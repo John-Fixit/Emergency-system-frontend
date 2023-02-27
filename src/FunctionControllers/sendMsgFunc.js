@@ -1,8 +1,6 @@
 import axios from "axios" 
+import { baseUrl } from "../URL"
 
-
-
-let baseUrl = process.env.NODE_ENV === 'development'? process.env.REACT_APP_SERVER_DEV_URL: process.env.REACT_APP_SERVER_PRO_URL;
 
 const sendMsg=(msgDetail)=>{
    return axios.post(`${baseUrl}/msg/sendMsg`, msgDetail).then((res)=>{

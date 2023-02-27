@@ -1,13 +1,14 @@
 
-import React, { useState } from "react";
-import { sendMsg } from "../../FunctionControllers/sendMsg";
+import React from "react";
+import { sendMsg } from "../../FunctionControllers/sendMsgFunc";
 import "../../Styles/emergency.css";
 import {ToastContainer, toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Checkbox, FormControl, FormControlLabel, FormHelperText, InputLabel, MenuItem, Select, Typography } from "@mui/material";
+import { getLocation } from "../../FunctionControllers/getUserCurrentLocation";
 function Emergency() {
-  const [category, setcategory] = useState("");
-  const [location, setlocation] = useState("");
-  const [details, setdetails] = useState({
+  const [useCurrentLocation, setUseCurrentLocation] = React.useState(null);
+  const [details, setdetails] = React.useState({
     category: "",
     text: "",
     location: "",
@@ -20,18 +21,16 @@ const toastStyle = {theme: "colored", delay: 8000, autoClose: true, draggable: t
     setdetails({ ...details, [e.target.name]: e.target.value });
   };
 
+
+  getLocation()
+
   const submit = () => {
     const { category, text, location } = details;
-    // let loc = navigator.geolocation.getCurrentPosition((position)=>{
-    //     console.log(position)
-    // })
-
     if(handleValidation()){
 
-      if(!(!!details.location)){
-        //get the current location of the user
-      }
+      if(!(!!details.location)){ 
 
+      }
 
       sendMsg({category, text, location}).then((res)=>{
         if(res.code){
@@ -50,7 +49,6 @@ const toastStyle = {theme: "colored", delay: 8000, autoClose: true, draggable: t
     else{
       toast.error("Please choose the category of the emergency!!", toastStyle);
     }
-
   };
   const handleValidation = () => {
     if(!(!!details.category)){
@@ -61,44 +59,81 @@ const toastStyle = {theme: "colored", delay: 8000, autoClose: true, draggable: t
     }
   };
 
+
+  const handleCheck=(e)=>{
+    setUseCurrentLocation(e.target.checked)
+    console.log(e.target.checked)
+  }
+
   return (
     <>
-   
+      <button className="btn btn-danger" onClick={getLocation}>Location</button>
       <div className="col-sm-5" >
         <div className="category">
-          <label htmlFor="">Emergency Category</label>
-          <select
-            className="form-control"
-            name="category"
-            onChange={(e) => handleChange(e)}
-          >
-            <option value="">Choose Category</option>
-            <option value="vehicleAccident">Vehicle Accident</option>
-            <option value="fireAccident">Fire Accident</option>
-            <option value="robbery">Robbery</option>
-            <option value="riot">Riot</option>
-          </select>
+        <Typography component="h1" variant="h5">
+            Category of incident
+          </Typography>
+          <FormControl sx={{ m: 2, minWidth: 120 }}>
+                <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  name="category"
+                  value={details.category}
+                  label="Category"
+                   onChange={(e)=>handleChange(e)}
+                >
+                  <MenuItem value={""}>Choose Category</MenuItem>
+                  <MenuItem value={"vehicleAccident"}>Vehicle Accident</MenuItem>
+                  <MenuItem value={"fireAccident"}>Fire Accident</MenuItem>
+                  <MenuItem value={"robbery"}>Robbery</MenuItem>
+                  <MenuItem value={"riot"}>Riot</MenuItem>
+                </Select>
+                <FormHelperText>
+                  Select the Category of your Organization
+                </FormHelperText>
+              </FormControl>
         </div>
         <div className="content my-2">
           <div className="text_desc_area">
+          <Typography component="h1" variant="h5">
+            More description of the incident (Optional)
+          </Typography>
             <textarea
               rows="10"
               cols="30"
               name="text"
-              className="form-control"
+              className="form-control textArea"
+              placeholder="Describe more..."
               onChange={(e) => handleChange(e)}
             ></textarea>
           </div>
           <div className="voice_desc_area">
+            <Typography component="" variant="h5">
+              Use Voice Record
+            </Typography>
             <label htmlFor="">
               Use voice record for more description of the incident
             </label>
           </div>
           <div className="video_desc_area">
+          <Typography component="h1" variant="h5">
+              Add Video for more description
+          </Typography>
+          <div className="take_video">
             <label htmlFor="">
               Take video coverage for more description about the urgent
               incident:{" "}
             </label>
+            //  
+          </div>
+          <div className="upload_video">
+          <label htmlFor="">
+              Already have the video coverage for more description about the
+              incident:{" "}
+            </label>
+            ///
+          </div>
           </div>
 
           <div className="">
@@ -111,8 +146,10 @@ const toastStyle = {theme: "colored", delay: 8000, autoClose: true, draggable: t
             />
 
             <div className="device_location">
-              <label htmlFor="">Use my current location</label>{" "}
-              <input type="checkbox" className="form-check-input"/>
+              <FormControlLabel
+              control={<Checkbox checked={useCurrentLocation} onChange={handleCheck} />}
+              label="Use my current location"
+    />
             </div>
           </div>
         </div>

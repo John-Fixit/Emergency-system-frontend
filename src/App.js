@@ -10,7 +10,7 @@ function App() {
 
   return (
     <>
-      <h1>Welcome to Emergency System</h1>
+
       <Routes >
         <Route path='' element={<Navigate to={'/emergency'}/>}/>
         <Route path='/emergency' element={<Emergency/>}/>
