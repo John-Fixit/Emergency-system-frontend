@@ -5,8 +5,13 @@ import "../../Styles/emergency.css";
 import {ToastContainer, toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Checkbox, FormControl, FormControlLabel, FormHelperText, InputLabel, MenuItem, Select, Typography } from "@mui/material";
-import { getLocation } from "../../FunctionControllers/getUserCurrentLocation";
+import { getPosition } from "../../FunctionControllers/getUserCurrentLocation";
+import {useAudioRecorder, AudioRecorder} from "react-audio-voice-recorder"
+import { recordComplete } from "../../FunctionControllers/recordComplete";
 function Emergency() {
+
+  const recordingControls = useAudioRecorder();
+
   const [useCurrentLocation, setUseCurrentLocation] = React.useState(null);
   const [details, setdetails] = React.useState({
     category: "",
@@ -22,7 +27,7 @@ const toastStyle = {theme: "colored", delay: 8000, autoClose: true, draggable: t
   };
 
 
-  getLocation()
+  getPosition()
 
   const submit = () => {
     const { category, text, location } = details;
@@ -67,7 +72,7 @@ const toastStyle = {theme: "colored", delay: 8000, autoClose: true, draggable: t
 
   return (
     <>
-      <button className="btn btn-danger" onClick={getLocation}>Location</button>
+      <button className="btn btn-danger" onClick={getPosition()}>Location</button>
       <div className="col-sm-5" >
         <div className="category">
         <Typography component="h1" variant="h5">
@@ -115,6 +120,10 @@ const toastStyle = {theme: "colored", delay: 8000, autoClose: true, draggable: t
             <label htmlFor="">
               Use voice record for more description of the incident
             </label>
+            <div >
+              <AudioRecorder onRecordingComplete={getAudioRecorded} recorderControls={recordingControls}/>
+              <button className="btn btn-primary" onClick={recordingControls.stopRecording}>Stop</button>
+            </div>
           </div>
           <div className="video_desc_area">
           <Typography component="h1" variant="h5">
