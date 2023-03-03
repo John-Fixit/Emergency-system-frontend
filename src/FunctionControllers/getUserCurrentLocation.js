@@ -57,7 +57,7 @@ const getPosition=()=>{
     navigator.geolocation.getCurrentPosition((position)=>{
       if(position){
         const {latitude, longitude} = position.coords
-        console.log(latitude, longitude);
+        // console.log(latitude, longitude);
         // axios.get(`https://api.myptv.com/geocoding/v1/locations/by-position/6.5994752/3.3292288?language=en`).then((res)=>{
         //   console.log(res);
         // });

@@ -1,109 +1,165 @@
-
 import React from "react";
 import { sendMsg } from "../../FunctionControllers/sendMsgFunc";
 import "../../Styles/emergency.css";
-import {ToastContainer, toast} from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Checkbox, FormControl, FormControlLabel, FormHelperText, InputLabel, MenuItem, Select, Typography } from "@mui/material";
+import {
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
 import { getPosition } from "../../FunctionControllers/getUserCurrentLocation";
-import {useAudioRecorder, AudioRecorder} from "react-audio-voice-recorder"
-import { recordComplete } from "../../FunctionControllers/recordComplete";
+import { useAudioRecorder, AudioRecorder } from "react-audio-voice-recorder";
+import { audioRecordComplete } from "../../FunctionControllers/audioRecordComplete";
+import { ReactMediaRecorder } from "react-media-recorder";
+import VideoPreview from "../../Pages/VideoPreview";
+import { videoRecordComplete } from "../../FunctionControllers/videoRecordComplete";
 function Emergency() {
-
   const recordingControls = useAudioRecorder();
 
   const [useCurrentLocation, setUseCurrentLocation] = React.useState(null);
   const [details, setdetails] = React.useState({
     category: "",
     text: "",
+    audioFile: "",
+    videoFile: "",
     location: "",
   });
+  const [control, setControl] = React.useState("stop");
 
-
-const toastStyle = {theme: "colored", delay: 8000, autoClose: true, draggable: true, pauseOnHover: true};
+  const toastStyle = {
+    theme: "colored",
+    delay: 8000,
+    autoClose: true,
+    draggable: true,
+    pauseOnHover: true,
+  };
 
   const handleChange = (e) => {
     setdetails({ ...details, [e.target.name]: e.target.value });
   };
 
-
-  getPosition()
+  getPosition();
 
   const submit = () => {
-    const { category, text, location } = details;
-    if(handleValidation()){
+    const { category, text, audioFile, location } = details;
+    console.log(details)
+    // if (handleValidation()) {
+    //   // if(!(!!details.location)){
 
-      if(!(!!details.location)){ 
+    //   // }
 
-      }
-
-      sendMsg({category, text, location}).then((res)=>{
-        if(res.code){
-          toast.error(`${res.message}: please check your internet immidiately!!!`, toastStyle)
-        }
-        else{
-          const {message, success} = res.data
-          success?
-            toast.success(message, toastStyle):
-            toast.error(message, toastStyle)
-        }
-      }).catch((err)=>{
-        toast.error(`${err.message}: please check your internet immidiately!!!`, toastStyle)
-      });
-    }
-    else{
-      toast.error("Please choose the category of the emergency!!", toastStyle);
-    }
+    //   sendMsg({ category, text, audioFile, location })
+    //     .then((res) => {
+    //       if (res.code) {
+    //         toast.error(
+    //           `${res.message}: please check your internet immidiately!!!`,
+    //           toastStyle
+    //         );
+    //       } else {
+    //         const { message, success } = res.data;
+    //         success
+    //           ? toast.success(message, toastStyle)
+    //           : toast.error(message, toastStyle);
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       toast.error(
+    //         `${err.message}: please check your internet immidiately!!!`,
+    //         toastStyle
+    //       );
+    //     });
+    // } else {
+    //   toast.error("Please choose the category of the emergency!!", toastStyle);
+    // }
   };
   const handleValidation = () => {
-    if(!(!!details.category)){
-        return false;
-    }
-    else{
-      return true
+    if (!!!details.category) {
+      return false;
+    } else {
+      return true;
     }
   };
 
+  const getAudioRecorded = (blob) => {
+    const audioFile = audioRecordComplete(blob);
+    const reader = new FileReader();
+    reader.readAsDataURL(audioFile);
+    reader.onload = () => {
+      setdetails({ ...details, audioFile: reader.result });
+    };
+  };
 
-  const handleCheck=(e)=>{
-    setUseCurrentLocation(e.target.checked)
-    console.log(e.target.checked)
-  }
+  const getVideoRecorded = (blob) => {
+    const videoFile =  videoRecordComplete(blob);
+    const reader = new FileReader();
+    reader.readAsDataURL(videoFile);
+    reader.onload = () => {
+      //error handling...
+      // console.log(reader.result);
+      setdetails({ ...details, videoFile: reader.result });
+    };
+  };
+
+
+
+  const handleCheck = (e) => {
+    setUseCurrentLocation(e.target.checked);
+    console.log(e.target.checked);
+  };
+
+  //video
+  const videoControl = ({ startRecording, stopRecording, mediaBlobUrl }) => {
+    if (control === "stop") {
+      startRecording();
+      setControl("start");
+    } else if (control === "start") {
+      stopRecording();
+      setControl("stop");
+    }
+  };
 
   return (
     <>
-      <button className="btn btn-danger" onClick={getPosition()}>Location</button>
-      <div className="col-sm-5" >
+      <button className="btn btn-danger" onClick={getPosition()}>
+        Location
+      </button>
+      <div className="col-sm-5">
         <div className="category">
-        <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5">
             Category of incident
           </Typography>
           <FormControl sx={{ m: 2, minWidth: 120 }}>
-                <InputLabel id="demo-simple-select-label">Category</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  name="category"
-                  value={details.category}
-                  label="Category"
-                   onChange={(e)=>handleChange(e)}
-                >
-                  <MenuItem value={""}>Choose Category</MenuItem>
-                  <MenuItem value={"vehicleAccident"}>Vehicle Accident</MenuItem>
-                  <MenuItem value={"fireAccident"}>Fire Accident</MenuItem>
-                  <MenuItem value={"robbery"}>Robbery</MenuItem>
-                  <MenuItem value={"riot"}>Riot</MenuItem>
-                </Select>
-                <FormHelperText>
-                  Select the Category of your Organization
-                </FormHelperText>
-              </FormControl>
+            <InputLabel id="demo-simple-select-label">Category</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              name="category"
+              value={details.category}
+              label="Category"
+              onChange={(e) => handleChange(e)}
+            >
+              <MenuItem value={""}>Choose Category</MenuItem>
+              <MenuItem value={"vehicleAccident"}>Vehicle Accident</MenuItem>
+              <MenuItem value={"fireAccident"}>Fire Accident</MenuItem>
+              <MenuItem value={"robbery"}>Robbery</MenuItem>
+              <MenuItem value={"riot"}>Riot</MenuItem>
+            </Select>
+            <FormHelperText>
+              Select the Category of your Organization
+            </FormHelperText>
+          </FormControl>
         </div>
         <div className="content my-2">
           <div className="text_desc_area">
-          <Typography component="h1" variant="h5">
-            More description of the incident (Optional)
-          </Typography>
+            <Typography component="h1" variant="h5">
+              More description of the incident (Optional)
+            </Typography>
             <textarea
               rows="10"
               cols="30"
@@ -120,29 +176,87 @@ const toastStyle = {theme: "colored", delay: 8000, autoClose: true, draggable: t
             <label htmlFor="">
               Use voice record for more description of the incident
             </label>
-            <div >
-              <AudioRecorder onRecordingComplete={getAudioRecorded} recorderControls={recordingControls}/>
-              <button className="btn btn-primary" onClick={recordingControls.stopRecording}>Stop</button>
+            <div>
+              <AudioRecorder
+                onRecordingComplete={getAudioRecorded}
+                recorderControls={recordingControls}
+              />
+              <button
+                className="btn btn-primary"
+                onClick={recordingControls.stopRecording}
+              >
+                Stop
+              </button>
             </div>
           </div>
           <div className="video_desc_area">
-          <Typography component="h1" variant="h5">
+            <Typography component="h1" variant="h5">
               Add Video for more description
-          </Typography>
-          <div className="take_video">
-            <label htmlFor="">
-              Take video coverage for more description about the urgent
-              incident:{" "}
-            </label>
-            //  
-          </div>
-          <div className="upload_video">
+            </Typography>
+            <div className="take_video">
+              <label htmlFor="">
+                Take video coverage for more description about the urgent
+                incident:{" "}
+              </label>
+              <ReactMediaRecorder
+                video
+                blobPropertyBag={{ type: "video/mp4" }}
+                render={({
+                  previewStream,
+                  startRecording,
+                  status,
+                  stopRecording,
+                  mediaBlobUrl,
+                }) => {
+                  // calling function videoRecordComplete to conver to video file
+                  if(mediaBlobUrl){
+
+                    
+                    getVideoRecorded(mediaBlobUrl)
+                  }
+                  return (
+                    <div>
+                      {
+                        status==="recording"?"": <video src={mediaBlobUrl} controls />
+                      }
+                     
+                      {mediaBlobUrl ? (
+                        ""
+                      ) : (
+                        <VideoPreview stream={previewStream} />
+                      )}
+                      <button
+                        className="btn btn-primary"
+                        onClick={() =>
+                          videoControl({
+                            startRecording,
+                            stopRecording,
+                            mediaBlobUrl,
+                          })
+                        }
+                      >
+                        {status != "recording" ? (
+                          <div style={{width: "6vh", height: "6vh", background: "red"}} className="rounded-circle align-items-center d-flex">
+                            <p style={{width: "3vh", height: "3vh"}} className="bg-light rounded-circle mx-auto my-auto"></p>
+                        </div>
+                        ) : (
+                          <div style={{width: "6vh", height: "6vh", background: "red"}} className="rounded-circle align-items-center d-flex">
+                          <p className="text-light mx-auto my-auto">REC</p>
+                      </div>
+                        )}
+                      </button>
+                    </div>
+                  );
+                }}
+              />
+            </div>
+            {/* <div className="upload_video">
           <label htmlFor="">
               Already have the video coverage for more description about the
               incident:{" "}
             </label>
             ///
-          </div>
+          </div> */}
           </div>
 
           <div className="">
@@ -156,9 +270,14 @@ const toastStyle = {theme: "colored", delay: 8000, autoClose: true, draggable: t
 
             <div className="device_location">
               <FormControlLabel
-              control={<Checkbox checked={useCurrentLocation} onChange={handleCheck} />}
-              label="Use my current location"
-    />
+                control={
+                  <Checkbox
+                    checked={useCurrentLocation}
+                    onChange={handleCheck}
+                  />
+                }
+                label="Use my current location"
+              />
             </div>
           </div>
         </div>
@@ -169,7 +288,15 @@ const toastStyle = {theme: "colored", delay: 8000, autoClose: true, draggable: t
         </div>
       </div>
 
-      <ToastContainer bodyStyle={{theme: "colored", delay: 8000, autoClose: true, draggable: true, pauseOnHover: true}}/>
+      <ToastContainer
+        bodyStyle={{
+          theme: "colored",
+          delay: 8000,
+          autoClose: true,
+          draggable: true,
+          pauseOnHover: true,
+        }}
+      />
     </>
   );
 }
