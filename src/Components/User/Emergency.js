@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { sendMsg } from "../../FunctionControllers/sendMsgFunc";
 import "../../Styles/emergency.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -47,36 +47,36 @@ function Emergency() {
   getPosition();
 
   const submit = () => {
-    const { category, text, audioFile, location } = details;
-    console.log(details)
-    // if (handleValidation()) {
-    //   // if(!(!!details.location)){
+    const { category, text, audioFile, videoFile, location } = details;
+    if (handleValidation()) {
+      // if(!(!!details.location)){
 
-    //   // }
+      // }
 
-    //   sendMsg({ category, text, audioFile, location })
-    //     .then((res) => {
-    //       if (res.code) {
-    //         toast.error(
-    //           `${res.message}: please check your internet immidiately!!!`,
-    //           toastStyle
-    //         );
-    //       } else {
-    //         const { message, success } = res.data;
-    //         success
-    //           ? toast.success(message, toastStyle)
-    //           : toast.error(message, toastStyle);
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       toast.error(
-    //         `${err.message}: please check your internet immidiately!!!`,
-    //         toastStyle
-    //       );
-    //     });
-    // } else {
-    //   toast.error("Please choose the category of the emergency!!", toastStyle);
-    // }
+      sendMsg({ category, text, audioFile, videoFile, location })
+        .then((res) => {
+          if (res.code) {
+            console.log(res)
+            toast.error(
+              `${res.message}: please check your internet connection immidiately!!!`,
+              toastStyle
+            );
+          } else {
+            const { message, success } = res.data;
+            success
+              ? toast.success(message, toastStyle)
+              : toast.error(message, toastStyle);
+          }
+        })
+        .catch((err) => {
+          toast.error(
+            `${err.message}: please check your internet immidiately!!!`,
+            toastStyle
+          );
+        });
+    } else {
+      toast.error("Please choose the category of the emergency!!", toastStyle);
+    }
   };
   const handleValidation = () => {
     if (!!!details.category) {
@@ -94,14 +94,14 @@ function Emergency() {
       setdetails({ ...details, audioFile: reader.result });
     };
   };
-
-  const getVideoRecorded = (blob) => {
+  
+  const getVideoRecorded = async(mediaBlobUrl) => {
+    const blob = await fetch(mediaBlobUrl).then((bl)=>bl.blob());
     const videoFile =  videoRecordComplete(blob);
     const reader = new FileReader();
     reader.readAsDataURL(videoFile);
     reader.onload = () => {
       //error handling...
-      // console.log(reader.result);
       setdetails({ ...details, videoFile: reader.result });
     };
   };
@@ -114,7 +114,7 @@ function Emergency() {
   };
 
   //video
-  const videoControl = ({ startRecording, stopRecording, mediaBlobUrl }) => {
+  const videoControl = ({ startRecording, stopRecording }) => {
     if (control === "stop") {
       startRecording();
       setControl("start");
@@ -200,7 +200,7 @@ function Emergency() {
               </label>
               <ReactMediaRecorder
                 video
-                blobPropertyBag={{ type: "video/mp4" }}
+                blobPropertyBag={{ type: "video/webm" }}
                 render={({
                   previewStream,
                   startRecording,
@@ -208,11 +208,10 @@ function Emergency() {
                   stopRecording,
                   mediaBlobUrl,
                 }) => {
-                  // calling function videoRecordComplete to conver to video file
+                  // calling function videoRecordComplete to convert to video file
                   if(mediaBlobUrl){
-
-                    
                     getVideoRecorded(mediaBlobUrl)
+                   
                   }
                   return (
                     <div>
@@ -231,17 +230,17 @@ function Emergency() {
                           videoControl({
                             startRecording,
                             stopRecording,
-                            mediaBlobUrl,
                           })
                         }
                       >
                         {status != "recording" ? (
                           <div style={{width: "6vh", height: "6vh", background: "red"}} className="rounded-circle align-items-center d-flex">
-                            <p style={{width: "3vh", height: "3vh"}} className="bg-light rounded-circle mx-auto my-auto"></p>
-                        </div>
+                          <p className="text-light mx-auto my-auto">REC</p>
+                      </div>
+                          
                         ) : (
                           <div style={{width: "6vh", height: "6vh", background: "red"}} className="rounded-circle align-items-center d-flex">
-                          <p className="text-light mx-auto my-auto">REC</p>
+                          <p style={{width: "3vh", height: "3vh"}} className="bg-light rounded-circle mx-auto my-auto"></p>
                       </div>
                         )}
                       </button>
