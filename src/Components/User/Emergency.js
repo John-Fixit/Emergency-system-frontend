@@ -19,6 +19,7 @@ import { audioRecordComplete } from "../../FunctionControllers/audioRecordComple
 import { ReactMediaRecorder } from "react-media-recorder";
 import VideoPreview from "../../Pages/VideoPreview";
 import { videoRecordComplete } from "../../FunctionControllers/videoRecordComplete";
+import Navbar from "../Navbar";
 function Emergency() {
   const recordingControls = useAudioRecorder();
 
@@ -139,10 +140,8 @@ function Emergency() {
 
   return (
     <>
-      <button className="btn btn-danger" onClick={() => getAddress()}>
-        location
-      </button>
-      <div className="col-sm-5">
+    <Navbar />
+      <div className="col-sm-5 mx-3">
         <div className="category">
           <Typography component="h1" variant="h5">
             Category of incident
@@ -308,7 +307,7 @@ function Emergency() {
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={useCurrentLocation}
+                    checked={!!useCurrentLocation}
                     onChange={handleCheck}
                   />
                 }
