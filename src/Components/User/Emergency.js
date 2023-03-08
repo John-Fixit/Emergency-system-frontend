@@ -13,7 +13,7 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import { getPosition } from "../../FunctionControllers/getUserCurrentLocation";
+import { getLocation } from "../../FunctionControllers/getUserCurrentLocation";
 import { useAudioRecorder, AudioRecorder } from "react-audio-voice-recorder";
 import { audioRecordComplete } from "../../FunctionControllers/audioRecordComplete";
 import { ReactMediaRecorder } from "react-media-recorder";
@@ -44,7 +44,25 @@ function Emergency() {
     setdetails({ ...details, [e.target.name]: e.target.value });
   };
 
-  getPosition();
+const getAddress=()=>{
+    navigator.geolocation.getCurrentPosition((position)=>{
+      if(position){
+        const {latitude, longitude} = position.coords
+        getLocation(latitude, longitude).then((addressData)=>{
+          console.log(addressData.formatted)
+          setdetails({...details, location: addressData.formatted})
+        }).catch((err)=>{
+          toast.error(err.message, toastStyle)
+        })
+      }
+      else{
+        console.log("Geolocation is not supported in your browser");
+      }
+    
+    })
+}
+
+// getAddress()
 
   const submit = () => {
     const { category, text, audioFile, videoFile, location } = details;
@@ -126,9 +144,7 @@ function Emergency() {
 
   return (
     <>
-      <button className="btn btn-danger" onClick={getPosition()}>
-        Location
-      </button>
+    <button className="btn btn-danger" onClick={()=>getAddress()}>location</button>
       <div className="col-sm-5">
         <div className="category">
           <Typography component="h1" variant="h5">
