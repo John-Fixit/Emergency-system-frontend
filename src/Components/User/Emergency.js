@@ -41,40 +41,36 @@ function Emergency() {
   };
 
   const handleChange = (e) => {
+    if(details.location==""){
+      getAddress()
+    }
     setdetails({ ...details, [e.target.name]: e.target.value });
   };
 
-const getAddress=()=>{
-    navigator.geolocation.getCurrentPosition((position)=>{
-      if(position){
-        const {latitude, longitude} = position.coords
-        getLocation(latitude, longitude).then((addressData)=>{
-          console.log(addressData.formatted)
-          setdetails({...details, location: addressData.formatted})
-        }).catch((err)=>{
-          toast.error(err.message, toastStyle)
-        })
+  const getAddress = () => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      if (position) {
+        const { latitude, longitude } = position.coords;
+        getLocation(latitude, longitude)
+          .then((addressData) => {
+            setdetails({ ...details, location: addressData.formatted });
+          })
+          .catch((err) => {
+            toast.error(err.message, toastStyle);
+          });
+      } else {
+        toast.error("Geolocation is not supported in your browser", toastStyle);
       }
-      else{
-        console.log("Geolocation is not supported in your browser");
-      }
-    
-    })
-}
+    });
+  };
 
-// getAddress()
-
-  const submit = () => {
+  const submit = async() => {
     const { category, text, audioFile, videoFile, location } = details;
     if (handleValidation()) {
-      // if(!(!!details.location)){
-
-      // }
-
+      console.log(details)
       sendMsg({ category, text, audioFile, videoFile, location })
         .then((res) => {
           if (res.code) {
-            console.log(res)
             toast.error(
               `${res.message}: please check your internet connection immidiately!!!`,
               toastStyle
@@ -92,12 +88,13 @@ const getAddress=()=>{
             toastStyle
           );
         });
-    } else {
+    } 
+    else {
       toast.error("Please choose the category of the emergency!!", toastStyle);
     }
   };
   const handleValidation = () => {
-    if (!!!details.category) {
+    if (!(!!details.category)) {
       return false;
     } else {
       return true;
@@ -112,10 +109,10 @@ const getAddress=()=>{
       setdetails({ ...details, audioFile: reader.result });
     };
   };
-  
-  const getVideoRecorded = async(mediaBlobUrl) => {
-    const blob = await fetch(mediaBlobUrl).then((bl)=>bl.blob());
-    const videoFile =  videoRecordComplete(blob);
+
+  const getVideoRecorded = async (mediaBlobUrl) => {
+    const blob = await fetch(mediaBlobUrl).then((bl) => bl.blob());
+    const videoFile = videoRecordComplete(blob);
     const reader = new FileReader();
     reader.readAsDataURL(videoFile);
     reader.onload = () => {
@@ -124,11 +121,9 @@ const getAddress=()=>{
     };
   };
 
-
-
   const handleCheck = (e) => {
     setUseCurrentLocation(e.target.checked);
-    console.log(e.target.checked);
+    getAddress()
   };
 
   //video
@@ -144,7 +139,9 @@ const getAddress=()=>{
 
   return (
     <>
-    <button className="btn btn-danger" onClick={()=>getAddress()}>location</button>
+      <button className="btn btn-danger" onClick={() => getAddress()}>
+        location
+      </button>
       <div className="col-sm-5">
         <div className="category">
           <Typography component="h1" variant="h5">
@@ -225,16 +222,17 @@ const getAddress=()=>{
                   mediaBlobUrl,
                 }) => {
                   // calling function videoRecordComplete to convert to video file
-                  if(mediaBlobUrl){
-                    getVideoRecorded(mediaBlobUrl)
-                   
+                  if (mediaBlobUrl) {
+                    getVideoRecorded(mediaBlobUrl);
                   }
                   return (
                     <div>
-                      {
-                        status==="recording"?"": <video src={mediaBlobUrl} controls />
-                      }
-                     
+                      {status === "recording" ? (
+                        ""
+                      ) : (
+                        <video src={mediaBlobUrl} controls />
+                      )}
+
                       {mediaBlobUrl ? (
                         ""
                       ) : (
@@ -250,14 +248,30 @@ const getAddress=()=>{
                         }
                       >
                         {status != "recording" ? (
-                          <div style={{width: "6vh", height: "6vh", background: "red"}} className="rounded-circle align-items-center d-flex">
-                          <p className="text-light mx-auto my-auto">REC</p>
-                      </div>
-                          
+                          <div
+                            style={{
+                              width: "6vh",
+                              height: "6vh",
+                              background: "red",
+                            }}
+                            className="rounded-circle align-items-center d-flex"
+                          >
+                            <p className="text-light mx-auto my-auto">REC</p>
+                          </div>
                         ) : (
-                          <div style={{width: "6vh", height: "6vh", background: "red"}} className="rounded-circle align-items-center d-flex">
-                          <p style={{width: "3vh", height: "3vh"}} className="bg-light rounded-circle mx-auto my-auto"></p>
-                      </div>
+                          <div
+                            style={{
+                              width: "6vh",
+                              height: "6vh",
+                              background: "red",
+                            }}
+                            className="rounded-circle align-items-center d-flex"
+                          >
+                            <p
+                              style={{ width: "3vh", height: "3vh" }}
+                              className="bg-light rounded-circle mx-auto my-auto"
+                            ></p>
+                          </div>
                         )}
                       </button>
                     </div>
@@ -274,14 +288,21 @@ const getAddress=()=>{
           </div> */}
           </div>
 
-          <div className="">
-            <label htmlFor="">Enter the exact location of the Emergency</label>
-            <input
-              type="text"
-              name="location"
-              onChange={(e) => handleChange(e)}
-              className="form-control"
-            />
+          <div className="location">
+            {
+              useCurrentLocation?"":
+            <div className="provide_location">
+              <label htmlFor="">
+                Enter the exact location of the Emergency
+              </label>
+              <input
+                type="text"
+                name="location"
+                onChange={(e) => handleChange(e)}
+                className="form-control"
+              />
+            </div>
+            }
 
             <div className="device_location">
               <FormControlLabel
