@@ -4,7 +4,13 @@ import "../../Styles/emergency.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
+  Button,
   Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -20,7 +26,9 @@ import { ReactMediaRecorder } from "react-media-recorder";
 import VideoPreview from "../../Pages/VideoPreview";
 import { videoRecordComplete } from "../../FunctionControllers/videoRecordComplete";
 import Navbar from "../Navbar";
-function Emergency() {
+import Loader from "react-spinners/ClipLoader"
+import DescTemplate from "../../Pages/DescTemplate";
+function Emergency({socket}) {
   const recordingControls = useAudioRecorder();
 
   const [useCurrentLocation, setUseCurrentLocation] = React.useState(null);
@@ -31,8 +39,12 @@ function Emergency() {
     videoFile: "",
     location: "",
   });
+  
   const [control, setControl] = React.useState("stop");
-
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [messages, setMessages] = React.useState([]);
+  const [open, setOpen] = React.useState(false);
+  const [resMsg, setResMsg] = React.useState("")
   const toastStyle = {
     theme: "colored",
     delay: 8000,
@@ -42,8 +54,8 @@ function Emergency() {
   };
 
   const handleChange = (e) => {
-    if(details.location==""){
-      getAddress()
+    if (details.location == "") {
+      getAddress();
     }
     setdetails({ ...details, [e.target.name]: e.target.value });
   };
@@ -65,37 +77,36 @@ function Emergency() {
     });
   };
 
-  const submit = async() => {
+  const submit = async () => {
     const { category, text, audioFile, videoFile, location } = details;
     if (handleValidation()) {
-      console.log(details)
+      setIsLoading(true);
       sendMsg({ category, text, audioFile, videoFile, location })
-        .then((res) => {
-          if (res.code) {
-            toast.error(
-              `${res.message}: please check your internet connection immidiately!!!`,
-              toastStyle
-            );
-          } else {
-            const { message, success } = res.data;
+        .then(async(res) => {
+            const { message, success } = res;
+            // socket.emit('msg', {category, text, location})
+            // toast.success(message, toastStyle)
+            await setResMsg(message)
+            setOpen(true)
             success
               ? toast.success(message, toastStyle)
               : toast.error(message, toastStyle);
-          }
         })
-        .catch((err) => {
-          toast.error(
-            `${err.message}: please check your internet immidiately!!!`,
-            toastStyle
-          );
+        .finally(()=>{
+          setIsLoading(false);
         });
-    } 
-    else {
+    } else {
       toast.error("Please choose the category of the emergency!!", toastStyle);
     }
   };
+  
+  // useEffect(()=>{
+  //   socket.on('msgResponse', (response)=>{
+  //     setMessages([...messages, response]);
+  // })
+  // }, [socket])
   const handleValidation = () => {
-    if (!(!!details.category)) {
+    if (!!!details.category) {
       return false;
     } else {
       return true;
@@ -117,14 +128,13 @@ function Emergency() {
     const reader = new FileReader();
     reader.readAsDataURL(videoFile);
     reader.onload = () => {
-      //error handling...
       setdetails({ ...details, videoFile: reader.result });
     };
   };
 
   const handleCheck = (e) => {
     setUseCurrentLocation(e.target.checked);
-    getAddress()
+    getAddress();
   };
 
   //video
@@ -138,30 +148,48 @@ function Emergency() {
     }
   };
 
+  const handleTemplate=(param)=>{
+      details.text = param
+      console.log(details)
+  }
+
   return (
     <>
-    <Navbar />
+      <Navbar />
       <div className="col-sm-5 mx-3">
         <div className="category">
           <Typography component="h1" variant="h5">
             Category of incident
           </Typography>
           <FormControl sx={{ m: 2, minWidth: 120 }}>
-            <InputLabel id="demo-simple-select-label">Category</InputLabel>
-            <Select
+            {/* <InputLabel id="demo-simple-select-label">Category</InputLabel> */}
+            {/* <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               name="category"
-              value={details.category}
+              // value={details.category}
               label="Category"
-              onChange={(e) => handleChange(e)}
+              onChange={(e) => setdetails({...details, 'category': e.target.value})}
             >
               <MenuItem value={""}>Choose Category</MenuItem>
               <MenuItem value={"vehicleAccident"}>Vehicle Accident</MenuItem>
               <MenuItem value={"fireAccident"}>Fire Accident</MenuItem>
               <MenuItem value={"robbery"}>Robbery</MenuItem>
               <MenuItem value={"riot"}>Riot</MenuItem>
-            </Select>
+            </Select> */}
+            <select   
+              name="category"
+              value={details.category}
+              label="Category"
+              onChange={(e) => setdetails({...details, 'category': e.target.value})}
+              className="form-control"
+            >
+            <option value={"Choose Category"}>Choose Category</option>
+              <option value={"vehicleAccident"}>Vehicle Accident</option>
+              <option value={"fireAccident"}>Fire Accident</option>
+              <option value={"robbery"}>Robbery</option>
+              <option value={"riot"}>Riot</option>
+            </select>
             <FormHelperText>
               Select the Category of your Organization
             </FormHelperText>
@@ -172,6 +200,7 @@ function Emergency() {
             <Typography component="h1" variant="h5">
               More description of the incident (Optional)
             </Typography>
+            <DescTemplate handleTemplate={handleTemplate}/>
             <textarea
               rows="10"
               cols="30"
@@ -288,20 +317,21 @@ function Emergency() {
           </div>
 
           <div className="location">
-            {
-              useCurrentLocation?"":
-            <div className="provide_location">
-              <label htmlFor="">
-                Enter the exact location of the Emergency
-              </label>
-              <input
-                type="text"
-                name="location"
-                onChange={(e) => handleChange(e)}
-                className="form-control"
-              />
-            </div>
-            }
+            {useCurrentLocation ? (
+              ""
+            ) : (
+              <div className="provide_location">
+                <label htmlFor="">
+                  Enter the exact location of the Emergency
+                </label>
+                <input
+                  type="text"
+                  name="location"
+                  onChange={(e) => handleChange(e)}
+                  className="form-control"
+                />
+              </div>
+            )}
 
             <div className="device_location">
               <FormControlLabel
@@ -317,11 +347,37 @@ function Emergency() {
           </div>
         </div>
         <div className="submitContent">
-          <button className="btn submitBtn btn-danger" onClick={() => submit()}>
+          <button className="btn submitBtn btn-danger d-flex gap-2" onClick={() => submit()}>
+            {
+            <p className="my-auto">
+              <Loader loading={isLoading} size={20} color={'white'}/>
+            </p>
+            }
             Submit
           </button>
         </div>
       </div>
+
+      <Dialog
+        open={open}
+        onClose={()=>setOpen(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Response: Notification! Notification!! Notification!!!"}
+        </DialogTitle>
+        <DialogContent className="text-center">
+          <DialogContentText id="alert-dialog-description">
+            {resMsg}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={()=>setOpen(false)} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <ToastContainer
         bodyStyle={{
@@ -337,3 +393,5 @@ function Emergency() {
 }
 
 export default Emergency;
+
+

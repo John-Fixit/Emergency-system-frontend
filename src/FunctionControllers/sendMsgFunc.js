@@ -5,11 +5,10 @@ const sendMsg = (msgDetail) => {
   return axios
     .post(`${baseUrl}/msg/sendMsg`, msgDetail)
     .then((res) => {
-      return res;
+      return res.data;
+    }).catch((err)=>{
+      return err.response.data
     })
-    .catch((err) => {
-      return err;
-    });
 };
 
 export { sendMsg };
