@@ -39,11 +39,13 @@ function Emergency({socket}) {
     videoFile: "",
     location: "",
   });
+  const [responseDialog, setResponseDialog] = React.useState({
+    open: false,
+    NoError: null
+  });
   
   const [control, setControl] = React.useState("stop");
   const [isLoading, setIsLoading] = React.useState(false);
-  const [messages, setMessages] = React.useState([]);
-  const [open, setOpen] = React.useState(false);
   const [resMsg, setResMsg] = React.useState("")
   const toastStyle = {
     theme: "colored",
@@ -84,27 +86,24 @@ function Emergency({socket}) {
       sendMsg({ category, text, audioFile, videoFile, location })
         .then(async(res) => {
             const { message, success } = res;
-            // socket.emit('msg', {category, text, location})
-            // toast.success(message, toastStyle)
             await setResMsg(message)
-            setOpen(true)
-            success
-              ? toast.success(message, toastStyle)
-              : toast.error(message, toastStyle);
+            setResponseDialog({...responseDialog, open: true, NoError: success})
+            if(success){
+              setdetails({...details, category: "", text: "", audioFile: "", videoFile: "", location: ""});
+              setUseCurrentLocation(false)
+            }
+           
         })
         .finally(()=>{
           setIsLoading(false);
         });
     } else {
-      toast.error("Please choose the category of the emergency!!", toastStyle);
+     await setResMsg(`Please choose the category of the emergency you want to report!`)
+      setResponseDialog({...responseDialog, open: true, NoError: false})
     }
   };
   
-  // useEffect(()=>{
-  //   socket.on('msgResponse', (response)=>{
-  //     setMessages([...messages, response]);
-  // })
-  // }, [socket])
+
   const handleValidation = () => {
     if (!!!details.category) {
       return false;
@@ -149,8 +148,7 @@ function Emergency({socket}) {
   };
 
   const handleTemplate=(param)=>{
-      details.text = param
-      console.log(details)
+      setdetails({...details, text: param})
   }
 
   return (
@@ -207,6 +205,7 @@ function Emergency({socket}) {
               name="text"
               className="form-control textArea"
               placeholder="Describe more..."
+              value={details.text}
               onChange={(e) => handleChange(e)}
             ></textarea>
           </div>
@@ -249,7 +248,6 @@ function Emergency({socket}) {
                   stopRecording,
                   mediaBlobUrl,
                 }) => {
-                  // calling function videoRecordComplete to convert to video file
                   if (mediaBlobUrl) {
                     getVideoRecorded(mediaBlobUrl);
                   }
@@ -329,6 +327,7 @@ function Emergency({socket}) {
                   name="location"
                   onChange={(e) => handleChange(e)}
                   className="form-control"
+                  value={details.location}
                 />
               </div>
             )}
@@ -359,21 +358,21 @@ function Emergency({socket}) {
       </div>
 
       <Dialog
-        open={open}
-        onClose={()=>setOpen(false)}
+        open={responseDialog.open}
+        onClose={()=>false}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
+        <DialogTitle id="alert-dialog-title" className={`${responseDialog.NoError? "text-success": "text-danger"}`}>
           {"Response: Notification! Notification!! Notification!!!"}
         </DialogTitle>
         <DialogContent className="text-center">
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText id="alert-dialog-description" className={`form-control ${responseDialog.NoError? "is-valid text-success": "is-invalid text-danger"}`}>
             {resMsg}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={()=>setOpen(false)} autoFocus>
+          <Button onClick={()=>setResponseDialog({...responseDialog, open: false})} autoFocus>
             Agree
           </Button>
         </DialogActions>
