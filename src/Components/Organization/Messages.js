@@ -23,6 +23,13 @@ function Messages() {
               })
             }
         </div>
+        <div className='row'>
+        <div className={`message_section mx-4 border col-sm-8 mx-auto`}>
+            <div className={`message_header text-center`}>
+              <h1>Messages</h1>
+            </div>
+        </div>
+        </div>
    </React.Fragment>
   )
 }
