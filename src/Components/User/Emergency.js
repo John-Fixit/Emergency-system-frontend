@@ -30,6 +30,9 @@ import Loader from "react-spinners/ClipLoader"
 import DescTemplate from "../../Pages/DescTemplate";
 function Emergency({socket}) {
   const recordingControls = useAudioRecorder();
+  React.useEffect(()=>{
+   
+})
 
   const [useCurrentLocation, setUseCurrentLocation] = React.useState(null);
   const [details, setdetails] = React.useState({

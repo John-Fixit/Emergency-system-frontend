@@ -1,15 +1,20 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import "../Styles/navbar.css"
+
 
 function Navbar() {
     const styles = {
-        fontSize: '5vh',
+        fontSize: '4vh',
         fontWeight: 'bold',
         color: "red"
     } 
+
+ 
+
   return (
     <React.Fragment>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-light navbar_second_color">
           <div className="container-fluid">
             <Link to="" className="navbar-brand" href="#"><span style={styles}>ES</span><small className='text-success fw-bold'>Emergency system</small>
             

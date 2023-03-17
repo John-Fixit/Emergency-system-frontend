@@ -7,6 +7,7 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.css"
 import "bootstrap/dist/js/bootstrap.bundle"
+import UserContext from "./Components/Organization/StoreContext/UserContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -14,7 +15,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
       <BrowserRouter>
-        <App />
+        <UserContext subPages={<App />}/>
       </BrowserRouter>
   </React.StrictMode>
 );
