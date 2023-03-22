@@ -5,9 +5,6 @@ import { UserDetailContext } from './StoreContext/UserContext';
 function Navbar() {
 
     const [userDetail, setUserDetail] = useContext(UserDetailContext);
-   React.useEffect(()=>{
-        console.log(userDetail)
-   }, [userDetail]);
 
   return (
    <React.Fragment>
@@ -17,7 +14,7 @@ function Navbar() {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-          <Link to={`/org`}className="navbar-brand" href="#">ESemergency system</Link>
+          <Link to={`/org/${userDetail&& userDetail._id}`}className="navbar-brand" href="#">ESemergency system</Link>
           <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <Link to={`/org/${userDetail&& userDetail._id}`}className="nav-link" aria-current="page" href="#">Home</Link>

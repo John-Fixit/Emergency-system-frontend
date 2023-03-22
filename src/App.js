@@ -11,15 +11,14 @@ import AddOrg from './Components/Organization/AddOrg';
 import {SWRConfig} from "swr"
 import axios from 'axios';
 function App() {
-  const socket = socketIOClient.connect(baseUrl)
   const fetcher =(...args)=>axios.get(...args)
   return (
     <>
       <SWRConfig value={{fetcher: fetcher}}>
         <Routes>
           <Route path='' element={<Navigate to={'/emergency'}/>}/>
-          <Route path='/emergency' element={<Emergency socket={socket}/>}/>
-          <Route path="/addOrg" element={<AddOrg />} />
+          <Route path='/emergency' element={<Emergency/>}/>
+          <Route path="/register_organization" element={<AddOrg />} />
           <Route path="/login" element={<Login />} />
           <Route path='/org/*' element={<OrgMainRoute />}/>
         </Routes>

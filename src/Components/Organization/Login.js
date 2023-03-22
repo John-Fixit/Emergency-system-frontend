@@ -5,7 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
+import {Link} from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -20,9 +20,9 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://github.com/John-Fixit">
+      <a color="inherit" href="https://github.com/John-Fixit">
         John-Fixit
-      </Link>{' '}
+      </a>
       {new Date().getFullYear()}
       {'.'}
     </Typography>
@@ -46,6 +46,7 @@ export default function Login() {
         if(success){
           setIsError(false)
             setUserDetail(user_detail);
+            localStorage.setItem('email', JSON.stringify(user_detail.email));
             navigate(`/org/${user_detail._id}`)
         }
         else{
@@ -127,12 +128,12 @@ export default function Login() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
+                  <Link to={``} variant="body2">
                     Forgot password?
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link to={'/register_organization'} variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { sendMsg } from "../../FunctionControllers/sendMsgFunc";
 import "../../Styles/emergency.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -28,11 +28,10 @@ import { videoRecordComplete } from "../../FunctionControllers/videoRecordComple
 import Navbar from "../Navbar";
 import Loader from "react-spinners/ClipLoader"
 import DescTemplate from "../../Pages/DescTemplate";
-function Emergency({socket}) {
+import { SocketContext } from "../Organization/StoreContext/UserContext";
+function Emergency() {
   const recordingControls = useAudioRecorder();
-  React.useEffect(()=>{
-   
-})
+  const socket = useContext(SocketContext)
 
   const [useCurrentLocation, setUseCurrentLocation] = React.useState(null);
   const [details, setdetails] = React.useState({
@@ -89,6 +88,7 @@ function Emergency({socket}) {
       sendMsg({ category, text, audioFile, videoFile, location })
         .then(async(res) => {
             const { message, success } = res;
+            socket.emit('sendMsg', {category, text, audioFile, videoFile, location})
             await setResMsg(message)
             setResponseDialog({...responseDialog, open: true, NoError: success})
             if(success){
@@ -153,6 +153,7 @@ function Emergency({socket}) {
   const handleTemplate=(param)=>{
       setdetails({...details, text: param})
   }
+
 
   return (
     <>
@@ -365,6 +366,7 @@ function Emergency({socket}) {
         onClose={()=>false}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        onKeyPress={(e)=>{e.key=="Enter"&& setResponseDialog({...responseDialog, open: false})}}
       >
         <DialogTitle id="alert-dialog-title" className={`${responseDialog.NoError? "text-success": "text-danger"}`}>
           {"Response: Notification! Notification!! Notification!!!"}
