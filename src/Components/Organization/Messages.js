@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { baseUrl } from "../../URL";
 import Navbar from "./Navbar";
@@ -6,11 +6,18 @@ import useSWR from "swr";
 import Loader from "react-spinners/PropagateLoader"
 import TimeAgo from "timeago-react";
 import "../../Styles/messages.css"
-function Messages() {
+function Messages({newMsg}) {
   const route = useParams("");
+  const allMsg = useRef({});
+useEffect(()=>{
+  if(newMsg.current){
+    allMsg.current = [...allMsg.current, newMsg.current]
+  }
+}, [newMsg]);
+
   const { cat } = route;
   const { data, error, isLoading } = useSWR(`${baseUrl}/org/${cat}`, {refreshInterval: 1000}); 
-  let allData = data?.data.allMessage
+  allMsg.current = data?.data.allMessage
 
   if(isLoading){
     return <>
@@ -40,7 +47,7 @@ function Messages() {
             <h1>Messages</h1>
           </div>
           <div className={`message_body`}>
-            {[...allData].reverse().map((msg, index) => {
+            {[...allMsg.current].reverse().map((msg, index) => {
               return (
                 <div
                   className="rounded my-2 w-lg-25 w-md-50 w-sm-199 p-2 text-light bg-danger"

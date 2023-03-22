@@ -13,7 +13,6 @@ function OrgMainRoute() {
   React.useEffect(()=>{
       socket.on("msgResponse", (data)=>{
         msgRef.current = data
-        console.log(msgRef.current)
       })
   }, [socket])
 
@@ -39,7 +38,7 @@ function OrgMainRoute() {
     <>
       <Routes>
         <Route path="/:id" element={<Dashboard />}/>
-        <Route path="/:id/:cat" element={<Messages />}/>
+        <Route path="/:id/:cat" element={<Messages newMsg={msgRef}/>}/>
       </Routes>
     </>
   );
