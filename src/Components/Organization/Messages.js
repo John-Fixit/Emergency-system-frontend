@@ -18,7 +18,6 @@ useEffect(()=>{
   const { cat } = route;
   const { data, error, isLoading } = useSWR(`${baseUrl}/org/${cat}`, {refreshInterval: 1000}); 
   allMsg.current = data?.data.allMessage
-
   if(isLoading){
     return <>
      <Navbar />
@@ -73,6 +72,7 @@ useEffect(()=>{
           </div>
         </div>
       </div>
+      
     </React.Fragment>
   );
 }

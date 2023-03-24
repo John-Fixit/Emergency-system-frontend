@@ -4,6 +4,8 @@ import { loginOrg } from "../../FunctionControllers/loginOrgFunc";
 import Dashboard from "./Dashboard"
 import Messages from "./Messages";
 import { SocketContext, UserDetailContext } from "./StoreContext/UserContext";
+import addNotification from "react-push-notification";
+import logo from '../../logo.svg';
 function OrgMainRoute() {
   const [user, setUserDetail] = useContext(UserDetailContext)
   const socket = useContext(SocketContext)
@@ -11,8 +13,19 @@ function OrgMainRoute() {
   const msgRef = useRef();
   
   React.useEffect(()=>{
-      socket.on("msgResponse", (data)=>{
-        msgRef.current = data
+      socket.on("msgResponse", async(data)=>{
+        msgRef.current = await data
+        const {category, text, location} = await msgRef.current;
+        if(!!text){
+          addNotification({
+            title: 'Emergency system',
+            message: `Message: ${text} Location: ${location}`,
+            duration: 4000,
+            icon: logo,
+            native: true,
+            // theme: 'darkblue',
+          })
+        }
       })
   }, [socket])
 
@@ -33,6 +46,17 @@ function OrgMainRoute() {
    }
 
   }, [])
+
+  const jj=()=>{
+    addNotification({
+      title: 'Emergency system',
+      message: "Message to be sent",
+      duration: 4000,
+      icon: logo,
+      native: true,
+      // theme: 'darkblue',
+    })
+  }
 
   return (
     <>

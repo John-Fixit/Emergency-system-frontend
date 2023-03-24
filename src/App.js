@@ -1,6 +1,5 @@
 import React from 'react';
 import logo from './logo.svg';
-import './App.css';
 import Emergency from './Components/User/Emergency';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import socketIOClient from "socket.io-client";

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { sendMsg } from "../../FunctionControllers/sendMsgFunc";
 import "../../Styles/emergency.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -23,16 +23,16 @@ import { getLocation } from "../../FunctionControllers/getUserCurrentLocation";
 import { useAudioRecorder, AudioRecorder } from "react-audio-voice-recorder";
 import { audioRecordComplete } from "../../FunctionControllers/audioRecordComplete";
 import { ReactMediaRecorder } from "react-media-recorder";
-import VideoPreview from "../../Pages/VideoPreview";
+import VideoPreview from "../../Sub-Components/VideoPreview";
 import { videoRecordComplete } from "../../FunctionControllers/videoRecordComplete";
 import Navbar from "../Navbar";
 import Loader from "react-spinners/ClipLoader"
-import DescTemplate from "../../Pages/DescTemplate";
+import DescTemplate from "../../Sub-Components/DescTemplate";
 import { SocketContext } from "../Organization/StoreContext/UserContext";
 function Emergency() {
   const recordingControls = useAudioRecorder();
   const socket = useContext(SocketContext)
-
+  const audioTime = useRef();
   const [useCurrentLocation, setUseCurrentLocation] = React.useState(null);
   const [details, setdetails] = React.useState({
     category: "",
@@ -154,44 +154,30 @@ function Emergency() {
       setdetails({...details, text: param})
   }
 
-
   return (
     <>
       <Navbar />
-      <div className="col-sm-5 mx-3">
+      <div className="col-lg-11 my-3 mx-auto">
         <div className="category">
           <Typography component="h1" variant="h5">
             Category of incident
           </Typography>
           <FormControl sx={{ m: 2, minWidth: 120 }}>
-            {/* <InputLabel id="demo-simple-select-label">Category</InputLabel> */}
-            {/* <Select
+            <InputLabel id="demo-simple-select-label">Category</InputLabel>
+            <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              name="category"
-              // value={details.category}
-              label="Category"
-              onChange={(e) => setdetails({...details, 'category': e.target.value})}
-            >
-              <MenuItem value={""}>Choose Category</MenuItem>
-              <MenuItem value={"vehicleAccident"}>Vehicle Accident</MenuItem>
-              <MenuItem value={"fireAccident"}>Fire Accident</MenuItem>
-              <MenuItem value={"robbery"}>Robbery</MenuItem>
-              <MenuItem value={"riot"}>Riot</MenuItem>
-            </Select> */}
-            <select   
               name="category"
               value={details.category}
               label="Category"
               onChange={(e) => setdetails({...details, 'category': e.target.value})}
-              className="form-control"
             >
-            <option value={"Choose Category"}>Choose Category</option>
-              <option value={"vehicleAccident"}>Vehicle Accident</option>
-              <option value={"fireAccident"}>Fire Accident</option>
-              <option value={"robbery"}>Robbery</option>
-              <option value={"riot"}>Riot</option>
-            </select>
+              <MenuItem value={"Choose catory"}>Choose Category</MenuItem>
+              <MenuItem value={"vehicleAccident"}>Vehicle Accident</MenuItem>
+              <MenuItem value={"fireAccident"}>Fire Accident</MenuItem>
+              <MenuItem value={"robbery"}>Robbery</MenuItem>
+              <MenuItem value={"riot"}>Riot</MenuItem>
+            </Select>
             <FormHelperText>
               Select the Category of your Organization
             </FormHelperText>
@@ -207,13 +193,13 @@ function Emergency() {
               rows="10"
               cols="30"
               name="text"
-              className="form-control textArea"
-              placeholder="Describe more..."
+              className="form-control textArea "
+              placeholder="More of description of the incident..."
               value={details.text}
               onChange={(e) => handleChange(e)}
             ></textarea>
           </div>
-          <div className="voice_desc_area">
+          <div className="voice_desc_area card my-3 p-2 border-0 shadow col-sm-5 media_record">
             <Typography component="" variant="h5">
               Use Voice Record
             </Typography>
@@ -233,7 +219,7 @@ function Emergency() {
               </button>
             </div>
           </div>
-          <div className="video_desc_area">
+          <div className="video_desc_area card my-3 p-2 border-0 shadow col-sm-5">
             <Typography component="h1" variant="h5">
               Add Video for more description
             </Typography>

@@ -4,3 +4,10 @@
     cursor: pointer;
     caret-color: red !important;
 }
+.select_category{
+    cursor: pointer;
+}
+.media_record:hover{
+    transform: translateY(1);
+    transition: all 0.5s;
+}

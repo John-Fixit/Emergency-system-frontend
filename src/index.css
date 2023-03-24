@@ -17,3 +17,23 @@ code {
 .textArea{
   resize: none;
 }
+
+/* CSS for Description Template */
+.vehicle:hover{
+  background-color: rgb(234, 234, 45) !important;
+  transition: all 0.5s ease;
+}
+.fire:hover{
+  background-color: rgb(155, 47, 47) !important;
+  color: white;
+  transition: all 0.5s ;
+}
+.robbery:hover{
+  background-color: aqua !important;
+  transition: all 0.5s ;
+}
+.riot:hover{
+  background-color: blue !important;
+  color: white;
+  transition: all 0.5s ;
+}
