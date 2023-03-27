@@ -20,7 +20,6 @@ import {
   Typography,
 } from "@mui/material";
 import { getLocation } from "../../FunctionControllers/getUserCurrentLocation";
-import { useAudioRecorder, AudioRecorder } from "react-audio-voice-recorder";
 import { audioRecordComplete } from "../../FunctionControllers/audioRecordComplete";
 import { ReactMediaRecorder } from "react-media-recorder";
 import VideoPreview from "../../Sub-Components/VideoPreview";
@@ -29,10 +28,9 @@ import Navbar from "../Navbar";
 import Loader from "react-spinners/ClipLoader"
 import DescTemplate from "../../Sub-Components/DescTemplate";
 import { SocketContext } from "../Organization/StoreContext/UserContext";
+import AudioRecord from "../../FunctionControllers/AudioRecord";
 function Emergency() {
-  const recordingControls = useAudioRecorder();
   const socket = useContext(SocketContext)
-  const audioTime = useRef();
   const [useCurrentLocation, setUseCurrentLocation] = React.useState(null);
   const [details, setdetails] = React.useState({
     category: "",
@@ -116,7 +114,7 @@ function Emergency() {
   };
 
   const getAudioRecorded = (blob) => {
-    const audioFile = audioRecordComplete(blob);
+    const audioFile = audioRecordComplete(blob.blob);
     const reader = new FileReader();
     reader.readAsDataURL(audioFile);
     reader.onload = () => {
@@ -183,8 +181,7 @@ function Emergency() {
             </FormHelperText>
           </FormControl>
         </div>
-        <div className="content my-2">
-          <div className="text_desc_area">
+          <div className="text_desc_area col-sm-5">
             <Typography component="h1" variant="h5">
               More description of the incident (Optional)
             </Typography>
@@ -207,16 +204,9 @@ function Emergency() {
               Use voice record for more description of the incident
             </label>
             <div>
-              <AudioRecorder
-                onRecordingComplete={getAudioRecorded}
-                recorderControls={recordingControls}
-              />
-              <button
-                className="btn btn-primary"
-                onClick={recordingControls.stopRecording}
-              >
-                Stop
-              </button>
+             
+              <AudioRecord getAudioRecorded={getAudioRecorded}/>
+              
             </div>
           </div>
           <div className="video_desc_area card my-3 p-2 border-0 shadow col-sm-5">
@@ -334,7 +324,6 @@ function Emergency() {
               />
             </div>
           </div>
-        </div>
         <div className="submitContent">
           <button className="btn submitBtn btn-danger d-flex gap-2" onClick={() => submit()}>
             {

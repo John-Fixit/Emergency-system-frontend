@@ -42,11 +42,12 @@ export default function Login() {
     const data = new FormData(event.currentTarget);
     const crd = {email: data.get('email')}
     loginOrg(crd).then(async(res)=>{
-      const {user_detail, success, message} = res;
+      const {user_detail, success, message, token} = res;
         if(success){
           setIsError(false)
             setUserDetail(user_detail);
-            localStorage.setItem('email', JSON.stringify(user_detail.email));
+            console.log(user_detail);
+            localStorage.setItem('org_token', JSON.stringify(token));
             navigate(`/org/${user_detail._id}`)
         }
         else{

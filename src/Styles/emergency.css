@@ -11,3 +11,14 @@
     transform: translateY(1);
     transition: all 0.5s;
 }
+
+.record_btn{
+    width: 7vh;
+    height: 7vh;
+    cursor: pointer;
+    background-color: brown;
+    border: 5px solid brown;
+}
+.record_btn:hover{
+    background-color: white;
+}
