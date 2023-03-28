@@ -28,7 +28,7 @@ function AudioRecord({getAudioRecorded}) {
   return (
     <div>
       <p>New Record</p>
-      <AudioReactRecorder state={recordState} onStop={onStop} canvasHeight={200} canvasWidth={400} foregroundColor="white" backgroundColor="red"/>
+      <AudioReactRecorder state={recordState} onStop={onStop} canvasHeight={200} canvasWidth={400} foregroundColor="brown"/>
       {
         recordState == "start"?
         <div >

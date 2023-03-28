@@ -28,7 +28,7 @@ import Navbar from "../Navbar";
 import Loader from "react-spinners/ClipLoader"
 import DescTemplate from "../../Sub-Components/DescTemplate";
 import { SocketContext } from "../Organization/StoreContext/UserContext";
-import AudioRecord from "../../FunctionControllers/AudioRecord";
+import AudioRecord from "../../Sub-Components/AudioRecord";
 function Emergency() {
   const socket = useContext(SocketContext)
   const [useCurrentLocation, setUseCurrentLocation] = React.useState(null);
@@ -155,7 +155,7 @@ function Emergency() {
   return (
     <>
       <Navbar />
-      <div className="col-lg-11 my-3 mx-auto">
+      <div className="col-lg-7 col-md-10 col-sm-12 my-3 mx-auto border">
         <div className="category">
           <Typography component="h1" variant="h5">
             Category of incident
@@ -190,7 +190,7 @@ function Emergency() {
               rows="10"
               cols="30"
               name="text"
-              className="form-control textArea "
+              className="form-control textArea my-2"
               placeholder="More of description of the incident..."
               value={details.text}
               onChange={(e) => handleChange(e)}
@@ -236,7 +236,7 @@ function Emergency() {
                       {status === "recording" ? (
                         ""
                       ) : (
-                        <video src={mediaBlobUrl} controls />
+                        <video src={mediaBlobUrl} width={700} height={300} />
                       )}
 
                       {mediaBlobUrl ? (
