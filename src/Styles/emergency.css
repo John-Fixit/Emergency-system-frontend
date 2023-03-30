@@ -1,6 +1,4 @@
-.emergency_contents{
-    
-}
+
 .submitBtn{
     padding: 10px;
     cursor: pointer;
@@ -23,4 +21,9 @@
 }
 .record_btn:hover{
     background-color: white;
+}
+
+video{
+    height: auto;
+    width: 100%;
 }

@@ -9,6 +9,7 @@ import Login from './Components/Organization/Login';
 import AddOrg from './Components/Organization/AddOrg';
 import {SWRConfig} from "swr"
 import axios from 'axios';
+import VideoRecord from "./Sub-Components/VideoRecord"
 function App() {
   const fetcher =(...args)=>axios.get(...args)
   return (

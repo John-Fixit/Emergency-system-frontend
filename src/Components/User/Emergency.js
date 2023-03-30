@@ -21,14 +21,13 @@ import {
 } from "@mui/material";
 import { getLocation } from "../../FunctionControllers/getUserCurrentLocation";
 import { audioRecordComplete } from "../../FunctionControllers/audioRecordComplete";
-import { ReactMediaRecorder } from "react-media-recorder";
-import VideoPreview from "../../Sub-Components/VideoPreview";
 import { videoRecordComplete } from "../../FunctionControllers/videoRecordComplete";
 import Navbar from "../Navbar";
 import Loader from "react-spinners/ClipLoader"
 import DescTemplate from "../../Sub-Components/DescTemplate";
 import { SocketContext } from "../Organization/StoreContext/UserContext";
 import AudioRecord from "../../Sub-Components/AudioRecord";
+import VideoRecord from "../../Sub-Components/VideoRecord";
 function Emergency() {
   const socket = useContext(SocketContext)
   const [useCurrentLocation, setUseCurrentLocation] = React.useState(null);
@@ -138,13 +137,15 @@ function Emergency() {
   };
 
   //video
-  const videoControl = ({ startRecording, stopRecording }) => {
+  const videoControl = ({ startRecording, stopRecording, clearBlobUrl }) => {
     if (control === "stop") {
       startRecording();
+
       setControl("start");
     } else if (control === "start") {
       stopRecording();
       setControl("stop");
+      // clearBlobUrl();
     }
   };
 
@@ -155,7 +156,7 @@ function Emergency() {
   return (
     <>
       <Navbar />
-      <div className="col-lg-7 col-md-10 col-sm-12 my-3 mx-auto border">
+      <div className="col-md-8 my-3 mx-auto shadow-sm">
         <div className="category">
           <Typography component="h1" variant="h5">
             Category of incident
@@ -181,9 +182,9 @@ function Emergency() {
             </FormHelperText>
           </FormControl>
         </div>
-          <div className="text_desc_area col-sm-5">
+          <div className="text_desc_area col-lg-8">
             <Typography component="h1" variant="h5">
-              More description of the incident (Optional)
+              Additional description of the incident (Optional)
             </Typography>
             <DescTemplate handleTemplate={handleTemplate}/>
             <textarea
@@ -196,7 +197,7 @@ function Emergency() {
               onChange={(e) => handleChange(e)}
             ></textarea>
           </div>
-          <div className="voice_desc_area card my-3 p-2 border-0 shadow col-sm-5 media_record">
+          <div className="voice_desc_area card my-3 p-2 border-0 shadow media_record">
             <Typography component="" variant="h5">
               Use Voice Record
             </Typography>
@@ -204,12 +205,11 @@ function Emergency() {
               Use voice record for more description of the incident
             </label>
             <div>
-             
               <AudioRecord getAudioRecorded={getAudioRecorded}/>
               
             </div>
           </div>
-          <div className="video_desc_area card my-3 p-2 border-0 shadow col-sm-5">
+          <div className="video_desc_area border-0 card my-3 p-2 shadow">
             <Typography component="h1" variant="h5">
               Add Video for more description
             </Typography>
@@ -218,80 +218,8 @@ function Emergency() {
                 Take video coverage for more description about the urgent
                 incident:{" "}
               </label>
-              <ReactMediaRecorder
-                video
-                blobPropertyBag={{ type: "video/webm" }}
-                render={({
-                  previewStream,
-                  startRecording,
-                  status,
-                  stopRecording,
-                  mediaBlobUrl,
-                }) => {
-                  if (mediaBlobUrl) {
-                    getVideoRecorded(mediaBlobUrl);
-                  }
-                  return (
-                    <div>
-                      {status === "recording" ? (
-                        ""
-                      ) : (
-                        <video src={mediaBlobUrl} width={700} height={300} />
-                      )}
-
-                      {mediaBlobUrl ? (
-                        ""
-                      ) : (
-                        <VideoPreview stream={previewStream} />
-                      )}
-                      <button
-                        className="btn btn-primary"
-                        onClick={() =>
-                          videoControl({
-                            startRecording,
-                            stopRecording,
-                          })
-                        }
-                      >
-                        {status != "recording" ? (
-                          <div
-                            style={{
-                              width: "6vh",
-                              height: "6vh",
-                              background: "red",
-                            }}
-                            className="rounded-circle align-items-center d-flex"
-                          >
-                            <p className="text-light mx-auto my-auto">REC</p>
-                          </div>
-                        ) : (
-                          <div
-                            style={{
-                              width: "6vh",
-                              height: "6vh",
-                              background: "red",
-                            }}
-                            className="rounded-circle align-items-center d-flex"
-                          >
-                            <p
-                              style={{ width: "3vh", height: "3vh" }}
-                              className="bg-light rounded-circle mx-auto my-auto"
-                            ></p>
-                          </div>
-                        )}
-                      </button>
-                    </div>
-                  );
-                }}
-              />
+              <VideoRecord getVideoRecorded={getVideoRecorded}/>
             </div>
-            {/* <div className="upload_video">
-          <label htmlFor="">
-              Already have the video coverage for more description about the
-              incident:{" "}
-            </label>
-            ///
-          </div> */}
           </div>
 
           <div className="location">
@@ -302,13 +230,16 @@ function Emergency() {
                 <label htmlFor="">
                   Enter the exact location of the Emergency
                 </label>
-                <input
-                  type="text"
-                  name="location"
-                  onChange={(e) => handleChange(e)}
-                  className="form-control"
-                  value={details.location}
-                />
+                <textarea
+                 rows="5"
+                 cols="10"
+                 name="location"
+                 className="form-control textArea my-2"
+                 placeholder="Location of the incident..."
+                 value={details.location}
+                 onChange={(e)=>handleChange(e)}
+                >
+                </textarea>
               </div>
             )}
 
