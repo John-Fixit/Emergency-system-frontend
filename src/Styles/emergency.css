@@ -25,5 +25,25 @@
 
 video{
     height: auto;
-    width: 100%;
+    width: 60%;
+}
+.video{
+    height: 40vh;
+    width: 60%;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (max-width: 992px) and (min-width: 564px){
+    video{
+        width: 80%;
+    }
+}
+
+@media only screen and (max-width: 563px) {
+    video{
+        width: 100%;
+    }
 }

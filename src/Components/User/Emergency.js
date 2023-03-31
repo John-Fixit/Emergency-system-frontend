@@ -67,6 +67,7 @@ function Emergency() {
         const { latitude, longitude } = position.coords;
         getLocation(latitude, longitude)
           .then((addressData) => {
+            console.log(addressData.formatted);
             setdetails({ ...details, location: addressData.formatted });
           })
           .catch((err) => {
