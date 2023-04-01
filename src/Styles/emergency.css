@@ -40,10 +40,16 @@ video{
     video{
         width: 80%;
     }
+    .video{
+        width: 80%;
+    }
 }
 
 @media only screen and (max-width: 563px) {
     video{
+        width: 100%;
+    }
+    .video{
         width: 100%;
     }
 }

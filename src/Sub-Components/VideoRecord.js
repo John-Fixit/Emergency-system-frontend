@@ -17,26 +17,19 @@ function VideoRecord({getVideoRecorded}) {
       getVideoRecorded(mediaBlobUrl)
     }
 
-
-    // I need to work on its pause button, adjust the width, change the preview image or tag when status is idle   and also when acquiring_media
     
   return (
     <div>
       <p>{status}</p>
       <div className='text-center'>
-        <video ref={videoRef} controls autoPlay className={`rounded ${status=="stopped"? 'd-none': ''}`}/>
-        <video src={mediaBlobUrl} controls className={`${status=="stopped"? '': 'd-none'}`}/>
-        <VideoBasePreview />
+        <video ref={videoRef} controls autoPlay className={`rounded ${status!="recording"? 'd-none': ''}`}/>
+        <video src={mediaBlobUrl} controls className={`rounded ${status=="stopped"? '': 'd-none'}`}/>
+        <VideoBasePreview status={status}/>
       </div>
-{/* 
-      <button onClick={startRecording}>{!!mediaBlobUrl?"Start New Record": "Start Recording"}</button>
-      <button onClick={stopRecording}>Stop recording</button>
-      <button onClick={pauseRecording}>Pause recording</button>
-      <button onClick={resumeRecording}>Resume recording</button> */}
     <div className='text-center'>
       {
         status == "recording"?
-        <div>
+        <div className='btn-group'>
           <button className="btn btn-warning rounded">
             <BsPauseFill size={"4vh"} />
           </button>
