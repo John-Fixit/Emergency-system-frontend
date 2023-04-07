@@ -28,6 +28,7 @@ import DescTemplate from "../../Sub-Components/DescTemplate";
 import { SocketContext } from "../Organization/StoreContext/UserContext";
 import AudioRecord from "../../Sub-Components/AudioRecord";
 import VideoRecord from "../../Sub-Components/VideoRecord";
+import Footer from "../Footer";
 function Emergency() {
   const socket = useContext(SocketContext)
   const [useCurrentLocation, setUseCurrentLocation] = React.useState(null);
@@ -213,7 +214,7 @@ function Emergency() {
           <div className="video_desc_area border-0 card my-3 p-2 shadow">
             <Typography component="h1" variant="h5">
               Add Video for more description
-            </Typography>
+            </Typography> 
             <div className="take_video">
               <label htmlFor="">
                 Take video coverage for more description about the urgent
@@ -299,6 +300,7 @@ function Emergency() {
           pauseOnHover: true,
         }}
       />
+      <Footer />
     </>
   );
 }

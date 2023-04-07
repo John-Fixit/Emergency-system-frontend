@@ -8,5 +8,10 @@
     color: white;
 }
 
+@media screen and (min-width: 730px) {
+    .pad_navbar{
+        padding: 0 5vh !important;
+    }
+}
 
 

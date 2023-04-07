@@ -15,7 +15,7 @@ function Navbar() {
   return (
     <React.Fragment>
         <nav className="navbar navbar-expand-sm navbar-light shadow">
-          <div className="container-fluid">
+          <div className="container-fluid pad_navbar">
             <Link to={`/`} className="navbar-brand" href="#"><span style={styles}>ES</span><small className='text-success fw-bold'>Emergency system</small>
             </Link>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

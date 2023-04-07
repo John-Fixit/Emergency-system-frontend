@@ -9,9 +9,8 @@ function Dashboard() {
 
   return (
     <>
-        <Navbar />
         <div >
-            <h1>This is a Dashboard component</h1>
+            <h1>Welcome to the Dashboard</h1>
         </div>
     </>
   )

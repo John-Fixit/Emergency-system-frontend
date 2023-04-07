@@ -5,6 +5,7 @@ import {GiOldMicrophone} from "react-icons/gi"
 import {BsPauseFill, BsStop, BsFillPlayFill} from "react-icons/bs"
 function AudioRecord({getAudioRecorded}) {
   const [recordState, setrecordState] = React.useState(null);
+  const [audioBlobUrl, setaudioBlobUrl] = React.useState(null)
   const start = () => {
     setrecordState(() => {
       return RecordState.START;
@@ -23,13 +24,19 @@ function AudioRecord({getAudioRecorded}) {
   };
 
   const onStop = (data) => {
-    getAudioRecorded(data)
+    setaudioBlobUrl(()=>{return data})
+    getAudioRecorded(data.blob)
   };
   return (
     <div>
 
       <p>New Record</p>
-      <AudioReactRecorder state={recordState} onStop={onStop} canvasHeight={200} canvasWidth={340} foregroundColor="brown"/>
+      <div className="row">
+        <AudioReactRecorder state={recordState} onStop={onStop} canvasHeight={200} canvasWidth={340} foregroundColor="brown"/>
+        <div>
+          <audio src="blob:http://localhost:3000/4e5deb22-7c54-4ac9-aa02-923595dbc6f0" controls />
+        </div>
+      </div>
       {
         recordState == "start"?
         <div >
