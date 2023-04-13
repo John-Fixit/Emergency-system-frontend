@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Outlet, Route, Routes, useNavigate } from "react-router-dom";
 import { authorize, loginOrg } from "../../FunctionControllers/loginOrgFunc";
 import Dashboard from "./Dashboard";
@@ -9,6 +9,11 @@ import logo from "../../logo.svg";
 import ShowMessage from "./ShowMessage";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
+import Profile from "./Profile";
+import Settings from "./Settings";
+import Logout from "./Logout";
+import { baseUrl } from "../../URL";
+import useSWR from "swr"
 function OrgMainRoute() {
   const [user, setUserDetail] = useContext(UserDetailContext);
   const socket = useContext(SocketContext);
@@ -51,19 +56,30 @@ function OrgMainRoute() {
     }
   }, []);
 
+  const { data, error, isLoading } = useSWR(`${baseUrl}/org/${user?.category}`, {refreshInterval: 1000}); 
+if(data){
+
+}
   return (
     <>
      <Sidebar >
-      {/* <Navbar /> */}
       <Routes>
-        <Route path="/:id" element={<Outlet />}>
+        <Route path="/" element={<Outlet />}>
           <Route path="" element={<Dashboard />} />
-          <Route path=":cat" element={<Outlet />} >
-            <Route path="" element={<Messages newMsg={msgRef} />} />
-            <Route path=":msgId" element={<ShowMessage />}/>
+          <Route path="category" element={<Outlet />} >
+            <Route path=":category" element={<Outlet />} >
+              <Route path="" element={<Messages newMsg={msgRef} />} />
+              <Route path=":msgId" element={<ShowMessage />}/>
+            </Route>
+          </Route>
+          <Route path="profile" element={<Outlet />}>
+            <Route path=":id" element={<Outlet />}>
+              <Route path="me" element={<Profile />}/>
+              <Route path="setting" element={<Settings />}/>
+              <Route path="logout" element={<Logout />}/>
+            </Route>
           </Route>
         </Route>
-        <Route path="/:id/:cat" element={<Messages newMsg={msgRef} />} />
       </Routes>
       </Sidebar>
     </>

@@ -9,18 +9,17 @@ import "../../Styles/messages.css"
 function Messages({newMsg}) {
   const route = useParams("");
   const allMsg = useRef({});
-useEffect(()=>{
-  if(newMsg.current){
-    allMsg.current = [...allMsg.current, newMsg.current]
-  }
-}, [newMsg]);
+// useEffect(()=>{
+//   if(newMsg.current){
+//     allMsg.current = [...allMsg.current, newMsg.current]
+//   }
+// }, [newMsg]);
 
-  const { cat } = route;
-  const { data, error, isLoading } = useSWR(`${baseUrl}/org/${cat}`, {refreshInterval: 1000}); 
+  const { category } = route;
+  const { data, error, isLoading } = useSWR(`${baseUrl}/org/${category}`, {refreshInterval: 1000}); 
   allMsg.current = data?.data.allMessage
   if(isLoading){
     return <>
-     <Navbar />
      <div className="mx-auto text-center">
         <Loader cssOverride={{margin: "auto"}} color="red"/>
      </div>

@@ -1,4 +1,6 @@
-
+*{
+  font-family: sans-serif;
+}
 *::-webkit-scrollbar{
   width: 3px;
 }
@@ -43,7 +45,17 @@ video{
   justify-content: center;
   align-items: center;
 }
-
+.page{
+  flex-basis: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: margin-left 1s;
+}
+.page-with-navbar{
+  /* width: 85%; */
+  margin-left: 15%;
+}
 @media screen and (max-width: 992px) and (min-width: 564px){
   video{
       width: 80%;
@@ -59,5 +71,11 @@ video{
   }
   .video{
       width: 100%;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .page-with-navbar{
+    width: 100%;
+    margin-left: 0;
   }
 }

@@ -1,0 +1,12 @@
+:scope
+/* .d_card{
+    margin: 5vh 0;
+    transition: 0.5s;
+} */
+.icon_box{
+    padding: 4vh !important;
+}
+.card::before{
+    content: "";
+    height: 0.7vh;
+}

@@ -48,7 +48,7 @@ export default function Login() {
             setUserDetail(user_detail);
             console.log(user_detail);
             localStorage.setItem('org_token', JSON.stringify(token));
-            navigate(`/org/${user_detail._id}`)
+            navigate(`/org/`)
         }
         else{
            setMessage(message);

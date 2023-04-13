@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "../../Styles/sidebar.css";
 import {
   FaBars,
@@ -11,33 +11,36 @@ import {VscOrganization} from "react-icons/vsc"
 import {BiLogOutCircle} from "react-icons/bi"
 import { Link, NavLink } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
-import { deepOrange, red } from "@mui/material/colors";
 import { Badge } from "@mui/material";
+import { UserDetailContext } from "./StoreContext/UserContext";
 function Sidebar({ children }) {
+    const [userDetail, setUserDetail] = useContext(UserDetailContext);
   const menus = [
-    { name: "Dashboard", icon: <RiDashboardLine size={"3.5vh"} />, route: "/org/jdjdj" },
+    { name: "Dashboard", icon: <RiDashboardLine size={"3.5vh"} />, route: "/org/" },
     {
       name: "Messages",
       icon: <TbMessages size={"3.5vh"} />,
-      route: "/org/hdhfd/ke",
+      route: `/org/category/${userDetail? userDetail.category: "xxxxxx"}`,
     },
-    { name: "Profile", icon: <VscOrganization size={"3.5vh"} />, route: "/org/" },
-    { name: "Settings", icon: <TbSettings size={"3.5vh"} />, route: "/org/jkhi8yu" },
-    { name: "Logout", icon: <BiLogOutCircle size={"3.5vh"} />, route: "/org/kjhj" },
+    { name: "Profile", icon: <VscOrganization size={"3.5vh"} />, route: `/org/profile/${userDetail? userDetail._id: "xxxxxx"}/me`},
+    { name: "Settings", icon: <TbSettings size={"3.5vh"} />, route: `/org/profile/${userDetail? userDetail._id: "xxxxxx"}/setting`},
+    { name: "Logout", icon: <BiLogOutCircle size={"3.5vh"} />, route: `/org/profile/${userDetail? userDetail._id: "xxxxxx"}/logout` },
   ];
+  
   const [isOpen, setIsOpen] = useState(false);
-
   const badgeStyle = {
     "& .MuiBadge-badge": {
         color: 'white',
     backgroundColor: 'red',
     }
   }
+
+
   return (
     <>
       <div className="header">
         <div className="top_section">
-          <Link to={"/org/jfjj"} className="d-flex gap-2">
+          <Link to={"/org/"} className="d-flex gap-2">
             <Avatar
               alt="Remy Sharp"
               src={require("../../assets/logo.png")}
@@ -65,14 +68,16 @@ function Sidebar({ children }) {
               <FaBell size={"3vh"} color="white" />
             </Badge>
           </p>
-          <p className="my-auto d-flex gap-2">
-            <p className="my-auto text-light ">Emergency System</p>
-            <Avatar sx={{ bgcolor: deepOrange[500] }}>ES</Avatar>
-          </p>
+          <div className="my-auto d-flex gap-1">
+            <p className="my-auto text-light fw-bold">{userDetail? userDetail.name: "Name"}</p>
+            <Link to={`/org/profile/${userDetail? userDetail._id: "xxxxxx"}/me`}>
+              <Avatar sx={{ bgcolor: "red" }}></Avatar>
+            </Link>
+          </div>
         </div>
       </div>
       <div className="sidebar_container">
-        <div className="sidebar" style={{ width: isOpen ? "300px" : "70px" }}>
+        <div className={`sidebar ${isOpen?"nav-open":"nav-closed"}`} >
           <div >
             {menus.slice(0, -2).map((menu, index) => {
               return (
@@ -80,6 +85,7 @@ function Sidebar({ children }) {
                   to={menu.route}
                   className={`link`}
                   activeclassName="active"
+                  key={index}
                 >
                   <div className="icon">{menu.icon}</div>
                   <div
@@ -99,6 +105,7 @@ function Sidebar({ children }) {
                   to={menu.route}
                   className={`link`}
                   activeclassName="active"
+                  key={Math.random()}
                 >
                   <div className="icon">{menu.icon}</div>
                   <div
@@ -112,7 +119,9 @@ function Sidebar({ children }) {
             })}
           </div>
         </div>
-        <main>{children}</main>
+        <main className={isOpen? 'shift-text': 'noShift-text'} style={{transition: "all 0.5s", marginTop: "2vh"}}>
+          {children}
+        </main>
       </div>
     </>
   );
