@@ -43,15 +43,16 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function AddOrg() {
+export default function Signup() {
 
   const [isLoading, setIsLoading] = React.useState(false)
   const [orgData, setOrgData] = React.useState({
     name: "",
     email: "",
     category: "Choose Category",
-    description: ""
-  })
+    description: "",
+    password: ''
+  });
 
   const toastStyle = { theme: "colored", delay: 8000, autoClose: true, draggable: true, pauseOnHover: true};
 
@@ -60,17 +61,16 @@ export default function AddOrg() {
   } 
 
   const handleSubmit = () => {
-
     if(handleValidation()){
       setIsLoading(true)
       createOrg(orgData)
         .then((res) => {
           if(res.success){
-            console.log(res)
             toast.success(res.message, toastStyle);
             orgData.name = ""
             orgData.email = ""
             orgData.category = ""
+            orgData.password = ""
             orgData.description = ""
           }
           else toast.error(res.message, toastStyle);
@@ -78,10 +78,8 @@ export default function AddOrg() {
         .catch((err) => {
             toast.error(`${err.message}: please check your connection!`, toastStyle)
         }).finally(()=>{
-
           setIsLoading(false)
         });
-
     }
     else {
         toast.error("Please select your organization category!", toastStyle)
@@ -169,14 +167,28 @@ export default function AddOrg() {
               </Grid>
               <Grid item xs={12}>
                 <FormHelperText>
-                  Provide your organization description here
+                  Provide your organization's description here
                 </FormHelperText>
                 <textarea rows="10" cols="10" name="description" placeholder="Your Organization description" className="form-control textArea"
                  onChange={(e)=>handleChange(e)}
                  value={orgData.description} 
                  >
                 </textarea>
+
+                <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={(e)=>handleChange(e)}
+                value={orgData.password}
+              />
               </Grid>
+
 
               <Grid item xs={12}>
                 <FormControlLabel

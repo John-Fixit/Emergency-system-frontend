@@ -1,29 +1,30 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useRef } from "react";
 import { Outlet, Route, Routes, useNavigate } from "react-router-dom";
-import { authorize, loginOrg } from "../../FunctionControllers/loginOrgFunc";
+import { authorize } from "../../FunctionControllers/loginOrgFunc";
 import Dashboard from "./Dashboard";
 import Messages from "./Messages";
-import { SocketContext, UserDetailContext } from "./StoreContext/UserContext";
 import addNotification from "react-push-notification";
 import logo from "../../logo.svg";
 import ShowMessage from "./ShowMessage";
-import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import Profile from "./Profile";
 import Settings from "./Settings";
 import Logout from "./Logout";
-import { baseUrl } from "../../URL";
-import useSWR from "swr"
+import { useDispatch } from "react-redux";
+import { usersActions } from "../../store/userSlice";
+import { messageActions } from "../../store/messageSlice";
+import { ContextForSocket} from "./StoreContext/SocketContext";
 function OrgMainRoute() {
-  const [user, setUserDetail] = useContext(UserDetailContext);
-  const socket = useContext(SocketContext);
+  const socket = useContext(ContextForSocket);
   const navigate = useNavigate("");
   const msgRef = useRef();
-
+  const dispatch = useDispatch();
   React.useEffect(() => {
     socket.on("msgResponse", async (data) => {
       msgRef.current = await data;
-      const { category, text, location } = await msgRef.current;
+      // console.log(data);
+      const { text, location } = await msgRef.current;
+      dispatch(messageActions.addNewMessage(msgRef.current));
       if (!!text) {
         addNotification({
           title: "Emergency system",
@@ -40,26 +41,22 @@ function OrgMainRoute() {
     if (localStorage.org_token) {
       let token = JSON.parse(localStorage.getItem("org_token"));
       authorize({ token }).then(async (res) => {
-        const { user_detail, success, message } = res;
+        const { user_detail, success } = res;
         if (success) {
-          await setUserDetail(user_detail);
+          await dispatch(usersActions.updateDetail(user_detail))
           socket.emit("signIn", {
             category: user_detail.category,
             id: socket.id,
           });
         } else {
-          // navigate("/login");
+          navigate("/login");
         }
       });
     } else {
-      // navigate("/login");
+      navigate("/login");
     }
   }, []);
 
-  const { data, error, isLoading } = useSWR(`${baseUrl}/org/${user?.category}`, {refreshInterval: 1000}); 
-if(data){
-
-}
   return (
     <>
      <Sidebar >

@@ -1,15 +1,13 @@
-import React from 'react';
-import logo from './logo.svg';
+
 import Emergency from './Components/User/Emergency';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import socketIOClient from "socket.io-client";
-import { baseUrl } from './URL';
 import OrgMainRoute from './Components/Organization/OrgMainRoute';
 import Login from './Components/Organization/Login';
-import AddOrg from './Components/Organization/AddOrg';
 import {SWRConfig} from "swr"
 import axios from 'axios';
-import VideoRecord from "./Sub-Components/VideoRecord"
+import Signup from './Components/Organization/Signup';
+import About from './Components/User/About'
+import Contact from './Components/User/Contact'
 function App() {
   const fetcher =(...args)=>axios.get(...args)
   return (
@@ -18,7 +16,9 @@ function App() {
         <Routes>
           <Route path='' element={<Navigate to={'/emergency'}/>}/>
           <Route path='/emergency' element={<Emergency/>}/>
-          <Route path="/register_organization" element={<AddOrg />} />
+          <Route path='/about' element={<About/>}/>
+          <Route path='/contact' element={<Contact/>}/>
+          <Route path="/register_organization" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path='/org/*' element={<OrgMainRoute />}/>
         </Routes>

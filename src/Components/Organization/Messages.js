@@ -1,22 +1,16 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { useParams } from "react-router-dom";
 import { baseUrl } from "../../URL";
-import Navbar from "./Navbar";
 import useSWR from "swr";
 import Loader from "react-spinners/PropagateLoader"
 import TimeAgo from "timeago-react";
 import "../../Styles/messages.css"
-function Messages({newMsg}) {
+function Messages() {
   const route = useParams("");
   const allMsg = useRef({});
-// useEffect(()=>{
-//   if(newMsg.current){
-//     allMsg.current = [...allMsg.current, newMsg.current]
-//   }
-// }, [newMsg]);
 
   const { category } = route;
-  const { data, error, isLoading } = useSWR(`${baseUrl}/org/${category}`, {refreshInterval: 1000}); 
+  const { data, error, isLoading } = useSWR(`${baseUrl}/org/${category}`, {refreshInterval: 1000});
   allMsg.current = data?.data.allMessage
   if(isLoading){
     return <>
@@ -31,8 +25,6 @@ function Messages({newMsg}) {
     <h1>Error</h1>
     </>
   }
-
-
 
   return (
     <React.Fragment>

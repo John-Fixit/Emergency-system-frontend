@@ -5,12 +5,8 @@ import styled from "styled-components"
 
 function Card({icon, name, quality}) {
 
-    const MsgCard = styled.div`
-        background-color: #fff;
-
-    `
   return (
-   <>
+    <>
         <MsgCard className='msg-card rounded my-2'>
             <div className="card-bod card_icon d-flex gap-3">
                 <span className="icon_box ">
@@ -27,3 +23,8 @@ function Card({icon, name, quality}) {
 }
 
 export default Card
+
+const MsgCard = styled.div`
+        background-color: #fff;
+
+    `

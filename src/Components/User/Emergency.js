@@ -22,15 +22,15 @@ import {
 import { getLocation } from "../../FunctionControllers/getUserCurrentLocation";
 import { audioRecordComplete } from "../../FunctionControllers/audioRecordComplete";
 import { videoRecordComplete } from "../../FunctionControllers/videoRecordComplete";
-import Navbar from "../Navbar";
+import Navbar from "../User/Navbar";
 import Loader from "react-spinners/ClipLoader"
 import DescTemplate from "../../Sub-Components/DescTemplate";
-import { SocketContext } from "../Organization/StoreContext/UserContext";
 import AudioRecord from "../../Sub-Components/AudioRecord";
 import VideoRecord from "../../Sub-Components/VideoRecord";
 import Footer from "../Footer";
+import { ContextForSocket } from "../Organization/StoreContext/SocketContext";
 function Emergency() {
-  const socket = useContext(SocketContext)
+  const socket = useContext(ContextForSocket);
   const [useCurrentLocation, setUseCurrentLocation] = React.useState(null);
   const [details, setdetails] = React.useState({
     category: "",
@@ -68,7 +68,7 @@ function Emergency() {
         const { latitude, longitude } = position.coords;
         getLocation(latitude, longitude)
           .then((addressData) => {
-            console.log(addressData.formatted);
+            console.log(addressData.formatted)
             setdetails({ ...details, location: addressData.formatted });
           })
           .catch((err) => {
@@ -94,7 +94,6 @@ function Emergency() {
               setdetails({...details, category: "", text: "", audioFile: "", videoFile: "", location: ""});
               setUseCurrentLocation(false)
             }
-           
         })
         .finally(()=>{
           setIsLoading(false);
@@ -104,12 +103,12 @@ function Emergency() {
       setResponseDialog({...responseDialog, open: true, NoError: false})
     }
   };
-  
 
   const handleValidation = () => {
     if (!!!details.category) {
       return false;
-    } else {
+    }
+    else {
       return true;
     }
   };
@@ -133,22 +132,9 @@ function Emergency() {
     };
   };
 
-  const handleCheck = (e) => {
+  const handleCheckLocation = (e) => {
     setUseCurrentLocation(e.target.checked);
     getAddress();
-  };
-
-  //video
-  const videoControl = ({ startRecording, stopRecording, clearBlobUrl }) => {
-    if (control === "stop") {
-      startRecording();
-
-      setControl("start");
-    } else if (control === "start") {
-      stopRecording();
-      setControl("stop");
-      // clearBlobUrl();
-    }
   };
 
   const handleTemplate=(param)=>{
@@ -173,7 +159,7 @@ function Emergency() {
               label="Category"
               onChange={(e) => setdetails({...details, 'category': e.target.value})}
             >
-              <MenuItem value={"Choose catory"}>Choose Category</MenuItem>
+              <MenuItem value={"Choose category"} disabled selected hidden>Choose Category</MenuItem>
               <MenuItem value={"vehicleAccident"}>Vehicle Accident</MenuItem>
               <MenuItem value={"fireAccident"}>Fire Accident</MenuItem>
               <MenuItem value={"robbery"}>Robbery</MenuItem>
@@ -199,31 +185,7 @@ function Emergency() {
               onChange={(e) => handleChange(e)}
             ></textarea>
           </div>
-          <div className="voice_desc_area card my-3 p-2 border-0 shadow media_record">
-            <Typography component="" variant="h5">
-              Use Voice Record
-            </Typography>
-            <label htmlFor="">
-              Use voice record for more description of the incident
-            </label>
-            <div>
-              <AudioRecord getAudioRecorded={getAudioRecorded}/>
-              
-            </div>
-          </div>
-          <div className="video_desc_area border-0 card my-3 p-2 shadow">
-            <Typography component="h1" variant="h5">
-              Add Video for more description
-            </Typography> 
-            <div className="take_video">
-              <label htmlFor="">
-                Take video coverage for more description about the urgent
-                incident:{" "}
-              </label>
-              <VideoRecord getVideoRecorded={getVideoRecorded}/>
-            </div>
-          </div>
-
+          {/* Location */}
           <div className="location">
             {useCurrentLocation ? (
               ""
@@ -244,19 +206,42 @@ function Emergency() {
                 </textarea>
               </div>
             )}
-
             <div className="device_location">
               <FormControlLabel
                 control={
                   <Checkbox
                     checked={!!useCurrentLocation}
-                    onChange={handleCheck}
+                    onChange={handleCheckLocation}
                   />
                 }
                 label="Use my current location"
               />
             </div>
           </div>
+
+          {/* voice record */}
+          <div className="voice_desc_area card my-3 p-2 border-0 shadow media_record">
+            <h4 className="card-title">Use Voice Record</h4>
+            <label htmlFor="">
+              Use voice record for more description of the incident
+            </label>
+            <div>
+              <AudioRecord getAudioRecorded={getAudioRecorded}/>
+            </div>
+          </div>
+          <div className="video_desc_area border-0 card my-3 p-2 shadow">
+            <Typography component="h1" variant="h5">
+              Add Video for more description
+            </Typography> 
+            <div className="take_video">
+              <label htmlFor="">
+                Take video coverage for more description about the urgent
+                incident:{" "}
+              </label>
+              <VideoRecord getVideoRecorded={getVideoRecorded}/>
+            </div>
+          </div>
+
         <div className="submitContent">
           <button className="btn submitBtn btn-danger d-flex gap-2" onClick={() => submit()}>
             {

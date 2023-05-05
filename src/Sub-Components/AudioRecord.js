@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useRef } from "react";
 import AudioReactRecorder, { RecordState } from "audio-react-recorder";
 import "../Styles/emergency.css";
 import {GiOldMicrophone} from "react-icons/gi"
@@ -22,19 +22,23 @@ function AudioRecord({getAudioRecorded}) {
       return RecordState.PAUSE;
     });
   };
-
+  const audioUrl = useRef()
   const onStop = (data) => {
     setaudioBlobUrl(()=>{return data})
+    audioUrl.current = data.url
     getAudioRecorded(data.blob)
   };
   return (
-    <div>
-
+    <div className="text-center border rounded">
       <p>New Record</p>
       <div className="row">
+        
         <AudioReactRecorder state={recordState} onStop={onStop} canvasHeight={200} canvasWidth={340} foregroundColor="brown"/>
         <div>
-          <audio src="blob:http://localhost:3000/4e5deb22-7c54-4ac9-aa02-923595dbc6f0" controls />
+          {
+            !audioBlobUrl||recordState=="recording"?"":
+            <audio src={audioUrl.current} controls />
+          }
         </div>
       </div>
       {

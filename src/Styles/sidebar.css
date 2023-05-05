@@ -1,4 +1,4 @@
-
+:scope
 *{
     margin: 0;
     padding: 0;
@@ -27,10 +27,12 @@
 }
 .sidebar_container{
     display: flex;
+    width: 100%;
+    overflow-x: hidden;
 }
 main{
     width: 100%;
-    padding: 8vh 20px;
+    padding: 8vh 20px !important;
     background-color: #EDEEEB;
 }
 .nav-open{
@@ -41,7 +43,6 @@ main{
 }
 .sidebar{
     background-color: #0025FF;
-    position: absolute;
     color: white;
     height: 100vh;
     overflow: hidden !important;
@@ -92,13 +93,13 @@ main{
     transition: all 0.5s;
 }
 .icon, .link_text{
-font-size: 20px;
+    font-size: 20px;
 }
 .shift-text{
-    padding-left: 35vh !important;
+    padding-left: 7vh;
 }
 .noShift-text{
-    padding-left: 15vh;
+    padding-left: 7vh;
 }
 
 @media screen and (max-width: 450px) {

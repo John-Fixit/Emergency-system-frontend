@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,8 +14,6 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { loginOrg } from '../../FunctionControllers/loginOrgFunc';
 import { useNavigate } from 'react-router-dom';
-import { UserDetailContext } from './StoreContext/UserContext';
-
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -33,26 +31,23 @@ const theme = createTheme();
 
 export default function Login() {
   const navigate = useNavigate();
-  const [userDetail, setUserDetail] = useContext(UserDetailContext);
 
   const [message, setMessage] = React.useState("");
   const [isError, setIsError] = React.useState(false);
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const crd = {email: data.get('email')}
+    const crd = {email: data.get('email'), password: data.get('password')};
     loginOrg(crd).then(async(res)=>{
-      const {user_detail, success, message, token} = res;
+      const {success, message, token} = res;
         if(success){
           setIsError(false)
-            setUserDetail(user_detail);
-            console.log(user_detail);
             localStorage.setItem('org_token', JSON.stringify(token));
             navigate(`/org/`)
         }
         else{
            setMessage(message);
-           setIsError(true)
+           setIsError(true);
         }
     })
   };
@@ -105,7 +100,7 @@ export default function Login() {
                 autoComplete="email"
                 autoFocus
               />
-              {/* <TextField
+              <TextField
                 margin="normal"
                 required
                 fullWidth
@@ -114,7 +109,7 @@ export default function Login() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-              /> */}
+              />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
