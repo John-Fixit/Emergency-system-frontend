@@ -5,13 +5,12 @@ import useSWR from "swr";
 import Loader from "react-spinners/PropagateLoader"
 import TimeAgo from "timeago-react";
 import "../../Styles/messages.css"
+import { useSelector } from "react-redux";
+import { messageActions } from "../../store/messageSlice";
 function Messages() {
-  const route = useParams("");
   const allMsg = useRef({});
-
-  const { category } = route;
-  const { data, error, isLoading } = useSWR(`${baseUrl}/org/${category}`, {refreshInterval: 1000});
-  allMsg.current = data?.data.allMessage
+  const {data, error, isLoading} = useSelector(state=>state.message.fetchMessages)
+  allMsg.current = data
   if(isLoading){
     return <>
      <div className="mx-auto text-center">

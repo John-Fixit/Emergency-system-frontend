@@ -11,9 +11,10 @@ import { Badge } from "@mui/material";
 import { useSelector } from "react-redux";
 import NotificationSlide from "../../Sub-Components/NotificationSlide";
 import Logout from "./Logout";
+import { BsFillReplyAllFill } from "react-icons/bs";
 function Sidebar({ children }) {
   const userDetail = useSelector((state) => state.user.details);
-  const newMessages = useSelector(state=>state.newMessage.newMessages);
+  const newMessages = useSelector(state=>state.message.newMessages);
   const menus = [
     {
       name: "Dashboard",
@@ -24,6 +25,11 @@ function Sidebar({ children }) {
       name: "Messages",
       icon: <TbMessages size={"3.5vh"} />,
       route: `/org/category/${userDetail ? userDetail.category : "xxxxxx"}`,
+    },
+    {
+      name: "Respond",
+      icon: <BsFillReplyAllFill size={"3.5vh"} />,
+      route: `/org/category/ll/${userDetail ? userDetail.category : "xxxxxx"}`,
     },
     {
       name: "Profile",

@@ -29,6 +29,7 @@ import AudioRecord from "../../Sub-Components/AudioRecord";
 import VideoRecord from "../../Sub-Components/VideoRecord";
 import Footer from "../Footer";
 import { ContextForSocket } from "../Organization/StoreContext/SocketContext";
+import ListOfOrgs from "../../Sub-Components/ListOfOrgs";
 function Emergency() {
   const socket = useContext(ContextForSocket);
   const [useCurrentLocation, setUseCurrentLocation] = React.useState(null);
@@ -86,8 +87,9 @@ function Emergency() {
       setIsLoading(true);
       sendMsg({ category, text, audioFile, videoFile, location })
         .then(async(res) => {
-            const { message, success } = res;
-            socket.emit('sendMsg', {category, text, audioFile, videoFile, location})
+            const { message, success, data } = res;
+            console.log(data)
+            socket.emit('sendMsg', data);
             await setResMsg(message)
             setResponseDialog({...responseDialog, open: true, NoError: success})
             if(success){
@@ -144,8 +146,20 @@ function Emergency() {
   return (
     <>
       <Navbar />
-      <div className="col-md-8 my-3 mx-auto shadow-sm">
-        <div className="category">
+      <div className="row px-lg-4 px-2">
+      <div className="col-md-8 my-3 mx-aut shadow-sm">
+      {/* <div className="submitContent float-end">
+          <button className="btn submitBtn btn-danger d-flex gap-2" onClick={() => submit()}>
+            {
+            <p className="my-auto">
+              <Loader loading={isLoading} size={20} color={'white'}/>
+            </p>
+            }
+            Submit
+          </button>
+        </div> */}
+        <div className='row'>
+        <div className="category col-sm-6">
           <Typography component="h1" variant="h5">
             Category of incident
           </Typography>
@@ -170,23 +184,8 @@ function Emergency() {
             </FormHelperText>
           </FormControl>
         </div>
-          <div className="text_desc_area col-lg-8">
-            <Typography component="h1" variant="h5">
-              Additional description of the incident (Optional)
-            </Typography>
-            <DescTemplate handleTemplate={handleTemplate}/>
-            <textarea
-              rows="10"
-              cols="30"
-              name="text"
-              className="form-control textArea my-2"
-              placeholder="More of description of the incident..."
-              value={details.text}
-              onChange={(e) => handleChange(e)}
-            ></textarea>
-          </div>
-          {/* Location */}
-          <div className="location">
+        {/* Location */}
+        <div className="location col-sm-6">
             {useCurrentLocation ? (
               ""
             ) : (
@@ -195,8 +194,8 @@ function Emergency() {
                   Enter the exact location of the Emergency
                 </label>
                 <textarea
-                 rows="5"
-                 cols="10"
+                 rows="2"
+                 cols="5"
                  name="location"
                  className="form-control textArea my-2"
                  placeholder="Location of the incident..."
@@ -215,9 +214,25 @@ function Emergency() {
                   />
                 }
                 label="Use my current location"
-              />
+                />
             </div>
           </div>
+          <div className="text_desc_area">
+            <Typography component="h1" variant="h5">
+              Additional description of the incident (Optional)
+            </Typography>
+            <DescTemplate handleTemplate={handleTemplate}/>
+            <textarea
+              rows="10"
+              cols="30"
+              name="text"
+              className="form-control textArea my-2"
+              placeholder="More of description of the incident..."
+              value={details.text}
+              onChange={(e) => handleChange(e)}
+            ></textarea>
+          </div>
+        </div>
 
           {/* voice record */}
           <div className="voice_desc_area card my-3 p-2 border-0 shadow media_record">
@@ -253,7 +268,8 @@ function Emergency() {
           </button>
         </div>
       </div>
-
+      <ListOfOrgs />
+      </div>
       <Dialog
         open={responseDialog.open}
         onClose={()=>false}
@@ -289,7 +305,4 @@ function Emergency() {
     </>
   );
 }
-
 export default Emergency;
-
-

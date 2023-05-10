@@ -5,13 +5,13 @@ function Logout() {
   const navigate = useNavigate();
   return (
     <>
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel"></h5>
+      <div className="modal fade" id="exampleModal" tabIndex="-1" >
+        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel"></h5>
             </div>
-            <div class="modal-body">
+            <div className="modal-body">
              <h5>Are you sure you want to logout?</h5>
              <button className="btn btn-secondary" data-bs-dismiss='modal'>Cancel</button>
              <button className="btn btn-danger" data-bs-dismiss="modal" onClick={()=>{

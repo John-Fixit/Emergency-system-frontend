@@ -10,20 +10,26 @@ import Sidebar from "./Sidebar";
 import Profile from "./Profile";
 import Settings from "./Settings";
 import Logout from "./Logout";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { usersActions } from "../../store/userSlice";
 import { messageActions } from "../../store/messageSlice";
 import { ContextForSocket} from "./StoreContext/SocketContext";
+import useSWR from 'swr';
+import { baseUrl } from "../../URL";
 function OrgMainRoute() {
   const socket = useContext(ContextForSocket);
   const navigate = useNavigate("");
   const msgRef = useRef();
   const dispatch = useDispatch();
+  //getting all messages from the server
+  const category = useSelector(state=>state.user.details.category)
+  const {data, error, isLoading} = useSWR(`${baseUrl}/org/${category}`, {refreshInterval: 1000});
+  dispatch(messageActions.setTotalMessage({data: data?.data.allMessage, error, isLoading}))
   React.useEffect(() => {
     socket.on("msgResponse", async (data) => {
+      console.log(data)
       msgRef.current = await data;
-      // console.log(data);
-      const { text, location } = await msgRef.current;
+      const { message: {text}, location } = await msgRef.current;
       dispatch(messageActions.addNewMessage(msgRef.current));
       if (!!text) {
         addNotification({
@@ -57,6 +63,8 @@ function OrgMainRoute() {
     }
   }, []);
 
+
+
   return (
     <>
      <Sidebar >
@@ -84,3 +92,4 @@ function OrgMainRoute() {
 }
 
 export default OrgMainRoute;
+
