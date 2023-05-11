@@ -12,10 +12,7 @@ function Dashboard() {
   const userDetail = useSelector((state) => state.user.details);
   const responseStatus = useSelector((state) => state.response.status);
   const allMessage = useSelector((state) => state.message.fetchMessages.data);
-  // const [expanded, setExpanded] = useState(false);
-  // const handleChange = (panel) => (event, isExpanded) => {
-  //   setExpanded(isExpanded ? panel : false);
-  // };
+  const respondedMsg = allMessage.filter((msg)=>msg.respond === true)
   return (
     <>
       <div className="dashboard_component">
@@ -27,7 +24,7 @@ function Dashboard() {
         </h2>
         <div className="row">
           <div className="col-lg-4">
-              <Card
+              <Card 
                 icon={<MdMessage size={60} color="blue" />}
                 name={"Messages"}
                 quality={allMessage?.length}
@@ -37,13 +34,13 @@ function Dashboard() {
               <Card
                   icon={<BsFillReplyAllFill size={60} color="red" />}
                   name={"Alert Attended To"}
-                  quality={10}
+                  quality={respondedMsg.length}
               />
           </div>
             {/* {responseStatus === "active" && <ResponsePanel />} */}
           <div className="col-sm-12 ms-auto">
             <Dialog className="card">
-                <h3 className="card-header text-center bg-white">Latest Alerts</h3>
+                <h3 className="card-header text-center bg-white">Latest Alerts On {userDetail?.category}</h3>
                 <MessageAccordion />
               </Dialog>
           </div>

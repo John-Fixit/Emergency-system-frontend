@@ -16,6 +16,7 @@ import { messageActions } from "../../store/messageSlice";
 import { ContextForSocket} from "./StoreContext/SocketContext";
 import useSWR from 'swr';
 import { baseUrl } from "../../URL";
+import RespondedMessages from "./RespondedMessages";
 function OrgMainRoute() {
   const socket = useContext(ContextForSocket);
   const navigate = useNavigate("");
@@ -23,11 +24,10 @@ function OrgMainRoute() {
   const dispatch = useDispatch();
   //getting all messages from the server
   const category = useSelector(state=>state.user.details.category)
-  const {data, error, isLoading} = useSWR(`${baseUrl}/org/${category}`, {refreshInterval: 1000});
+  const {data, error, isLoading} = useSWR(`${baseUrl}/msg/${category}`, {refreshInterval: 1000});
   dispatch(messageActions.setTotalMessage({data: data?.data.allMessage, error, isLoading}))
   React.useEffect(() => {
     socket.on("msgResponse", async (data) => {
-      console.log(data)
       msgRef.current = await data;
       const { message: {text}, location } = await msgRef.current;
       dispatch(messageActions.addNewMessage(msgRef.current));
@@ -77,6 +77,7 @@ function OrgMainRoute() {
               <Route path=":msgId" element={<ShowMessage />}/>
             </Route>
           </Route>
+          <Route path=":category/responded" element={<RespondedMessages />} />
           <Route path="profile" element={<Outlet />}>
             <Route path=":id" element={<Outlet />}>
               <Route path="me" element={<Profile />}/>

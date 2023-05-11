@@ -29,7 +29,7 @@ function Sidebar({ children }) {
     {
       name: "Respond",
       icon: <BsFillReplyAllFill size={"3.5vh"} />,
-      route: `/org/category/ll/${userDetail ? userDetail.category : "xxxxxx"}`,
+      route: `/org/${userDetail ? userDetail.category : "xxxxxx"}/responded`,
     },
     {
       name: "Profile",

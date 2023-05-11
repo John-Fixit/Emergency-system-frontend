@@ -18,7 +18,7 @@ function App() {
           <Route path='/emergency' element={<Emergency/>}/>
           <Route path='/about' element={<About/>}/>
           <Route path='/contact' element={<Contact/>}/>
-          <Route path="/register_organization" element={<Signup />} />
+          <Route path="/register" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path='/org/*' element={<OrgMainRoute />}/>
         </Routes>

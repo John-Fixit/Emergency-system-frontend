@@ -2,23 +2,19 @@ import React, {useState} from "react";
 import { Accordion, AccordionDetails, AccordionSummary, Typography } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useSelector } from "react-redux";
+import RespondDialog from "./RespondDialog";
 function MessageAccordion() {
     const allMessage = useSelector((state) => state.message.fetchMessages.data);
     const [expanded, setExpanded] = useState(false);
-    const [comment, setComment] = useState('')
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
       };
-
-      const handleSubmit=(message)=>{
-        console.log(message)
-      }
   return (
     <>
       <div className="my-2 alert-messages-container">
         {allMessage
           ?.slice(-20)
-          .reverse()
+          .reverse().filter((msg)=>msg.respond!==true)
           .map((message, index) => {
             return (
               <Accordion
@@ -71,12 +67,7 @@ function MessageAccordion() {
                     <b>Date: </b>
                     {new Date(message.createdAt).toLocaleTimeString()}
                   </Typography>
-                  <div className="col-lg-4 col-md-8 col-sm-12 my-2">
-                    <div className="input-group">
-                        <input type="text" name="comment" className="form-control" value={comment} placeholder='Comment here' onChange={(e)=>setComment(e.target.value)}/>
-                        <button type="submit" className="btn btn-primary float-end" onClick={()=>handleSubmit(message)}>Submit</button>
-                    </div>
-                  </div>
+                    <RespondDialog message={message}/>
                 </AccordionDetails>
               </Accordion>
             );

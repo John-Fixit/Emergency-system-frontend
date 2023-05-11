@@ -23,6 +23,9 @@ import {
 import {ToastContainer, toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "react-spinners/ClockLoader"
+import SignupBg from "../../Sub-Components/SignupBg";
+import SignupForm from "../../Sub-Components/SignupForm";
+import '../../Styles/signup.css'
 function Copyright(props) {
   return (
     <Typography
@@ -98,9 +101,13 @@ export default function Signup() {
 
   return (
       <React.Fragment>
-            <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="sm" className="p-2 shadow rounded-3">
-        <CssBaseline />
+          <div className="d-flex">
+              <SignupBg />
+              <SignupForm />
+            </div>
+            {/* <ThemeProvider theme={theme}>
+              <CssBaseline /> */}
+      {/* <Container component="main" maxWidth="sm" className="p-2 shadow rounded-3">
         <Box
           sx={{
             marginTop: 4,
@@ -220,8 +227,8 @@ export default function Signup() {
             </div> 
         </Box>
         <Copyright sx={{ mt: 5 }} />
-      </Container>
-    </ThemeProvider>
+      </Container> */}
+    {/* </ThemeProvider> */}
     <ToastContainer />
       </React.Fragment>
   );
