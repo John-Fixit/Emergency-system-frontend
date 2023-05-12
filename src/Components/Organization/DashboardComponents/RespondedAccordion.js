@@ -25,7 +25,7 @@ function RespondedAccordion({respondedMessages, allMessages}) {
                 >
                   <Typography
                     sx={{
-                      width: "80%",
+                      width: "100%",
                       flexShrink: 0,
                     }}
                   >

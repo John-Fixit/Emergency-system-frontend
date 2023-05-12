@@ -24,7 +24,7 @@ function OrgMainRoute() {
   const dispatch = useDispatch();
   //getting all messages from the server
   const category = useSelector(state=>state.user.details.category)
-  const {data, error, isLoading} = useSWR(`${baseUrl}/msg/${category}`, {refreshInterval: 1000});
+  const {data, error, isLoading, mutate} = useSWR(`${baseUrl}/msg/${category}`);
   dispatch(messageActions.setTotalMessage({data: data?.data.allMessage, error, isLoading}))
   React.useEffect(() => {
     socket.on("msgResponse", async (data) => {
@@ -41,6 +41,7 @@ function OrgMainRoute() {
         });
       }
     });
+    mutate()
   }, [socket]);
 
   React.useEffect(() => {
