@@ -1,21 +1,16 @@
-import React, {useState} from "react";
-import { Accordion, AccordionDetails, AccordionSummary, Typography } from "@mui/material";
+import {useState} from 'react'
+import {Typography, Accordion, AccordionSummary, AccordionDetails} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useSelector } from "react-redux";
-import RespondDialog from "./RespondDialog";
-function MessageAccordion({messages, type}) {
-    const allMessage = useSelector((state) => state.message.fetchMessages.data);
-    const [expanded, setExpanded] = useState(false);
-    const handleChange = (panel) => (event, isExpanded) => {
-        setExpanded(isExpanded ? panel : false);
-      };
+import CommentsModal from './CommentsModal';
+function RespondedAccordion({respondedMessages, allMessages}) {
+  const [expanded, setExpanded] = useState(false);
+  const handleChange = (panel) => (event, isExpanded) => {
+      setExpanded(isExpanded ? panel : false);
+    };
   return (
     <>
-      <div className="my-2 alert-messages-container">
-        {allMessage
-          ?.slice(-20)
-          .reverse().filter((msg)=>msg.respond!==true)
-          .map((message, index) => {
+        <div className="my-2 alert-messages-container">
+        {allMessages?.filter((msg)=>msg.respond===true).map((message, index) => {
             return (
               <Accordion
                 expanded={expanded === index}
@@ -34,20 +29,17 @@ function MessageAccordion({messages, type}) {
                       flexShrink: 0,
                     }}
                   >
-                    <b>Location: </b>
-                    {message.location}
+                    <b>Message: </b>
+                    {message.message.text}
+                   <div className=''>
+
+                   </div>
+
                   </Typography>
-                  <Typography  sx={{
-                      width: "20%",
-                      flexShrink: 0,
-                    }}>
-                    <b>Time: </b>
-                    {new Date(message.createdAt).toDateString()}
-                  </Typography>
+                 
                 </AccordionSummary>
                 <AccordionDetails>
-                  <b>Message:</b>
-                  <Typography>{message.message.text}</Typography>
+                  {/* <Typography>{message.message.text}</Typography>
                   <div
                     className={`${!!message?.message.audio ? "" : "d-none"}`}
                   >
@@ -66,15 +58,17 @@ function MessageAccordion({messages, type}) {
                   <Typography>
                     <b>Date: </b>
                     {new Date(message.createdAt).toLocaleTimeString()}
-                  </Typography>
-                    <RespondDialog message={message}/>
+                  </Typography> */}
+                    {/* <RespondDialog message={message}/> */}
+                    
+                    <CommentsModal respondedMsg={respondedMessages} msgId={message._id} msgCategory={message.category}/>
                 </AccordionDetails>
               </Accordion>
             );
           })}
       </div>
     </>
-  );
+  )
 }
 
-export default MessageAccordion;
+export default RespondedAccordion

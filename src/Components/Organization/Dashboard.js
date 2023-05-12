@@ -12,7 +12,8 @@ function Dashboard() {
   const userDetail = useSelector((state) => state.user.details);
   const responseStatus = useSelector((state) => state.response.status);
   const allMessage = useSelector((state) => state.message.fetchMessages.data);
-  const respondedMsg = allMessage.filter((msg)=>msg.respond === true)
+  const respondedMsg = allMessage?.filter((msg)=>msg.respond === true)
+  
   return (
     <>
       <div className="dashboard_component">
@@ -34,7 +35,7 @@ function Dashboard() {
               <Card
                   icon={<BsFillReplyAllFill size={60} color="red" />}
                   name={"Alert Attended To"}
-                  quality={respondedMsg.length}
+                  quality={respondedMsg?.length}
               />
           </div>
             {/* {responseStatus === "active" && <ResponsePanel />} */}

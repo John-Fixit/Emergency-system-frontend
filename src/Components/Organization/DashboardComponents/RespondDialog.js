@@ -25,7 +25,7 @@ export default function RespondDialog({message}) {
   };
   const handleSubmit=async()=>{
     setIsLoading(true)
-    axios.post(`${baseUrl}/respond/comment`, {comment, messageId: message._id, responderId: user._id}).then((result)=>{
+    axios.post(`${baseUrl}/respond/comment`, {comment, messageId: message._id, responderId: user._id, messageCategory: message.category}).then((result)=>{
         const {message, success} = result.data
         if(success){
           setOpen(false)
@@ -43,7 +43,7 @@ export default function RespondDialog({message}) {
         Respond
         </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>Reply to this Alert</DialogTitle>
         <DialogContent>
           <DialogContentText>
             <b>Message <FaEnvelope size={'3vh'} color='blue'/>: </b>{message.message.text}
