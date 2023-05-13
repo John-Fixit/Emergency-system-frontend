@@ -3,7 +3,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Typography } from "@mui/
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useSelector } from "react-redux";
 import RespondDialog from "./RespondDialog";
-function MessageAccordion({messages, type}) {
+function MessageAccordion() {
     const allMessage = useSelector((state) => state.message.fetchMessages.data);
     const [expanded, setExpanded] = useState(false);
     const handleChange = (panel) => (event, isExpanded) => {
@@ -21,7 +21,7 @@ function MessageAccordion({messages, type}) {
                 expanded={expanded === index}
                 onChange={handleChange(index)}
                 key={index}
-                sx={{ m: 1 }}
+                sx={{ m: 1, p: 1 }}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}

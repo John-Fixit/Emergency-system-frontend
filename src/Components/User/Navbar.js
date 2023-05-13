@@ -30,7 +30,7 @@ function Navbar() {
                 {
                   menuList.map((item)=>{
                     return (
-                    <li className={`nav-item px-2 ${selectedId==item.id? 'active bg-danger': ''}`} key={item.id} onClick={()=>setselectedId(()=>{return item.id})}>
+                    <li className={`nav-item px-2 ${selectedId==item.id? 'active bg-primary': ''}`} key={item.id} onClick={()=>setselectedId(()=>{return item.id})}>
                       <Link to={item.path} className={`nav-link ${selectedId==item.id? 'text-light': ''}`} >{item.name}</Link>
                     </li>
                     )

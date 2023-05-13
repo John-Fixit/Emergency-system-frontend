@@ -1,4 +1,4 @@
-import React, { useContext} from "react";
+import React, { useContext, useEffect, useRef} from "react";
 import { sendMsg } from "../../FunctionControllers/sendMsgFunc";
 import "../../Styles/emergency.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -156,6 +156,7 @@ function Emergency() {
     setdetails({ ...details, text: param });
   };
 
+  
   return (
     <>
       <Navbar />

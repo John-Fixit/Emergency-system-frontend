@@ -26,9 +26,13 @@ function OrgMainRoute() {
   const category = useSelector(state=>state.user.details.category)
   const {data, error, isLoading, mutate} = useSWR(`${baseUrl}/msg/${category}`);
   dispatch(messageActions.setTotalMessage({data: data?.data.allMessage, error, isLoading}))
+  const audio = new Audio('../../assets/alarm3.mp3');
   React.useEffect(() => {
     socket.on("msgResponse", async (data) => {
       msgRef.current = await data;
+      if(msgRef.current){
+        audio.play()
+      }
       const { message: {text}, location } = await msgRef.current;
       dispatch(messageActions.addNewMessage(msgRef.current));
       if (!!text) {
@@ -40,6 +44,9 @@ function OrgMainRoute() {
           native: true,
         });
       }
+      setTimeout(()=>{
+        audio.pause();
+      }, 10000)
     });
     mutate()
   }, [socket]);

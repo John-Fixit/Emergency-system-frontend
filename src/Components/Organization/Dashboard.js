@@ -41,7 +41,7 @@ function Dashboard() {
             {/* {responseStatus === "active" && <ResponsePanel />} */}
           <div className="col-sm-12 ms-auto">
             <Dialog className="card">
-                <h3 className="card-header text-center bg-white">Latest Alerts On {userDetail?.category}</h3>
+                <h3 className="card-header text-center bg-white">Non-Responded Alerts On {userDetail?.category}</h3>
                 <MessageAccordion />
               </Dialog>
           </div>

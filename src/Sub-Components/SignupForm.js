@@ -1,16 +1,13 @@
 import styled from 'styled-components'
 import React from 'react'
-import {Box, Avatar, Typography, TextField, FormControlLabel, Button, Grid,FormControl, InputLabel, Select, MenuItem, FormHelperText, Checkbox} from '@mui/material'
+import {Box, Typography, TextField, Button, Grid, FormHelperText} from '@mui/material'
 import {Link, useNavigate} from 'react-router-dom' 
-import {ToastContainer, toast} from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Loader from "react-spinners/ClockLoader"
 import { createOrg } from "../FunctionControllers/createOrgFunc";
 function SignupForm() {
     const navigate = useNavigate('')
     const [isLoading, setIsLoading] = React.useState(false)
     const [errorMsg, setErrorMsg] = React.useState('');
-    const [errorStatus, setErrorStatus] = React.useState(null);
     const [orgData, setOrgData] = React.useState({
         name: "",
         email: "",
@@ -47,9 +44,8 @@ function SignupForm() {
         });
     }
     else {
-        setErrorStatus(true)
         let errorName = handleValidation().name
-        errorName=='category'? setErrorMsg('Please select your organization category'): errorName=='mobile'? setErrorMsg('Please your organization contact'): errorName=='name'&& setErrorMsg('Organization name cannot be empty') 
+        errorName==='category'? setErrorMsg('Please select your organization category'): errorName==='mobile'? setErrorMsg('Please your organization contact'): errorName==='name'&& setErrorMsg('Organization name cannot be empty') 
     }
   };
 
@@ -58,7 +54,7 @@ function SignupForm() {
     if(!(!!orgData.name)){
         return {status: false, name: 'name'};
     }
-      if(orgData.category=='Choose Category'){
+      if(orgData.category==='Choose Category'){
         return {status: false, name: 'category'};
     }
     if(!(!!orgData.mobile)){
@@ -197,9 +193,7 @@ function SignupForm() {
             </div> 
             </div>
         </Box>
-
         </Container>
-        <ToastContainer />
     </>
   )
 }
