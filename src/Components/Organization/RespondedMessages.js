@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux'
 function RespondedMessages() {
   const routeParam = useParams()
   const allMessages = useSelector((state) => state.message.fetchMessages.data)
-  const {data, error, isLoading} = useSWR(`${baseUrl}/respond/${routeParam.category}`)
+  const {data, isLoading} = useSWR(`${baseUrl}/respond/${routeParam.category}`)
   const respondedMessages = data?.data.data
 
   if(isLoading){

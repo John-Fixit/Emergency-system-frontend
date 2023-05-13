@@ -22,9 +22,7 @@ export default function CommentsModal({respondedMsg, msgId, msgCategory}) {
   const comments = useRef(null)
   const user = useSelector((state=>state.user.details))
   const {data, error, isLoading, mutate} = useSWR(`${baseUrl}/respond/comment/${msgId}`);
-//   React.useEffect(()=>{
-//     mutate();
-//   }, [])
+
   React.useEffect(() => {
     if (open) {
       const { current: descriptionElement } = descriptionElementRef;
@@ -105,9 +103,13 @@ export default function CommentsModal({respondedMsg, msgId, msgCategory}) {
                         <textarea rows="3" cols="70" style={{resize: 'none'}} className='form-control' value={comment} placeholder='Leave your Respond here' onChange={(e)=>setComment(e.target.value)}></textarea>
                     </div>
             </div>
-            <div >
+            <div className='ms-auto'>
                 <Button onClick={handleClose} sx={{color: 'red'}}>Cancel</Button>
-                <Button className={`${!!comment? '': 'disabled'}`} onClick={()=>handleSubmit()}>Submit</Button>
+                {
+                    !!comment?
+                    <Button onClick={()=>handleSubmit()}>Submit</Button>:
+                    <Button disabled onClick={()=>handleSubmit()}>Submit</Button>
+                }
             </div>
         </DialogActions>
       </Dialog>

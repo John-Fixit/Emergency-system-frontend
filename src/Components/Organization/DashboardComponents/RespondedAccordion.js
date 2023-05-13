@@ -10,7 +10,7 @@ function RespondedAccordion({respondedMessages, allMessages}) {
   return (
     <>
         <div className="my-2 alert-messages-container">
-        {allMessages?.filter((msg)=>msg.respond===true).map((message, index) => {
+        {allMessages?.filter((msg)=>msg.respond===true).reverse().map((message, index) => {
             return (
               <Accordion
                 expanded={expanded === index}
@@ -29,9 +29,17 @@ function RespondedAccordion({respondedMessages, allMessages}) {
                       flexShrink: 0,
                     }}
                   >
-                    <b>Message: </b>
-                    {message.message.text}
+                   <span> <b>Message: </b>
+                    {message.message.text}</span>
                    <div className=''>
+                    <span>
+                      <b>Location: </b>
+                        {message.location}
+                    </span>
+                    <span>
+                        <b className='mx-3'>Time: </b>
+                          {new Date(message.createdAt).toUTCString ()}
+                    </span>
 
                    </div>
 

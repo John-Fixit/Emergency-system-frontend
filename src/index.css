@@ -56,6 +56,11 @@ video{
   /* width: 85%; */
   margin-left: 15%;
 }
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 @media screen and (max-width: 992px) and (min-width: 564px){
   video{
       width: 80%;

@@ -7,7 +7,7 @@ import { VscOrganization } from "react-icons/vsc";
 import { BiLogOutCircle } from "react-icons/bi";
 import { Link, NavLink } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
-import { Badge } from "@mui/material";
+import { Badge, Tooltip, Zoom } from "@mui/material";
 import { useSelector } from "react-redux";
 import NotificationSlide from "../../Sub-Components/NotificationSlide";
 import Logout from "./Logout";
@@ -109,6 +109,7 @@ function Sidebar({ children }) {
           <div>
             {menus.slice(0, -2).map((menu, index) => {
               return (
+                <Tooltip title={menu.name} placement="right-start" arrow sx={{padding: '3px'}} TransitionComponent={Zoom}>
                 <NavLink
                   to={menu.route}
                   className={`link`}
@@ -126,27 +127,30 @@ function Sidebar({ children }) {
                     {menu.name}
                   </div>
                 </NavLink>
+                </Tooltip>
               );
             })}
           </div>
           <div className="">
             {menus.slice(-2).map((menu, index) => {
               return (
-                <NavLink
-                  to={menu.route}
-                  className={`link`}
-                  activeclassName="active"
-                  key={Math.random()}
-                  data-bs-toggle="modal" data-bs-target="#exampleModal"
-                >
-                  <div className="icon">{menu.icon}</div>
-                  <div
-                    className="link_text"
-                    style={{ display: isOpen ? "block" : "none" }}
+                <Tooltip title={menu.name} placement="right-start" arrow sx={{padding: '3px'}} TransitionComponent={Zoom}>
+                  <NavLink
+                    to={menu.route}
+                    className={`link`}
+                    activeclassName="active"
+                    key={Math.random()}
+                    data-bs-toggle="modal" data-bs-target="#exampleModal"
                   >
-                    {menu.name}
-                  </div>
-                </NavLink>
+                    <div className="icon">{menu.icon}</div>
+                    <div
+                      className="link_text"
+                      style={{ display: isOpen ? "block" : "none" }}
+                    >
+                      {menu.name}
+                    </div>
+                  </NavLink>
+                </Tooltip>
               );
             })}
           </div>
