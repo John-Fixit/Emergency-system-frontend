@@ -28,7 +28,6 @@
     "socket.io-client": "^4.6.1",
     "styled-components": "^5.3.9",
     "swr": "^2.0.3",
-    "timeago-react": "^3.0.6",
     "web-vitals": "^2.1.4",
     "workbox-background-sync": "^6.5.4",
     "workbox-broadcast-update": "^6.5.4",

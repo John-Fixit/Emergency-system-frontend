@@ -140,7 +140,7 @@ function Sidebar({ children }) {
                     className={`link`}
                     activeclassName="active"
                     key={Math.random()}
-                    data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    data-bs-toggle={menu.name=='Logout'? 'modal': ''} data-bs-target="#exampleModal"
                   >
                     <div className="icon">{menu.icon}</div>
                     <div

@@ -40,35 +40,10 @@ function RespondedAccordion({respondedMessages, allMessages}) {
                         <b className='mx-3'>Time: </b>
                           {new Date(message.createdAt).toUTCString ()}
                     </span>
-
                    </div>
-
                   </Typography>
-                 
                 </AccordionSummary>
                 <AccordionDetails>
-                  {/* <Typography>{message.message.text}</Typography>
-                  <div
-                    className={`${!!message?.message.audio ? "" : "d-none"}`}
-                  >
-                    <audio src={message?.message.audio} controls />
-                  </div>
-                  <div
-                    className={`${!!message?.message.video ? "" : "d-none"}`}
-                  >
-                    <video
-                      width="270px"
-                      height="200px"
-                      src={message?.message.video}
-                      controls
-                    />
-                  </div>
-                  <Typography>
-                    <b>Date: </b>
-                    {new Date(message.createdAt).toLocaleTimeString()}
-                  </Typography> */}
-                    {/* <RespondDialog message={message}/> */}
-                    
                     <CommentsModal respondedMsg={respondedMessages} msgId={message._id} msgCategory={message.category}/>
                 </AccordionDetails>
               </Accordion>

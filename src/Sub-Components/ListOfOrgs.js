@@ -1,8 +1,6 @@
 import Loader from 'react-spinners/PropagateLoader'
 import styled from 'styled-components';
 function ListOfOrgs({allOrg, isLoading}) {
-  console.log(allOrg)
-
   return (
     <>
         <div className='col-lg-4'>
@@ -16,7 +14,7 @@ function ListOfOrgs({allOrg, isLoading}) {
                   {
                     allOrg.map((org, index)=>{
                       return (
-                        <div className='org-contact shadow-sm px-2 rounded d-flex justify-content-between py-3'>
+                        <div className='org-contact shadow-sm px-2 rounded d-flex justify-content-between py-3' key={index}>
                           <p>{org.name} -</p>
                           <p>{org.mobile}</p>
                         </div>
@@ -38,10 +36,10 @@ const ContactList = styled.div`
   white-space: nowrap;
   &::-webkit-scrollbar{
     height: 5px;
-    background-color: blue;
+    background-color: rgb(212, 209, 209);
     border-radius: 5vh;
     &-thumb{
-      background-color: red;
+      background-color: blue;
     }
   }
   .org-contact{
