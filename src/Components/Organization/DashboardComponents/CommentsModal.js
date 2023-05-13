@@ -11,6 +11,7 @@ import axios from 'axios';
 import useSWR from 'swr'
 import { baseUrl } from '../../../URL';
 import PreLoader from 'react-spinners/PropagateLoader'
+import TimeAgo from 'timeago-react';
 export default function CommentsModal({respondedMsg, msgId, msgCategory}) {
 
   const [open, setOpen] = React.useState(false);
@@ -84,7 +85,9 @@ export default function CommentsModal({respondedMsg, msgId, msgCategory}) {
                 return (
                     <div className='comment my-4 text-end' key={index}>
                         <p className='shadow-sm py-2 px-3 rounded text-dark'>{msg.comment}</p>
-                        <small className='float-end'>{new Date(msg.createdAt).toDateString()} | {new Date(msg.createdAt).toLocaleTimeString()}</small>
+                        <small className='float-end'>
+                        <TimeAgo datetime={msg.createdAt}/>
+                        </small>
                     </div>
                 )
             }):
