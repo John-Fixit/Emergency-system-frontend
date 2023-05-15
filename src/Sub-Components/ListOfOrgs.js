@@ -12,7 +12,7 @@ function ListOfOrgs({allOrg, isLoading}) {
                 </div>: 
                 <ContactList className={`px-2`}>
                   {
-                    allOrg.map((org, index)=>{
+                    allOrg?.map((org, index)=>{
                       return (
                         <div className='org-contact shadow-sm px-2 rounded d-flex justify-content-between py-3' key={index}>
                           <p>{org.name} -</p>

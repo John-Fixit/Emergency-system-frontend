@@ -116,11 +116,11 @@ function SignupForm() {
                 <div className="col-md-12 my-1">
                     <select className='form-select py-3' name='category' onChange={(e)=>handleChange(e)} style={{cursor: 'pointer'}}>
                         <option value={''}>Choose Category</option>
-                        <option value={'vehicleAccident'}>Vehicle Accident</option>
-                        <option value={'fireAccident'}>Fire Accident</option>
-                        <option value={'flood'}>Flood</option>
-                        <option value={'robbery'}>Robbery</option>
-                        <option value={'riot'}>Riot</option>
+                        <option value={'Vehicle Accident'}>Vehicle Accident</option>
+                        <option value={'Fire Accident'}>Fire Accident</option>
+                        <option value={'Flood'}>Flood</option>
+                        <option value={'Robbery'}>Robbery</option>
+                        <option value={'Riot'}>Riot</option>
                     </select>
                     <FormHelperText>
                          Select the Category of your Organization

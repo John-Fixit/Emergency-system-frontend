@@ -51,8 +51,9 @@ function MessageAccordion() {
                   <div
                     className={`${!!message?.message.audio ? "" : "d-none"}`}
                   >
-                    <audio src={message?.message.audio} controls />
+                    <audio src={message?.message.audio} controls/>
                   </div>
+                  {message?.message.audio}
                   <div
                     className={`${!!message?.message.video ? "" : "d-none"}`}
                   >

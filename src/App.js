@@ -8,6 +8,7 @@ import axios from 'axios';
 import Signup from './Components/Organization/Signup';
 import About from './Components/User/About'
 import Contact from './Components/User/Contact'
+import USSD from './Sub-Components/USSD';
 function App() {
   const fetcher =(...args)=>axios.get(...args)
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/register" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path='/org/*' element={<OrgMainRoute />}/>
+          <Route path='/ussd' element={<USSD />}/>
         </Routes>
       </SWRConfig>
     </>

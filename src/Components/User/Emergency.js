@@ -89,7 +89,6 @@ function Emergency() {
       sendMsg({ category, text, audioFile, videoFile, location })
         .then(async (res) => {
           const { message, success, data } = res;
-          console.log(data);
           socket.emit("sendMsg", data);
           await setResMsg(message);
           setResponseDialog({

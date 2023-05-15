@@ -17,22 +17,30 @@ import { ContextForSocket} from "./StoreContext/SocketContext";
 import useSWR from 'swr';
 import { baseUrl } from "../../URL";
 import RespondedMessages from "./RespondedMessages";
+import tone from '../../assets/alarm1.mp3';
+const  audio = new Audio(tone);
+audio.loop()
 function OrgMainRoute() {
   const socket = useContext(ContextForSocket);
   const navigate = useNavigate("");
   const msgRef = useRef();
+  const audioRef = useRef();
   const dispatch = useDispatch();
   //getting all messages from the server
   const category = useSelector(state=>state.user.details.category)
   const {data, error, isLoading, mutate} = useSWR(`${baseUrl}/msg/${category}`);
   dispatch(messageActions.setTotalMessage({data: data?.data.allMessage, error, isLoading}))
-  const audio = new Audio('../../assets/alarm3.mp3');
+  const startAlart=()=>{
+     return audio.play()
+  }
+
+  const stopAlert =()=>{
+    audio.pause();
+  }
   React.useEffect(() => {
     socket.on("msgResponse", async (data) => {
       msgRef.current = await data;
-      if(msgRef.current){
-        audio.play()
-      }
+      startAlart();
       const { message: {text}, location } = await msgRef.current;
       dispatch(messageActions.addNewMessage(msgRef.current));
       if (!!text) {
@@ -44,9 +52,6 @@ function OrgMainRoute() {
           native: true,
         });
       }
-      setTimeout(()=>{
-        audio.pause();
-      }, 10000)
     });
     mutate()
   }, [socket]);
@@ -72,10 +77,14 @@ function OrgMainRoute() {
   }, []);
 
 
-
   return (
     <>
      <Sidebar >
+      {
+        !audio.paused&&
+        <button className="btn btn-danger float-end" onClick={()=>stopAlert()}>Stop Alert</button>
+        
+      }
       <Routes>
         <Route path="/" element={<Outlet />}>
           <Route path="" element={<Dashboard />} />
