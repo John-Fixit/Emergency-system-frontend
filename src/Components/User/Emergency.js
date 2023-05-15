@@ -89,14 +89,9 @@ function Emergency() {
       sendMsg({ category, text, audioFile, videoFile, location })
         .then(async (res) => {
           const { message, success, data } = res;
-          socket.emit("sendMsg", data);
-          await setResMsg(message);
-          setResponseDialog({
-            ...responseDialog,
-            open: true,
-            NoError: success,
-          });
+          console.log(success)
           if (success) {
+            socket.emit("sendMsg", data);
             setdetails({
               ...details,
               category: "",
@@ -107,6 +102,12 @@ function Emergency() {
             });
             setUseCurrentLocation(false);
           }
+          await setResMsg(message);
+          setResponseDialog({
+            ...responseDialog,
+            open: true,
+            NoError: success,
+          });
         })
         .finally(() => {
           setIsSending(false);
