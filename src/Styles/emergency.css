@@ -1,8 +1,13 @@
 
 .submitBtn{
-    padding: 10px;
+    padding: 0 10px;
+    text-align: center;
     cursor: pointer;
     caret-color: red !important;
+    position: fixed;
+    right: 70vh;
+    bottom: 10vh;
+    z-index: 99;
 }
 .select_category{
     cursor: pointer;
@@ -21,5 +26,12 @@
 }
 .record_btn:hover{
     background-color: white;
+}
+
+@media only screen and (max-width: 548px){
+   .submitBtn{
+    right: 1vh;
+    bottom: 2vh;
+   }
 }
 

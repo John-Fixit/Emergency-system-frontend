@@ -10,9 +10,9 @@ function Navbar() {
         color: "red"
     }
     const menuList = [
-      {id: '1', name: 'Home', path: '/'},
-      {id: '2', name: 'About', path: '/about'},
-      {id: '3', name: 'Contact', path: '/contact'}
+      {id: 1, name: 'Home', path: '/'},
+      // {id: '2', name: 'About', path: '/about'},
+      // {id: '3', name: 'Contact', path: '/contact'},
     ]
 
  
@@ -30,7 +30,7 @@ function Navbar() {
                 {
                   menuList.map((item)=>{
                     return (
-                    <li className={`nav-item px-2 ${selectedId===item.id? 'active bg-primary': ''}`} key={item.id} onClick={()=>setselectedId(()=>{return item.id})}>
+                    <li className={`nav-item px-2 ${selectedId===item.id? 'active bg-primary text-light': ''}`} key={item.id} onClick={()=>setselectedId(()=>{return item.id})}>
                       <Link to={item.path} className={`nav-link ${selectedId===item.id? 'text-light': ''}`} >{item.name}</Link>
                     </li>
                     )

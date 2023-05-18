@@ -19,9 +19,9 @@ function Copyright(props) {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <a color="inherit" href="https://github.com/John-Fixit">
-        John-Fixit
+        John-Fixit 
       </a>
-      {new Date().getFullYear()}
+       {new Date().getFullYear()}
       {'.'}
     </Typography>
   );
@@ -62,7 +62,8 @@ export default function Login() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random)',
+            backgroundImage: '../../assets/SBG.PNG',
+            height: 'auto',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -73,7 +74,6 @@ export default function Login() {
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
-              my: 8,
               mx: 4,
               display: 'flex',
               flexDirection: 'column',
@@ -124,12 +124,12 @@ export default function Login() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link to={``} variant="body2">
+                  {/* <Link to={``} className="fw-light" >
                     Forgot password?
-                  </Link>
+                  </Link> */}
                 </Grid>
                 <Grid item>
-                  <Link to={'/register'} variant="body2">
+                  <Link to={'/register'} style={{fontSize: '3vh'}}>
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

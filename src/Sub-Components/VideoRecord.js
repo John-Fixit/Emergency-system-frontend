@@ -16,13 +16,11 @@ function VideoRecord({getVideoRecorded}) {
     if(mediaBlobUrl && status=="stopped"){
       getVideoRecorded(mediaBlobUrl)
     }
-
     
   return (
     <div>
-      <p>{status}</p>
       <div className='text-center'>
-        <video ref={videoRef} controls autoPlay className={`rounded ${status!="recording"? 'd-none': ''}`}/>
+        <video ref={videoRef} controls autoPlay className={`rounded ${status!="recording"? 'd-none': ''}`} style={{height: '10vh'}}/>
         <video src={mediaBlobUrl} controls className={`rounded ${status=="stopped"? '': 'd-none'}`}/>
         <VideoBasePreview status={status}/>
       </div>

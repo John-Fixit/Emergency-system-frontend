@@ -119,9 +119,9 @@ function SignupForm() {
                         <option value={'Road Accident'}>Road Accident</option>
                         <option value={'Fire'}>Fire</option>
                         <option value={'Medical'}>Medical</option>
-                        <option value={'Flood'}>Flood</option>
                         <option value={'Robbery'}>Robbery</option>
                         <option value={'Riot'}>Riot</option>
+                        <option value={'Natural Disaster'}>Natural Disaster</option>
                     </select>
                     <FormHelperText>
                          Select the Category of your Organization

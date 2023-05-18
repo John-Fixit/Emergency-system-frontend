@@ -159,8 +159,10 @@ function Emergency() {
 
   const handleCheckLocation = (e) => {
     if(e.target.checked){
-      console.log(newLocation)
-      setdetails({ ...details, location: newLocation });
+      if(!!!newLocation){
+          alert('Network issue, cannot get your location')
+        }
+        setdetails({...details, location: newLocation})
     }
     setUseCurrentLocation(e.target.checked);
   };
@@ -169,31 +171,20 @@ function Emergency() {
     setdetails({ ...details, text: param });
   };
 
-  
+  const hoverOnUseLocation=()=>{
+    if(!!!newLocation){
+      alert('Network issue, cannot get your location')
+    }
+  }
   return (
     <>
       <Navbar />
       <div className="col-12 px-lg-4 px-2">
         <div className="row">
-        <div className="col-md-8 my-3 mx-aut shadow-sm">
-          <div className="submitContent">
-            <button
-              className="btn submitBtn btn-danger d-flex gap-2"
-              onClick={() => submit()}
-            >
-              {
-                <p className="my-auto">
-                  <Loader loading={isSending} size={20} color={"white"} />
-                </p>
-              }
-              Submit
-            </button>
-          </div>
+        <div className="col-sm-8 my-3 shadow-sm">
           <div className="row">
-            <div className="category col-sm-6">
-              <Typography component="h1" variant="h5">
-                Category of incident
-              </Typography>
+            <div className="category col-lg-6 col-md-6 col-sm-12">
+              <label htmlFor="">Category of incident</label>
               <FormControl sx={{ m: 2, minWidth: 120 }}>
                 <InputLabel id="demo-simple-select-label">Category</InputLabel>
                 <Select
@@ -216,6 +207,7 @@ function Emergency() {
                   <MenuItem value={"Medical"}>Medical</MenuItem>
                   <MenuItem value={"Robbery"}>Robbery</MenuItem>
                   <MenuItem value={"Riot"}>Riot</MenuItem>
+                  <MenuItem value={"Natural Disaster"}>Natural Disaster</MenuItem>
                 </Select>
                 <FormHelperText>
                   Select the Category of your Organization
@@ -242,61 +234,56 @@ function Emergency() {
                   ></textarea>
                 </div>
               )}
-              <div className="device_location">
+              <div className="device_location" >
                 <FormControlLabel
                   control={
                     <Checkbox
                       checked={!!useCurrentLocation}
                       onChange={handleCheckLocation}
+                      onMouseEnter={hoverOnUseLocation}
                     />
                   }
                   label="Use my current location"
                 />
               </div>
             </div>
-            <div className="text_desc_area">
-              <Typography component="h1" variant="h5">
-                Add more description of the incident (Optional)
-              </Typography>
+            <div className="col-12">
+              <label htmlFor="">
+               (Optional Information) 
+              </label><br />
               <DescTemplate handleTemplate={handleTemplate} />
+            </div>
+            <div className="col-lg-6 col-md-6 col-sm-12 text_desc_area my-2">
+              <label htmlFor="">Description</label>
               <textarea
                 rows="3"
                 cols="10"
                 name="text"
-                className="form-control textArea my-2"
-                placeholder="More of description of the incident..."
+                className="form-control textArea"
+                placeholder="More description of the incident..."
                 value={details.text}
                 onChange={(e) => handleChange(e)}
               ></textarea>
             </div>
-          </div>
 
           {/* voice record */}
-          <div className="voice_desc_area card my-3 p-2 border-0 shadow media_record">
-            <h4 className="card-title">Use Voice Record</h4>
+          <div className="col-lg-6 col-md-6 col-sm-12 voice_desc_area my-2 media_record">
             <label htmlFor="">
-              Use voice record for more description of the incident
+              Use voice record
             </label>
-            <div>
               <AudioRecord getAudioRecorded={getAudioRecorded} />
-            </div>
           </div>
-          <div className="video_desc_area border-0 card my-3 p-2 shadow">
-            <Typography component="h1" variant="h5">
-              Add Video for more description
-            </Typography>
+          <div className="video_desc_area border-0 card my-2 shadow">
             <div className="take_video">
-              <label htmlFor="">
-                Take video coverage for more description about the urgent
-                incident:{" "}
+              <label htmlFor="" className="text-center">
+                Take a Video record
               </label>
               <VideoRecord getVideoRecorded={getVideoRecorded} />
             </div>
           </div>
-
-          <div className="submitContent">
-            <button
-              className="btn submitBtn btn-danger d-flex gap-2"
+        </div>
+          <button
+              className="btn submitBtn px-5 text-center float-end rounded btn-danger d-flex gap-2"
               onClick={() => submit()}
             >
               {
@@ -304,9 +291,8 @@ function Emergency() {
                   <Loader loading={isSending} size={20} color={"white"} />
                 </p>
               }
-              Submit
+              Send 
             </button>
-          </div>
         </div>
         <ListOfOrgs allOrg={data?.data.result} isLoading={isLoading} />
       </div>

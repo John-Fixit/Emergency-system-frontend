@@ -32,12 +32,15 @@ function OrgMainRoute() {
   const {data, error, isLoading} = useSWR(`${baseUrl}/msg/${category}`, {refreshInterval: 1000});
   dispatch(messageActions.setTotalMessage({data: data?.data.allMessage, error, isLoading}))
   const startAlart=()=>{
-    audio.currentTime = 0;
-     audio.play()
+    // audio.currentTime = 0;
+    // document.getElementById('myAudio')
+    
+    console.log(audioRef)
   }
   const stopAlert =()=>{
+    // audio.current.p ause()
     audio.pause()
-    audio.currentTime = 0;
+    // audio.currentTime = 0;
   }
   React.useEffect(() => {
     socket.on("msgResponse", async (data) => {
@@ -81,7 +84,7 @@ function OrgMainRoute() {
   return (
     <>
      <Sidebar >
-      <audio loop={true} ref={audioRef.current} src={tone}/>
+      <audio loop={true} ref={audioRef} src={tone} id="myAudio" preload="auto"/>
       {
         !audio.paused&&
         <button className="btn btn-danger float-end" onClick={()=>stopAlert()}>Stop Alert</button>

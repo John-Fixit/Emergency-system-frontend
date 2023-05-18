@@ -33,39 +33,39 @@ function AudioRecord({getAudioRecorded}) {
       <p>New Record</p>
       <div className="row">
         
-        <AudioReactRecorder state={recordState} onStop={onStop} canvasHeight={200} canvasWidth={340} foregroundColor="brown"/>
+        <AudioReactRecorder state={recordState} onStop={onStop} canvasHeight={30} canvasWidth={340} foregroundColor="brown"/>
         <div>
           {
             !audioBlobUrl||recordState=="recording"?"":
-            <audio src={audioUrl.current} controls />
+            <audio src={audioUrl.current} controls style={{height: '10px'}}/>
           }
         </div>
       </div>
       {
         recordState == "start"?
         <div >
-          <button className="btn btn-warning rounded" onClick={()=>pause()}>
+          <button className="btn btn-warning rounded-circle" onClick={()=>pause()}>
             <BsPauseFill size={"4vh"} />
           </button>
-          <button className="btn btn-danger rounded" onClick={()=>stop()}>
+          <button className="btn btn-danger rounded-circle" onClick={()=>stop()}>
             <BsStop size={"4vh"} />
           </button>
         </div>
         :
         recordState=="pause"?
         <div >
-          <button className="btn btn-warning rounded" onClick={()=>start()}>
+          <button className="btn btn-warning rounded-circle" onClick={()=>start()}>
            <BsFillPlayFill size={"4vh"} />
           </button>
-          <button className="btn btn-danger rounded" onClick={()=>stop()}>
+          <button className="btn btn-danger rounded-circle" onClick={()=>stop()}>
             <BsStop size={"4vh"} />
           </button>
         </div>
        :
         recordState==null||recordState=="stop"?
         <div >
-          <button className="btn btn-danger rounded" onClick={()=>start()}>
-            <GiOldMicrophone size={"5vh"} />
+          <button className="btn btn-danger rounded-circle" onClick={()=>start()}>
+            <GiOldMicrophone size={"4vh"} />
           </button>
           </div>:""
       }
