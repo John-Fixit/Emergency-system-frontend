@@ -18,7 +18,8 @@ import useSWR from 'swr';
 import { baseUrl } from "../../URL";
 import RespondedMessages from "./RespondedMessages";
 import tone from '../../assets/alarm3.mp3';
-let  audio = new Audio(tone);
+
+const audio = new Audio(tone);
 // audio.loop
 function OrgMainRoute() {
   const socket = useContext(ContextForSocket);
@@ -28,14 +29,15 @@ function OrgMainRoute() {
   const dispatch = useDispatch();
   //getting all messages from the ser
   const category = useSelector(state=>state.user.details.category)
-  const {data, error, isLoading, mutate} = useSWR(`${baseUrl}/msg/${category}`);
+  const {data, error, isLoading} = useSWR(`${baseUrl}/msg/${category}`, {refreshInterval: 1000});
   dispatch(messageActions.setTotalMessage({data: data?.data.allMessage, error, isLoading}))
   const startAlart=()=>{
-     return audio.play();
+    audio.currentTime = 0;
+     audio.play()
   }
-
   const stopAlert =()=>{
-    new audio.pause();
+    audio.pause()
+    audio.currentTime = 0;
   }
   React.useEffect(() => {
     socket.on("msgResponse", async (data) => {
@@ -53,7 +55,6 @@ function OrgMainRoute() {
         });
       }
     });
-    mutate()
   }, [socket]);
 
   React.useEffect(() => {
@@ -80,10 +81,10 @@ function OrgMainRoute() {
   return (
     <>
      <Sidebar >
+      <audio loop={true} ref={audioRef.current} src={tone}/>
       {
         !audio.paused&&
         <button className="btn btn-danger float-end" onClick={()=>stopAlert()}>Stop Alert</button>
-        
       }
       <Routes>
         <Route path="/" element={<Outlet />}>

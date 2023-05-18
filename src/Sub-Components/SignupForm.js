@@ -116,8 +116,9 @@ function SignupForm() {
                 <div className="col-md-12 my-1">
                     <select className='form-select py-3' name='category' onChange={(e)=>handleChange(e)} style={{cursor: 'pointer'}}>
                         <option value={''}>Choose Category</option>
-                        <option value={'Vehicle Accident'}>Vehicle Accident</option>
-                        <option value={'Fire Accident'}>Fire Accident</option>
+                        <option value={'Road Accident'}>Road Accident</option>
+                        <option value={'Fire'}>Fire</option>
+                        <option value={'Medical'}>Medical</option>
                         <option value={'Flood'}>Flood</option>
                         <option value={'Robbery'}>Robbery</option>
                         <option value={'Riot'}>Riot</option>

@@ -20,7 +20,7 @@ function Navbar() {
     <React.Fragment>
         <nav className="navbar navbar-expand-sm navbar-light shadow-sm">
           <div className="container-fluid pad_navbar">
-            <Link to={`/`} className="navbar-brand" href="#"><span style={styles}>ES</span><small className='text-success fw-bold'>Emergency system</small>
+            <Link to={`/`} className="navbar-brand fw-bold" ><span style={styles}>E.N.S</span>
             </Link>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span className="navbar-toggler-icon"></span>
@@ -30,8 +30,8 @@ function Navbar() {
                 {
                   menuList.map((item)=>{
                     return (
-                    <li className={`nav-item px-2 ${selectedId==item.id? 'active bg-primary': ''}`} key={item.id} onClick={()=>setselectedId(()=>{return item.id})}>
-                      <Link to={item.path} className={`nav-link ${selectedId==item.id? 'text-light': ''}`} >{item.name}</Link>
+                    <li className={`nav-item px-2 ${selectedId===item.id? 'active bg-primary': ''}`} key={item.id} onClick={()=>setselectedId(()=>{return item.id})}>
+                      <Link to={item.path} className={`nav-link ${selectedId===item.id? 'text-light': ''}`} >{item.name}</Link>
                     </li>
                     )
                   })

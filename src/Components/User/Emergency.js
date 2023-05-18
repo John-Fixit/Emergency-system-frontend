@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef} from "react";
+import React, { useContext, useEffect, useState} from "react";
 import { sendMsg } from "../../FunctionControllers/sendMsgFunc";
 import "../../Styles/emergency.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -35,6 +35,7 @@ import { baseUrl } from "../../URL";
 function Emergency() {
   const socket = useContext(ContextForSocket);
   const [useCurrentLocation, setUseCurrentLocation] = React.useState(null);
+  const [newLocation, setnewLocation] = useState('')
   const [details, setdetails] = React.useState({
     category: "",
     text: "",
@@ -43,7 +44,10 @@ function Emergency() {
     location: "",
   });
   const [isSending, setIsSending] = React.useState(false);
-  const [resMsg, setResMsg] = React.useState("");
+  const [resMsg, setResMsg] = React.useState({
+    message: '',
+    suggestedMeasure: []
+  });
   const [responseDialog, setResponseDialog] = React.useState({
     open: false,
     NoError: null,
@@ -56,6 +60,10 @@ function Emergency() {
     draggable: true,
     pauseOnHover: true,
   };
+
+  useEffect(()=>{
+    getAddress();
+  }, [])
 
   const handleChange = (e) => {
     if (details.location == "") {
@@ -70,8 +78,7 @@ function Emergency() {
         const { latitude, longitude } = position.coords;
         getLocation(latitude, longitude)
           .then((addressData) => {
-            console.log(addressData.formatted);
-            setdetails({ ...details, location: addressData.formatted });
+            setnewLocation(()=>{return addressData.formatted});
           })
           .catch((err) => {
             toast.error(err.message, toastStyle);
@@ -84,12 +91,11 @@ function Emergency() {
 
   const submit = async () => {
     const { category, text, audioFile, videoFile, location } = details;
-    if (handleValidation()) {
+    if (handleValidation().status) {
       setIsSending(true);
       sendMsg({ category, text, audioFile, videoFile, location })
         .then(async (res) => {
-          const { message, success, data } = res;
-          console.log(success)
+          const { message, success, data, suggestedMeasure } = res;
           if (success) {
             socket.emit("sendMsg", data);
             setdetails({
@@ -102,7 +108,7 @@ function Emergency() {
             });
             setUseCurrentLocation(false);
           }
-          await setResMsg(message);
+          await setResMsg({...resMsg, message, suggestedMeasure});
           setResponseDialog({
             ...responseDialog,
             open: true,
@@ -113,28 +119,32 @@ function Emergency() {
           setIsSending(false);
         });
     } else {
-      await setResMsg(
-        `Please choose the category of the emergency you want to report!`
-      );
+      await setResMsg({
+        ...resMsg, message: handleValidation().message
+      });
       setResponseDialog({ ...responseDialog, open: true, NoError: false });
     }
   };
 
   const handleValidation = () => {
     if (!!!details.category) {
-      return false;
-    } else {
-      return true;
+      return {message: 'Please choose the category of the emergency you want to report!', status: false};
+    }
+    if(!(!!details.location)){
+        return {message: 'Location can not be empty, please provide the location', status: false};
+    }
+    else {
+      return {status: true};
     }
   };
 
   const getAudioRecorded = (blob) => {
-    const audioFile = audioRecordComplete(blob.blob);
+    // const audioFile = audioRecordComplete(blob.blob);
     const reader = new FileReader();
-    reader.readAsDataURL(audioFile);
-    reader.onload = () => {
+    reader.readAsDataURL(blob);
+    reader.onload = function(){
       setdetails({ ...details, audioFile: reader.result });
-    };
+    }
   };
 
   const getVideoRecorded = async (mediaBlobUrl) => {
@@ -148,8 +158,11 @@ function Emergency() {
   };
 
   const handleCheckLocation = (e) => {
+    if(e.target.checked){
+      console.log(newLocation)
+      setdetails({ ...details, location: newLocation });
+    }
     setUseCurrentLocation(e.target.checked);
-    getAddress();
   };
 
   const handleTemplate = (param) => {
@@ -196,12 +209,13 @@ function Emergency() {
                   <MenuItem value={"Choose category"} disabled selected hidden>
                     Choose Category
                   </MenuItem>
-                  <MenuItem value={"vehicleAccident"}>
-                    Vehicle Accident
+                  <MenuItem value={"Road Accident"}>
+                    Road Accident
                   </MenuItem>
-                  <MenuItem value={"fireAccident"}>Fire Accident</MenuItem>
-                  <MenuItem value={"robbery"}>Robbery</MenuItem>
-                  <MenuItem value={"riot"}>Riot</MenuItem>
+                  <MenuItem value={"Fire"}>Fire</MenuItem>
+                  <MenuItem value={"Medical"}>Medical</MenuItem>
+                  <MenuItem value={"Robbery"}>Robbery</MenuItem>
+                  <MenuItem value={"Riot"}>Riot</MenuItem>
                 </Select>
                 <FormHelperText>
                   Select the Category of your Organization
@@ -324,8 +338,23 @@ function Emergency() {
                 : "is-invalid text-danger"
             }`}
           >
-            {resMsg}
+            {resMsg.message}
           </DialogContentText>
+          {
+            resMsg.suggestedMeasure?.length ?
+            <div className="my-2 px-lg-3 text-danger" style={{listStyleType: 'circle'}}>
+              <ul className="text-start">
+                <p className="fw-bold text-uppercase">Take Note of the following:</p>
+                {
+                  resMsg.suggestedMeasure?.map((msg, index)=>{
+                    return(
+                      <li key={index}>{msg}</li>
+                      )
+                    })
+                }
+              </ul>
+            </div>: ''
+          }
         </DialogContent>
         <DialogActions>
           <Button
@@ -334,11 +363,10 @@ function Emergency() {
             }
             autoFocus
           >
-            Agree
+            Ok
           </Button>
         </DialogActions>
       </Dialog>
-
       <ToastContainer
         bodyStyle={{
           theme: "colored",

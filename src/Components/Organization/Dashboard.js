@@ -13,7 +13,6 @@ function Dashboard() {
   const responseStatus = useSelector((state) => state.response.status);
   const allMessage = useSelector((state) => state.message.fetchMessages.data);
   const respondedMsg = allMessage?.filter((msg)=>msg.respond === true)
-  
   return (
     <>
       <div className="dashboard_component">
@@ -38,7 +37,6 @@ function Dashboard() {
                   quality={respondedMsg?.length}
               />
           </div>
-            {/* {responseStatus === "active" && <ResponsePanel />} */}
           <div className="col-sm-12 ms-auto">
             <Dialog className="card">
                 <h3 className="card-header text-center bg-white">Non-Responded Alerts On {userDetail?.category}</h3>
@@ -50,9 +48,7 @@ function Dashboard() {
     </>
   );
 }
-
 export default Dashboard;
-
 const Dialog = styled.div`
   height: 80vh;
   .alert-messages-container{

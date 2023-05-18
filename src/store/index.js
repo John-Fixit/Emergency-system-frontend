@@ -10,7 +10,7 @@ const store = configureStore({
         auth: authSlice.reducer,
         user: userSlice.reducer,
         message: messageSlice.reducer,
-        response: responseSlice.reducer
+        response: responseSlice.reducer,
     }
 });
 

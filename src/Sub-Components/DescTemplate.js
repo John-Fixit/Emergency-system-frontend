@@ -1,10 +1,11 @@
 import { Chip } from '@mui/material'
 import React from 'react'
 const descList = [
-  {catName: "Vehicle Accident", desc: "There is a sudden vehicle accident that you need to attend to "},
-  {catName: "Fire Accident", desc: "There is a sudden Fire accident that you need to attend to immediately, before it cause more than normal"},
-  {catName: "Robbery", desc: "There is a sudden vehicle accident that you need to attend to "},
-  {catName: "Riot", desc: "There is an ongoing riot, please come and help us to settle it, it's becoming more serious"},
+  {catName: "Road Accident", desc: "There is a sudden vehicle accident that you need to attend to "},
+  {catName: "Fire", desc: "There is a sudden Fire that you need to attend to immediately, Fire agency is needed quicly."},
+  {catName: "Medical", desc: "Please, medical emergency is needed quickly..."},
+  {catName: "Robbery", desc: "There is an ongoing robbery, you need to help us please"},
+  {catName: "Riot", desc: "There is an ongoing riot, please come and help us to settle it, it's becoming more serious."},
 ]
 
 function DescTemplate({handleTemplate}) {
@@ -12,7 +13,7 @@ function DescTemplate({handleTemplate}) {
         <React.Fragment>
           {
             descList.map((item, i)=>{
-              return <Chip key={i} label={item.catName} className={`${item.catName=='Vehicle Accident'? 'vehicle border border-warning': item.catName=='Fire Accident'? 'fire border border-danger': item.catName=='Robbery'? 'robbery border border-info': item.catName=='Riot'&&'riot border border-primary'}`} onClick={()=>handleTemplate(item.desc)} />
+              return <Chip key={i} label={item.catName} className={`${item.catName=='Road Accident'? 'vehicle border border-warning': item.catName=='Fire'? 'fire border border-danger': item.catName=='Robbery'? 'robbery border border-primary': item.catName=='Riot'?'riot border border-primary':item.catName==='Medical'&&'fire border border-danger'}`} onClick={()=>handleTemplate(item.desc)} />
             })
           }
         </React.Fragment>

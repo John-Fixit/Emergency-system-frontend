@@ -9,7 +9,7 @@ import {IoTimerOutline} from 'react-icons/io5'
 import { FaEnvelope } from 'react-icons/fa';
 import axios from 'axios';
 import { baseUrl } from '../../../URL';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Loader from 'react-spinners/BarLoader'
 export default function RespondDialog({message}) {
   const [open, setOpen] = useState(false);
@@ -28,6 +28,7 @@ export default function RespondDialog({message}) {
     axios.post(`${baseUrl}/respond/comment`, {comment, messageId: message._id, responderId: user._id, messageCategory: message.category}).then((result)=>{
         const {message, success} = result.data
         if(success){
+          setComment('')
           setOpen(false)
         }
     }).catch((err)=>{
