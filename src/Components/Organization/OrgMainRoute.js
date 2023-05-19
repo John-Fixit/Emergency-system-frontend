@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Outlet, Route, Routes, useNavigate } from "react-router-dom";
 import { authorize } from "../../FunctionControllers/loginOrgFunc";
 import Dashboard from "./Dashboard";
@@ -30,20 +30,25 @@ function OrgMainRoute() {
   //getting all messages from the ser
   const category = useSelector(state=>state.user.details.category)
   const {data, error, isLoading} = useSWR(`${baseUrl}/msg/${category}`, {refreshInterval: 1000});
+  const [arrived, setarrived] = useState(false)
   dispatch(messageActions.setTotalMessage({data: data?.data.allMessage, error, isLoading}))
   const startAlart=()=>{
-    return audio.play()
+    audio.loop = true
+    audio.play()
+    // return audioRef.current.play()
     // audio.currentTime = 0;
     // document.getElementById('myAudio')
   }
   const stopAlert =()=>{
-    // audio.current.p ause()
-    audio.pause()
+    // audio.current.pause()
+    setarrived(false)
+    audioRef.current.pause()
     // audio.currentTime = 0;
   }
   React.useEffect(() => {
     socket.on("msgResponse", async (data) => {
       msgRef.current = await data;
+      setarrived(true)
       startAlart();
       const { message: {text}, location } = await msgRef.current;
       dispatch(messageActions.addNewMessage(msgRef.current));
@@ -83,9 +88,10 @@ function OrgMainRoute() {
   return (
     <>
      <Sidebar >
-      <audio loop={true} ref={audioRef} src={tone} id="myAudio" preload="auto"/>
+      {/* <button onClick={startAlart}></button> */}
+      {/* <audio loop={true} ref={audioRef} src={tone}/> */}
       {
-        !audio.paused&&
+        !audio.paused&& arrived&&
         <button className="btn btn-danger float-end" onClick={()=>stopAlert()}>Stop Alert</button>
       }
       <Routes>
