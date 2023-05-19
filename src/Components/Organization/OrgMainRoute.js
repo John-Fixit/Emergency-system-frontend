@@ -17,7 +17,7 @@ import { ContextForSocket} from "./StoreContext/SocketContext";
 import useSWR from 'swr';
 import { baseUrl } from "../../URL";
 import RespondedMessages from "./RespondedMessages";
-import tone from '../../assets/alarm3.mp3';
+import tone from '../../assets/alarm1.mp3';
 
 const audio = new Audio(tone);
 // audio.loop
@@ -32,10 +32,9 @@ function OrgMainRoute() {
   const {data, error, isLoading} = useSWR(`${baseUrl}/msg/${category}`, {refreshInterval: 1000});
   dispatch(messageActions.setTotalMessage({data: data?.data.allMessage, error, isLoading}))
   const startAlart=()=>{
+    return audio.play()
     // audio.currentTime = 0;
     // document.getElementById('myAudio')
-    
-    console.log(audioRef)
   }
   const stopAlert =()=>{
     // audio.current.p ause()

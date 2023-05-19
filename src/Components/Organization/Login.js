@@ -62,7 +62,7 @@ export default function Login() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: '../../assets/SBG.PNG',
+            backgroundImage: 'url(https://source.unsplash.com/random)',
             height: 'auto',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
