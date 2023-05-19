@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,16 +14,14 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { loginOrg } from '../../FunctionControllers/loginOrgFunc';
 import { useNavigate } from 'react-router-dom';
-import { UserDetailContext } from './StoreContext/UserContext';
-
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <a color="inherit" href="https://github.com/John-Fixit">
-        John-Fixit
+        John-Fixit 
       </a>
-      {new Date().getFullYear()}
+       {new Date().getFullYear()}
       {'.'}
     </Typography>
   );
@@ -33,26 +31,23 @@ const theme = createTheme();
 
 export default function Login() {
   const navigate = useNavigate();
-  const [userDetail, setUserDetail] = useContext(UserDetailContext);
 
   const [message, setMessage] = React.useState("");
   const [isError, setIsError] = React.useState(false);
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const crd = {email: data.get('email')}
+    const crd = {email: data.get('email'), password: data.get('password')};
     loginOrg(crd).then(async(res)=>{
-      const {user_detail, success, message, token} = res;
+      const {success, message, token} = res;
         if(success){
           setIsError(false)
-            setUserDetail(user_detail);
-            console.log(user_detail);
             localStorage.setItem('org_token', JSON.stringify(token));
-            navigate(`/org/${user_detail._id}`)
+            navigate(`/org/`)
         }
         else{
            setMessage(message);
-           setIsError(true)
+           setIsError(true);
         }
     })
   };
@@ -68,6 +63,7 @@ export default function Login() {
           md={7}
           sx={{
             backgroundImage: 'url(https://source.unsplash.com/random)',
+            height: 'auto',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -78,7 +74,6 @@ export default function Login() {
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
-              my: 8,
               mx: 4,
               display: 'flex',
               flexDirection: 'column',
@@ -105,7 +100,7 @@ export default function Login() {
                 autoComplete="email"
                 autoFocus
               />
-              {/* <TextField
+              <TextField
                 margin="normal"
                 required
                 fullWidth
@@ -114,7 +109,7 @@ export default function Login() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-              /> */}
+              />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
@@ -129,12 +124,12 @@ export default function Login() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link to={``} variant="body2">
+                  {/* <Link to={``} className="fw-light" >
                     Forgot password?
-                  </Link>
+                  </Link> */}
                 </Grid>
                 <Grid item>
-                  <Link to={'/register_organization'} variant="body2">
+                  <Link to={'/register'} style={{fontSize: '3vh'}}>
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

@@ -1,70 +1,64 @@
-import React, { useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
-import { baseUrl } from "../../URL";
-import Navbar from "./Navbar";
-import useSWR from "swr";
+import React, { useRef } from "react";
 import Loader from "react-spinners/PropagateLoader"
-import TimeAgo from "timeago-react";
+import TimeAgo from "react-timeago";
 import "../../Styles/messages.css"
-function Messages({newMsg}) {
-  const route = useParams("");
+import { useSelector } from "react-redux";
+function Messages() {
   const allMsg = useRef({});
-useEffect(()=>{
-  if(newMsg.current){
-    allMsg.current = [...allMsg.current, newMsg.current]
-  }
-}, [newMsg]);
-
-  const { cat } = route;
-  const { data, error, isLoading } = useSWR(`${baseUrl}/org/${cat}`, {refreshInterval: 1000}); 
-  allMsg.current = data?.data.allMessage
+  const {data, error, isLoading} = useSelector(state=>state.message.fetchMessages)
+  allMsg.current = data
   if(isLoading){
     return <>
-     <Navbar />
      <div className="mx-auto text-center">
         <Loader cssOverride={{margin: "auto"}} color="red"/>
      </div>
     </>
   }
-
   if(error){
     return <>
     <h1>Error</h1>
     </>
   }
 
-
-
   return (
     <React.Fragment>
       <div className="msg_section_container">
         <div
-          className={`message_section col-lg-8 col-md-11 cursor_pointer col-sm-12 mx-auto shadow p-2`}
+          className={`message_section col-lg-8 col-md-11 col-sm-12 mx-auto shadow p-2`}
         >
           <div className={`message_header`}>
-            <h1>Messages</h1>
+            <h2 className="card-header rounded text-light text-center p-2" style={{backgroundColor: 'red'}}>All Alert Messages</h2>
           </div>
           <div className={`message_body`}>
             {[...allMsg.current].reverse().map((msg, index) => {
               return (
                 <div
-                  className="rounded my-2 w-lg-25 w-md-50 w-sm-199 border border-warning p-2 text-light bg-danger"
+                  className="rounded my-2 w-lg-25 w-md-50 p-2 bg-light shadow"
                   key={index}
                 >
-                  <p>message: {msg.message.text}</p>
+                   <div className="d-flex gap-2">
+                      <p className="fw-bold">message: </p>
+                      <p className="">{msg.message.text}</p>
+                      </div>
                   <div className={`${!!(msg.message.audio)?"": "d-none"}`}>
                      <audio src={msg.message.audio} controls />
                   </div>
                   <div className={`${!!(msg.message.video)?"": "d-none"}`}>
                       <video width="270px" height="200px" src={msg.message.video} controls />
                     </div>
-                  <p>Location: {msg.location}</p>
-                  <p>Time: 
-                    {
-                      msg.dateCreated
-                  + " "}
-                  <TimeAgo datetime={msg.createdAt} locale="en-US"/>
-                  </p>
+                    <div className="d-flex gap-2">
+                      <p className="fw-bold">Location: </p>
+                      <p className="">{msg.location}</p>
+                      </div>
+                      <div className="d-flex gap-2">
+                        <p className="fw-bold">Time: </p>
+                        <p className="">
+                          {
+                            msg.dateCreated
+                        + " "}
+                        <TimeAgo date={msg.createdAt}/>
+                        </p>
+                      </div>
                 </div>
               );
             })}

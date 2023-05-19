@@ -4,12 +4,11 @@
 }
 .message_body::-webkit-scrollbar{
     width: 3px;
-    background-color: rgb(169, 157, 157);
+    background-color: rgb(212, 209, 209);
     border-radius: 5vh;
-    box-shadow: inset 6px -6px 13px 20px;
 }
 .message_body::-webkit-scrollbar-thumb
 {
-    background-color: orange;
+    background-color: blue;
     width: 1px;
 }

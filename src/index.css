@@ -1,4 +1,6 @@
-
+*{
+  font-family: sans-serif;
+}
 *::-webkit-scrollbar{
   width: 3px;
 }
@@ -12,27 +14,13 @@
 }
 
 /* CSS for Description Template */
-.vehicle:hover{
-  background-color: rgb(234, 234, 45) !important;
-  transition: all 0.5s ease;
-}
 .fire:hover{
   background-color: rgb(155, 47, 47) !important;
   color: white;
   transition: all 0.5s ;
 }
-.robbery:hover{
-  background-color: aqua !important;
-  transition: all 0.5s ;
-}
-.riot:hover{
-  background-color: blue !important;
-  color: white;
-  transition: all 0.5s ;
-}
 
 video{
-  height: auto;
   width: 60%;
 }
 .video{
@@ -42,6 +30,21 @@ video{
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.page{
+  flex-basis: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: margin-left 1s;
+}
+.page-with-navbar{
+  /* width: 85%; */
+  margin-left: 15%;
+}
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 @media screen and (max-width: 992px) and (min-width: 564px){
@@ -59,5 +62,11 @@ video{
   }
   .video{
       width: 100%;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .page-with-navbar{
+    width: 100%;
+    margin-left: 0;
   }
 }

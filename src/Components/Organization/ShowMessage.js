@@ -4,8 +4,8 @@ function ShowMessage() {
   return (
     <>
         <div className='container-fluid'>
-            
-        </div>
+              <h1>Show each message</h1>
+        </div>  
     </>
   )
 }

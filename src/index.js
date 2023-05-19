@@ -7,16 +7,20 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.css"
 import "bootstrap/dist/js/bootstrap.bundle"
-import UserContext from "./Components/Organization/StoreContext/UserContext";
+import {Provider} from 'react-redux';
+import store from "./store";
+import SocketContext from "./Components/Organization/StoreContext/SocketContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 
 root.render(
   <React.StrictMode>
+    <Provider store={store}>
       <BrowserRouter>
-        <UserContext subPages={<App />}/>
+        <SocketContext subPages={<App />}/>
       </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );
 

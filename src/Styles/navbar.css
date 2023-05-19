@@ -1,6 +1,9 @@
 .navbar{
     background: white;
     color: red;
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(5px);
 }
 
 .navbar_second_color{
