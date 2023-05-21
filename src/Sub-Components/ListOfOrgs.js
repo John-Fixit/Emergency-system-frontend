@@ -1,6 +1,8 @@
 import Loader from 'react-spinners/PropagateLoader'
 import styled from 'styled-components';
-function ListOfOrgs({allOrg, isLoading}) {
+function ListOfOrgs({allOrg, isLoading, category}) {
+  const newOrgContacts = allOrg?.filter((item)=>item.category === category)
+
   return (
     <>
         <div className='col-lg-4'>
@@ -12,7 +14,7 @@ function ListOfOrgs({allOrg, isLoading}) {
                 </div>: 
                 <ContactList className={`px-2`}>
                   {
-                    allOrg?.map((org, index)=>{
+                    newOrgContacts?.map((org, index)=>{
                       return (
                         <div className='org-contact shadow-sm px-2 rounded d-flex justify-content-between py-3' key={index}>
                           <p>{org.name} -</p>

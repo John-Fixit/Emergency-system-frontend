@@ -76,11 +76,11 @@ function OrgMainRoute() {
             id: socket.id,
           });
         } else {
-          navigate("/login");
+          // navigate("/login");
         }
       });
     } else {
-      navigate("/login");
+      // navigate("/login");
     }
   }, []);
 

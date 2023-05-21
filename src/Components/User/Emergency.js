@@ -294,7 +294,7 @@ function Emergency() {
               Send 
             </button>
         </div>
-        <ListOfOrgs allOrg={data?.data.result} isLoading={isLoading} />
+        <ListOfOrgs allOrg={data?.data.result} isLoading={isLoading} category={details.category}/>
       </div>
       </div>
       <Dialog

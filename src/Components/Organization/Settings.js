@@ -1,9 +1,13 @@
 import React from 'react'
+import OrgHeader from '../../Sub-Components/OrgHeader'
 
 function Settings() {
   return (
    <>
-    <h1>Setting page</h1>
+      <OrgHeader page={'Profile Setting'}/>
+      <div className='row'>
+        
+      </div>
    </>
   )
 }

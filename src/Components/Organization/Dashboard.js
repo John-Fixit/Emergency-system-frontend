@@ -8,6 +8,7 @@ import styled from "styled-components";
 
 import { BsFillReplyAllFill } from "react-icons/bs";
 import MessageAccordion from "./DashboardComponents/MessageAccordion";
+import OrgHeader from "../../Sub-Components/OrgHeader";
 function Dashboard() {
   const userDetail = useSelector((state) => state.user.details);
   const responseStatus = useSelector((state) => state.response.status);
@@ -16,12 +17,16 @@ function Dashboard() {
   return (
     <>
       <div className="dashboard_component">
-        <h2 className="fw-bold">
+        <OrgHeader page={'Dashboard'}/>
+        <sub className={`fw-light fs-6`}>
+            Category- <b className={`text-danger`}>{userDetail?.category}</b>
+          </sub>
+        {/* <h2 className="fw-bold">
           Dashboard
           <sub className={`fw-light fs-6`}>
             Category- <b className={`text-danger`}>{userDetail?.category}</b>
           </sub>
-        </h2>
+        </h2> */}
         <div className="row">
           <div className="col-lg-4">
               <Card 
