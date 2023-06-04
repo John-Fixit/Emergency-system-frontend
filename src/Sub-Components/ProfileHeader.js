@@ -2,7 +2,7 @@ import { Avatar } from '@mui/material'
 import React from 'react'
 import { FaEnvelope, FaUserAlt } from 'react-icons/fa'
 
-function ProfileHeader() {
+function ProfileHeader({name, email, profile_photo}) {
   return (
     <>
         <div className='col-sm-12'>
@@ -11,13 +11,13 @@ function ProfileHeader() {
                     <div className='org_avatar'>
                         <Avatar ></Avatar>
                     </div>
-                    <div className='org_name'>
-                        <h4 className=''>Organisation Name</h4>
+                    <div className='org_name my-auto'>
+                        <h4 className=''>{name?? "Organisation Name"}</h4>
                     </div>
                     <div className='org_email d-flex gap-2 my-auto'>
-                        <FaEnvelope size={'3vh'}/>:
+                        <FaEnvelope size={'3vh'} color='blue'/>:
                         <p>
-                            <a href="/">Organisation email</a>
+                            <span className='text-muted'>{email ?? "Organisation email"}</span>
                         </p>
                     </div>
                 </div>

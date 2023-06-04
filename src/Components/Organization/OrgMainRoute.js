@@ -17,9 +17,9 @@ import { ContextForSocket} from "./StoreContext/SocketContext";
 import useSWR from 'swr';
 import { baseUrl } from "../../URL";
 import RespondedMessages from "./RespondedMessages";
-import tone from '../../assets/alarm1.mp3';
+import tone from '../../assets/alarm3.mp3';
 
-const audio = new Audio(tone);
+// const audio = new Audio(tone);
 // audio.loop
 function OrgMainRoute() {
   const socket = useContext(ContextForSocket);
@@ -27,6 +27,7 @@ function OrgMainRoute() {
   const msgRef = useRef();
   const audioRef = useRef();
   const dispatch = useDispatch();
+  const [audio] = useState(new Audio(tone));
   //getting all messages from the ser
   const category = useSelector(state=>state.user.details.category)
   const {data, error, isLoading} = useSWR(`${baseUrl}/msg/${category}`, {refreshInterval: 1000});
@@ -42,7 +43,7 @@ function OrgMainRoute() {
   const stopAlert =()=>{
     // audio.current.pause()
     setarrived(false)
-    audioRef.current.pause()
+    audio.pause();
     // audio.currentTime = 0;
   }
   React.useEffect(() => {
