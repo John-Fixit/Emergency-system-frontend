@@ -99,7 +99,14 @@ function Sidebar({ children }) {
             <Link
               to={`/org/profile/${userDetail ? userDetail._id : "xxxxxx"}/me`}
             >
-              <Avatar sx={{ bgcolor: "red" }}></Avatar>
+              <Avatar sx={{ bgcolor: "red" }}>
+              {
+                userDetail?
+                `${userDetail?.name?.split(" ")[0].split("")[0]}${
+                  userDetail?.name?.split(" ")[1].split("")[0]
+                }`:""
+              }
+              </Avatar>
             </Link>
           </div>
         </div>

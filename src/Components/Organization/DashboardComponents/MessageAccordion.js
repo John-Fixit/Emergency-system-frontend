@@ -41,7 +41,7 @@ function MessageAccordion() {
                       width: "20%",
                       flexShrink: 0,
                     }}>
-                    <b>Time: </b>
+                    <b>Date: </b>
                     {new Date(message.createdAt).toDateString()}
                   </Typography>
                 </AccordionSummary>
@@ -65,7 +65,7 @@ function MessageAccordion() {
                     />
                   </div>
                   <Typography>
-                    <b>Date: </b>
+                    <b>Time: </b>
                     {new Date(message.createdAt).toLocaleTimeString()}
                   </Typography>
                     <RespondDialog message={message}/>

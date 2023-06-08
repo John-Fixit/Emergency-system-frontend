@@ -27,7 +27,7 @@ function Messages() {
           className={`message_section col-lg-8 col-md-11 col-sm-12 mx-auto shadow p-2`}
         >
           <div className={`message_header`}>
-            <h2 className="card-header rounded text-light text-center p-2" style={{backgroundColor: 'red'}}>All Alert Messages</h2>
+            <h3 className="card-header rounded text-light text-center p-2" style={{backgroundColor: 'red'}}>All Alert Messages</h3>
           </div>
           <div className={`message_body`}>
             {[...allMsg.current].reverse().map((msg, index) => {

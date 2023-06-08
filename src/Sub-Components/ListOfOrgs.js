@@ -8,6 +8,7 @@ function ListOfOrgs({allOrg, isLoading, category}) {
         <div className='col-lg-4'>
             <div className='card h-100 shadow-sm'>
                 <h3 className='card-header text-center'>Agent Contacts</h3>
+                <a href={`tel: +2349160261836`}>9160261836</a>
                 {
                   isLoading?   <div className="mx-auto text-center">
                   <Loader cssOverride={{margin: "auto"}} color="blue"/>
@@ -17,8 +18,11 @@ function ListOfOrgs({allOrg, isLoading, category}) {
                     newOrgContacts?.map((org, index)=>{
                       return (
                         <div className='org-contact shadow-sm px-2 rounded d-flex justify-content-between py-3' key={index}>
-                          <p>{org.name} -</p>
-                          <p>{org.mobile}</p>
+                          <p>{org?.name} -</p>
+                          <p>
+                            <a href={`tel: +234${org.mobile}`}>{org.mobile}</a>
+                            {/* {org?.mobile} */}
+                          </p>
                         </div>
                       )
                     })

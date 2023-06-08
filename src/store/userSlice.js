@@ -2,30 +2,33 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { baseUrl } from "../URL";
 
-// export const getUserDetailAction = createAsyncThunk("/user/detail", async(payload, {rejectWithValue})=>{
-//     try{
-//         const res = await axios.get(`${baseUrl}/org/get-org-details`)
-//     }catch(err){
-//         rejectWithValue(err?.response?.data);
-//     }
-// })
-
-
-export const updateUserAction = createAsyncThunk("user/updateProfile", async(payload, {rejectWithValue})=>{
+export const getOrgDetailAction = createAsyncThunk("/user/detail", async(payload, {rejectWithValue})=>{
     try{
-        const res = await axios.patch(``, payload);
+        const res = await axios.get(`${baseUrl}/org/profile/${payload}`)
+        return res?.data?.detail
+    }catch(err){
+        console.log(err?.response?.data);
+        rejectWithValue(err?.response?.data);
+    }
+})
+
+
+export const updateOrgAction = createAsyncThunk("user/updateProfile", async(payload, {rejectWithValue})=>{
+    try{
+        const res = await axios.patch(`${baseUrl}/org/update-org`, payload);
         console.log(res?.data);
         return res?.data;
     }catch(err){
-        return err?.response?.data
-    }   
+        console.log(err?.response?.data);
+        return rejectWithValue(err?.response?.data);
+    }
 })
 
 const userSlice = createSlice({
     name: 'user',
     initialState: {
         details: {},
-        updateUserDetail: {
+        updateOrgDetail: {
             loading: false,
             appError: null,
         }
@@ -36,16 +39,20 @@ const userSlice = createSlice({
         }
     },
     extraReducers: (builder)=>{
-        builder.addCase(updateUserAction.pending, (state, action)=>{
-            state.updateUserDetail.loading = true;
-            state.updateUserDetail.appError = null;
+        builder.addCase(updateOrgAction.pending, (state, action)=>{
+            state.updateOrgDetail.loading = true;
+            state.updateOrgDetail.appError = null;
         })
-        .addCase(updateUserAction.fulfilled, (state, action)=>{
-            state.updateUserDetail.loading = false;
+        .addCase(updateOrgAction.fulfilled, (state, action)=>{
+            state.updateOrgDetail.loading = false;
         })
-        .addCase(updateUserAction.rejected, (state, action)=>{
-            state.updateUserDetail.loading = false;
-            state.updateUserDetail.appError = action.payload;
+        .addCase(updateOrgAction.rejected, (state, action)=>{
+            state.updateOrgDetail.loading = false;
+            state.updateOrgDetail.appError = action.payload;
+        })
+        //get org detail
+        .addCase(getOrgDetailAction.fulfilled, (state, action)=>{
+            state.details = action.payload;
         })
     }
 })

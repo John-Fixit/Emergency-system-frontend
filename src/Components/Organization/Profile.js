@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux'
 
 function Profile() {
   const org_detail = useSelector((state)=>state.user.details)
-  console.log(org_detail);
   return (
     <>
         <OrgHeader page={'Profile'}/>

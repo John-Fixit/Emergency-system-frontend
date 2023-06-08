@@ -56,7 +56,7 @@ function OrgMainRoute() {
       if (!!text) {
         addNotification({
           title: "Emergency system",
-          message: `Message: ${text} Location: ${location}`,
+          message: `Message: ${text} |->| Location: ${location}`,
           duration: 4000,
           icon: logo,
           native: true,
@@ -77,11 +77,11 @@ function OrgMainRoute() {
             id: socket.id,
           });
         } else {
-          // navigate("/login");
+          navigate("/login");
         }
       });
     } else {
-      // navigate("/login");
+      navigate("/login");
     }
   }, []);
 

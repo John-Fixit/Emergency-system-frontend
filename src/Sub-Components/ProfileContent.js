@@ -17,8 +17,8 @@ function ProfileContent({org_detail}) {
                         infoMenu.map((item, index)=>{
                             return (
                                 <div key={index} className='row my-2'>
-                                    <p className='col-2 fw-bold '>{item.name} :</p>
-                                    <p className='col-3'>
+                                    <p className='col-lg-2 col-sm-6 fw-bold'>{item.name} :</p>
+                                    <p className='col-lg-3 col-sm-6'>
                                         <span > {item.value}</span>
                                     </p>
                                 </div>
