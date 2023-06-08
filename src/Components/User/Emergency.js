@@ -54,6 +54,8 @@ function Emergency() {
     NoError: null,
   });
   const { data, isLoading } = useSWR(`${baseUrl}/org/allOrgs`);
+  const [orgs, setOrgs] = useState(data?.data.result)
+  
   const toastStyle = {
     theme: "colored",
     delay: 8000,
@@ -64,14 +66,26 @@ function Emergency() {
 
   useEffect(()=>{
     getAddress();
+    setOrgs(()=>{return data?.data.result})
   }, [])
+console.log(orgs)
+  useEffect(()=>{
+      const allOrg = data?.data?.result;
+      let newArray = [orgs]
+      allOrg?.map((item)=>{
+        const confirmIfHas = item.category.includes(details?.category);
+        if(confirmIfHas){
+          newArray.push(item)
+        }
+      })
+      setOrgs(newArray)
+  }, [details?.category])
 
   const handleChange = (e) => {
     if (details.location == "") {
       getAddress();
     }
     setdetails({ ...details, [e.target.name]: e.target.value });
-    
   };
 
   const getAddress = () => {
@@ -296,7 +310,7 @@ function Emergency() {
               Send 
             </button>
         </div>
-        <ListOfOrgs allOrg={data?.data.result} isLoading={isLoading} category={details.category}/>
+        <ListOfOrgs allOrg={orgs} isLoading={isLoading} category={details.category}/>
       </div>
       </div>
       <Dialog
