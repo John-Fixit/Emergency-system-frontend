@@ -36,6 +36,7 @@ function Emergency() {
   const socket = useContext(ContextForSocket);
   const [useCurrentLocation, setUseCurrentLocation] = React.useState(null);
   const [newLocation, setnewLocation] = useState('')
+  const [newCategory,, setNewCategory] = useState('')
   const [details, setdetails] = React.useState({
     category: "",
     text: "",
@@ -70,6 +71,7 @@ function Emergency() {
       getAddress();
     }
     setdetails({ ...details, [e.target.name]: e.target.value });
+    
   };
 
   const getAddress = () => {
