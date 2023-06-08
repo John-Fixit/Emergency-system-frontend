@@ -9,7 +9,6 @@ const messageSlice = createSlice({
     },
     reducers: {
         setTotalMessage(state, action){
-            let dd = [];
             const {data, error, isLoading} = action.payload;
             state.fetchMessages = {data, error, isLoading};
         },

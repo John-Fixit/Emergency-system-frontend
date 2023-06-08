@@ -1,6 +1,10 @@
 import "../../Styles/dashboard.css";
 import { useState } from "react";
 import { MdMessage } from "react-icons/md";
+// import { FaRoadSpikes } from "react-icons/fa"
+import {FaStreetView} from "react-icons/fa";
+import {WiEarthquake} from "react-icons/wi";
+import {GiKingJuMask, GiSwordman, GiFireBowl} from "react-icons/gi";
 import Card from "./DashboardComponents/Card";
 import { useSelector } from "react-redux";
 import ResponsePanel from "./DashboardComponents/ResponsePanel";
@@ -10,10 +14,12 @@ import { BsFillReplyAllFill } from "react-icons/bs";
 import MessageAccordion from "./DashboardComponents/MessageAccordion";
 import OrgHeader from "../../Sub-Components/OrgHeader";
 function Dashboard() {
+  const iconSize = 45;
   const org_detail = useSelector((state) => state.user.details);
   const responseStatus = useSelector((state) => state.response.status);
   const allMessage = useSelector((state) => state.message.fetchMessages.data);
   const respondedMsg = allMessage?.filter((msg)=>msg.respond === true)
+
   return (
     <>
       <div className="dashboard_component">
@@ -29,17 +35,32 @@ function Dashboard() {
             </b>
           </sub>
         <div className="row">
+          {
+            org_detail?.category?.length?
+            org_detail?.category.map((cat, index)=>{
+              return <div className="col-lg-4">
+               <Card
+                  key={index}
+                  icon={cat=='Road Accident'? <FaStreetView size={iconSize} color="red" />: cat=="Robbery"? <GiKingJuMask size={iconSize} color="red" />: cat=="Riot" ? <GiSwordman size={iconSize} color="red" />: cat=="Fire" ? <GiFireBowl size={iconSize} color="red" />: cat=="Natural Disaster" &&<WiEarthquake size={iconSize} color="red" />}
+                  name={`${cat} Messages`}
+                  quality={allMessage?.filter((msg)=>msg.category==cat)?.length}
+                />
+          </div>
+            })
+          :
+          (
           <div className="col-lg-4">
-              <Card 
-                icon={<MdMessage size={60} color="blue" />}
-                name={"Messages"}
-                quality={allMessage?.length}
-              />
-          </div> 
+            <Card 
+              icon={<MdMessage size={60} color="blue" />}
+              name={"Messages"}
+              quality={allMessage?.length}
+            />
+          </div>)
+          }
           <div className="col-lg-4">
               <Card
-                  icon={<BsFillReplyAllFill size={60} color="red" />}
-                  name={"Alert Attended To"}
+                  icon={<BsFillReplyAllFill size={iconSize} color="red" />}
+                  name={"Responded Alerts"}
                   quality={respondedMsg?.length}
               />
           </div>

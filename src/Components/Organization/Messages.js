@@ -3,6 +3,7 @@ import Loader from "react-spinners/PropagateLoader"
 import TimeAgo from "react-timeago";
 import "../../Styles/messages.css"
 import { useSelector } from "react-redux";
+import OrgHeader from "../../Sub-Components/OrgHeader";
 function Messages() {
   const allMsg = useRef({});
   const {data, error, isLoading} = useSelector(state=>state.message.fetchMessages)
@@ -23,19 +24,25 @@ function Messages() {
   return (
     <React.Fragment>
       <div className="msg_section_container">
+      <OrgHeader page={'All Messages of your category'}/>
         <div
           className={`message_section col-lg-8 col-md-11 col-sm-12 mx-auto shadow p-2`}
         >
-          <div className={`message_header`}>
-            <h3 className="card-header rounded text-light text-center p-2" style={{backgroundColor: 'red'}}>All Alert Messages</h3>
-          </div>
+          {/* <div className={`message_header`}>
+            <h3 className="card-header rounded text-light text-center p-2" style={{backgroundColor: 'red'}}>All Alert Messages of all category</h3>
+          </div> */}
           <div className={`message_body`}>
             {[...allMsg.current].reverse().map((msg, index) => {
               return (
                 <div
-                  className="rounded my-2 w-lg-25 w-md-50 p-2 bg-light shadow"
+                  className="my-2 w-lg-25 w-md-50 p-2 bg-light shadow"
+                  style={{ borderTop: "2px solid red"}}
                   key={index}
                 >
+                   <div className="d-flex gap-2">
+                      <p className="fw-bold">Category: </p>
+                      <p className="">{msg.category}</p>
+                      </div>
                    <div className="d-flex gap-2">
                       <p className="fw-bold">message: </p>
                       <p className="">{msg.message.text}</p>
@@ -55,8 +62,8 @@ function Messages() {
                         <p className="">
                           {
                             msg.dateCreated
-                        + " "}
-                        <TimeAgo date={msg.createdAt}/>
+                        + " "} (
+                        <TimeAgo date={msg.createdAt}/>)
                         </p>
                       </div>
                 </div>

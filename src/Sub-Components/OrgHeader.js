@@ -3,8 +3,8 @@ import React from 'react'
 function OrgHeader({page}) {
   return (
    <>
-        <div className='page_header bg-danger p-2 col-lg-4 text-light' style={{borderRadius: "10px", borderTopRightRadius: "0px"}}>
-            <h2>{page}</h2>
+        <div className='page_header p-2 col-lg-5 text-light' style={{borderRadius: "10px", borderTopRightRadius: "0px", backgroundColor: "red"}}>
+            <h3>{page}</h3>
         </div>
    </>
   )
