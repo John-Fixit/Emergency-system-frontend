@@ -10,7 +10,7 @@ import { BsFillReplyAllFill } from "react-icons/bs";
 import MessageAccordion from "./DashboardComponents/MessageAccordion";
 import OrgHeader from "../../Sub-Components/OrgHeader";
 function Dashboard() {
-  const userDetail = useSelector((state) => state.user.details);
+  const org_detail = useSelector((state) => state.user.details);
   const responseStatus = useSelector((state) => state.response.status);
   const allMessage = useSelector((state) => state.message.fetchMessages.data);
   const respondedMsg = allMessage?.filter((msg)=>msg.respond === true)
@@ -19,14 +19,15 @@ function Dashboard() {
       <div className="dashboard_component">
         <OrgHeader page={'Dashboard'}/>
         <sub className={`fw-light fs-6`}>
-            Category- <b className={`text-danger`}>{userDetail?.category}</b>
+            Category- <b className={`text-danger`}>
+              {
+                org_detail?.category?.length?
+                org_detail?.category.map((cat, index)=>{
+                  return <span key={index}> | {cat}</span>
+                }): "Category"
+              }
+            </b>
           </sub>
-        {/* <h2 className="fw-bold">
-          Dashboard
-          <sub className={`fw-light fs-6`}>
-            Category- <b className={`text-danger`}>{userDetail?.category}</b>
-          </sub>
-        </h2> */}
         <div className="row">
           <div className="col-lg-4">
               <Card 
@@ -44,7 +45,14 @@ function Dashboard() {
           </div>
           <div className="col-sm-12 ms-auto">
             <Dialog className="card">
-                <h3 className="card-header text-center bg-white">Non-Responded Alerts On {userDetail?.category}</h3>
+                <h3 className="card-header text-center bg-white">Non-Responded Alerts On 
+                {
+                  org_detail?.category?.length?
+                org_detail?.category.map((cat, index)=>{
+                  return <span key={index}> | {cat}</span>
+                }) : "Category"
+              }
+              </h3>
                 <MessageAccordion />
               </Dialog>
           </div>

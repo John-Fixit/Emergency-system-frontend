@@ -1,9 +1,27 @@
 import styled from 'styled-components'
 import React from 'react'
-import {Box, Typography, TextField, Button, Grid, FormHelperText} from '@mui/material'
+import {Box, Typography, TextField, Button, Grid, FormHelperText, FormControl, InputLabel, Select, MenuItem, Checkbox, ListItemText, OutlinedInput} from '@mui/material'
 import {Link, useNavigate} from 'react-router-dom' 
 import Loader from "react-spinners/ClockLoader"
 import { createOrg } from "../FunctionControllers/createOrgFunc";
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+const categories = [
+  'Road Accident',
+  'Fire',
+  'Medical',
+  'Robbery',
+  'Riot',
+  'Natural Disaster',
+];
 function SignupForm() {
     const navigate = useNavigate('')
     const [isLoading, setIsLoading] = React.useState(false)
@@ -11,15 +29,23 @@ function SignupForm() {
     const [orgData, setOrgData] = React.useState({
         name: "",
         email: "",
-        category: "Choose Category",
+        category: [],
         mobile: '',
         password: ''
     });
+    const [personName, setPersonName] = React.useState([]);
 
-  const handleChange=(e)=>{
+  const handleChange=(e)=>{ 
       setOrgData({...orgData, [e.target.name]: e.target.value})
   } 
-
+  const handleChangeCategory = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setOrgData({...orgData, category: typeof value === 'string' ? value.split(',') : value,}
+      // On autofill we get a stringified value.   
+    );
+  };
   const handleSubmit = () => {
     if(handleValidation().status){
       setIsLoading(true)
@@ -112,20 +138,27 @@ function SignupForm() {
                   Provide Your Organization Email Address   
                 </FormHelperText>
                 </div>
-               
-                <div className="col-md-12 my-1">
-                    <select className='form-select py-3' name='category' onChange={(e)=>handleChange(e)} style={{cursor: 'pointer'}}>
-                        <option value={''}>Choose Category</option>
-                        <option value={'Road Accident'}>Road Accident</option>
-                        <option value={'Fire'}>Fire</option>
-                        <option value={'Medical'}>Medical</option>
-                        <option value={'Robbery'}>Robbery</option>
-                        <option value={'Riot'}>Riot</option>
-                        <option value={'Natural Disaster'}>Natural Disaster</option>
-                    </select>
-                    <FormHelperText>
-                         Select the Category of your Organization
-                    </FormHelperText>
+                <div className='col-md-12 my-1'>
+                  <FormControl sx={{ width: "100%" }}>
+                    <InputLabel id="demo-multiple-checkbox-label">Category *</InputLabel>
+                    <Select
+                      labelId="demo-multiple-checkbox-label"
+                      id="demo-multiple-checkbox"
+                      multiple
+                      value={orgData.category}
+                      onChange={handleChangeCategory}
+                      input={<OutlinedInput label="Category *" />}
+                      renderValue={(selected) => selected.join(', ')}
+                      MenuProps={MenuProps}
+                    >
+                      {categories.map((name) => (
+                        <MenuItem key={name} value={name}>
+                          <Checkbox checked={orgData.category.indexOf(name) > -1} />
+                          <ListItemText primary={name} />
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </div>
                 <div className="col-md-12 my-1">
                     <TextField
@@ -145,16 +178,6 @@ function SignupForm() {
                         <small className="text-danger"> [ Please enter with country code ]</small>
                     </FormHelperText>
                 </div>
-                {/* <div className="col-md-12 my-1">
-                    <textarea rows="3" cols="5" name="description" placeholder="Your Organization description" className="form-control textArea"
-                    onChange={(e)=>handleChange(e)}
-                    value={orgData.description}
-                    >
-                    </textarea>
-                    <FormHelperText>
-                        Provide your organization's description here
-                    </FormHelperText>
-                </div> */}
                 <div className="col-md-12">
                     <TextField
                         margin="normal"

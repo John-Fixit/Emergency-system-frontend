@@ -3,7 +3,11 @@ import React from 'react'
 function ProfileContent({org_detail}) {
     const infoMenu = [
         {name: 'Mobile', value: org_detail?.mobile ??'9892982938'},
-        {name: 'Category', value: org_detail?.category ??'Category'},
+        {name: 'Category', value: 
+            org_detail?.category.map((cat, index)=>{
+              return <span key={index}>| {cat}</span>
+            }) ?? "Category"
+        },
         {name: 'Description', value: !!org_detail?.description ? org_detail?.description:  'Not Available'},
         {name: 'Website', value: <a href="">{!!org_detail?.websiteLink ? org_detail?.websiteLink: 'https://yourwebsite'}</a>}
     ]

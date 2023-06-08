@@ -32,7 +32,7 @@ function OrgMainRoute() {
   const category = useSelector(state=>state.user.details.category)
   const {data, error, isLoading} = useSWR(`${baseUrl}/msg/${category}`, {refreshInterval: 1000});
   const [arrived, setarrived] = useState(false)
-  dispatch(messageActions.setTotalMessage({data: data?.data.allMessage, error, isLoading}))
+  dispatch(messageActions.setTotalMessage({data: data?.data.allMessage?.flat(), error, isLoading}))
   const startAlart=()=>{
     audio.loop = true
     audio.play()
