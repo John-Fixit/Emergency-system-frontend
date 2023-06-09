@@ -63,7 +63,7 @@ function Sidebar({ children }) {
           <Link to={"/org/"} className="d-flex gap-2">
             <Avatar
               alt="Remy Sharp"
-              src={require("../../assets/logo.png")}
+              src={require("../../assets/ENS Logo.png")}
               sx={{ width: 50, height: 50 }}
             />
             <h3

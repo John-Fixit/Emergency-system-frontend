@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import "../../Styles/navbar.css"
+import { Avatar } from '@mui/material';
 
 function Navbar() {
   const [selectedId, setselectedId] = useState(1);
@@ -20,7 +21,13 @@ function Navbar() {
     <React.Fragment>
         <nav className="navbar navbar-expand-sm navbar-light shadow-sm">
           <div className="container-fluid pad_navbar">
-            <Link to={`/`} className="navbar-brand fw-bold" ><span style={styles}>E.N.S</span>
+            <Link to={`/`} className="navbar-brand fw-bold" ><span style={styles}>
+              <Avatar
+              alt="Remy Sharp"
+              src={require("../../assets/ENS Logo.png")}
+              sx={{ width: 50, height: 50 }}
+            />
+            </span>
             </Link>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span className="navbar-toggler-icon"></span>

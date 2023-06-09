@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { baseUrl } from "../URL";
 
+// get the organization detail
 export const getOrgDetailAction = createAsyncThunk("/user/detail", async(payload, {rejectWithValue})=>{
     try{
         const res = await axios.get(`${baseUrl}/org/profile/${payload}`)
@@ -11,8 +12,7 @@ export const getOrgDetailAction = createAsyncThunk("/user/detail", async(payload
         rejectWithValue(err?.response?.data);
     }
 })
-
-
+// update orgnaization detail
 export const updateOrgAction = createAsyncThunk("user/updateProfile", async(payload, {rejectWithValue})=>{
     try{
         const res = await axios.patch(`${baseUrl}/org/update-org`, payload);
@@ -23,6 +23,9 @@ export const updateOrgAction = createAsyncThunk("user/updateProfile", async(payl
         return rejectWithValue(err?.response?.data);
     }
 })
+
+//get all organization
+// export const updateOrgAction = createAsyncThunk
 
 const userSlice = createSlice({
     name: 'user',

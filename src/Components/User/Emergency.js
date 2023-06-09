@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useRef, useState} from "react";
 import { sendMsg } from "../../FunctionControllers/sendMsgFunc";
 import "../../Styles/emergency.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -36,7 +36,8 @@ function Emergency() {
   const socket = useContext(ContextForSocket);
   const [useCurrentLocation, setUseCurrentLocation] = React.useState(null);
   const [newLocation, setnewLocation] = useState('')
-  const [newCategory,, setNewCategory] = useState('')
+  const [newCategory, setNewCategory] = useState('')
+  const [orgs, setOrgs] = useState();
   const [details, setdetails] = React.useState({
     category: "",
     text: "",
@@ -49,13 +50,12 @@ function Emergency() {
     message: '',
     suggestedMeasure: []
   });
+  // const orgs = useRef();
   const [responseDialog, setResponseDialog] = React.useState({
     open: false,
     NoError: null,
   });
   const { data, isLoading } = useSWR(`${baseUrl}/org/allOrgs`);
-  const [orgs, setOrgs] = useState(data?.data.result)
-  
   const toastStyle = {
     theme: "colored",
     delay: 8000,
@@ -63,22 +63,23 @@ function Emergency() {
     draggable: true,
     pauseOnHover: true,
   };
-
+  
+  // orgs.current = data?.data.result;
   useEffect(()=>{
+    setOrgs(()=>{return data?.data.result});
     getAddress();
-    setOrgs(()=>{return data?.data.result})
   }, [])
-console.log(orgs)
   useEffect(()=>{
       const allOrg = data?.data?.result;
       let newArray = [orgs]
       allOrg?.map((item)=>{
         const confirmIfHas = item.category.includes(details?.category);
         if(confirmIfHas){
-          newArray.push(item)
+          newArray.push(item);
         }
       })
-      setOrgs(newArray)
+      setOrgs(newArray);
+      // orgs.current = newArray;
   }, [details?.category])
 
   const handleChange = (e) => {
