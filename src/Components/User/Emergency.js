@@ -50,7 +50,6 @@ function Emergency() {
     message: '',
     suggestedMeasure: []
   });
-  // const orgs = useRef();
   const [responseDialog, setResponseDialog] = React.useState({
     open: false,
     NoError: null,
@@ -64,14 +63,14 @@ function Emergency() {
     pauseOnHover: true,
   };
   
-  // orgs.current = data?.data.result;
   useEffect(()=>{
     setOrgs(()=>{return data?.data.result});
     getAddress();
   }, [])
+
   useEffect(()=>{
       const allOrg = data?.data?.result;
-      let newArray = [orgs]
+      let newArray = []
       allOrg?.map((item)=>{
         const confirmIfHas = item.category.includes(details?.category);
         if(confirmIfHas){
@@ -79,7 +78,6 @@ function Emergency() {
         }
       })
       setOrgs(newArray);
-      // orgs.current = newArray;
   }, [details?.category])
 
   const handleChange = (e) => {
