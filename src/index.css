@@ -13,6 +13,10 @@
   resize: none;
 }
 
+.form-control, .form-select:focus{
+  -webkit-box-shadow: none!important;
+}
+
 /* CSS for Description Template */
 .fire:hover{
   background-color: rgb(155, 47, 47) !important;

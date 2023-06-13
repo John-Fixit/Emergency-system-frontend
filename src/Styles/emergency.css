@@ -1,4 +1,7 @@
-
+.main_container{
+    background-color: #EDEEEB;
+    width: 100%;
+}
 .submitBtn{
     padding: 0 10px;
     text-align: center;

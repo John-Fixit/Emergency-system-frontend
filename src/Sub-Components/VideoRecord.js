@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 import { BsFillPlayFill, BsPauseFill, BsPlayBtn, BsRecordBtn, BsStop } from 'react-icons/bs';
 import { GiOldMicrophone } from 'react-icons/gi';
+import { BiVideoRecording } from 'react-icons/bi';
 import { useReactMediaRecorder } from 'react-media-recorder'
 import "../Styles/emergency.css";
 import VideoBasePreview from './VideoBasePreview';
@@ -18,10 +19,13 @@ function VideoRecord({getVideoRecorded}) {
     }
     
   return (
-    <div>
-      <div className='text-center'>
-        <video ref={videoRef} controls autoPlay className={`rounded ${status!="recording"? 'd-none': ''}`} style={{height: '10vh'}}/>
-        <video src={mediaBlobUrl} controls className={`rounded ${status=="stopped"? '': 'd-none'}`}/>
+    <div className="py-3">
+    <label htmlFor="" className="fw-bold border-start border-primary border-3 text-danger">
+              Video record <sup><BiVideoRecording className="text-primary" size={20}/></sup>
+      </label>
+      <div className='text-center mx-auto'>
+        <video ref={videoRef} controls autoPlay className={`video mx-auto rounded ${status!="recording"? 'd-none': ''}`} />
+        <video src={mediaBlobUrl} controls className={`rounded video mx-auto ${status=="stopped"? '': 'd-none'}`}/>
         <VideoBasePreview status={status}/>
       </div>
     <div className='text-center'>

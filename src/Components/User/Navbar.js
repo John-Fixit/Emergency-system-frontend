@@ -19,7 +19,7 @@ function Navbar() {
  
   return (
     <React.Fragment>
-        <nav className="navbar navbar-expand-sm navbar-light shadow-sm">
+        <nav className="navbar navbar-expand-sm navbar-light shadow-sm sticky-top border-bottom border-danger border-2">
           <div className="container-fluid pad_navbar">
             <Link to={`/`} className="navbar-brand fw-bold" ><span style={styles}>
               <Avatar
@@ -37,7 +37,7 @@ function Navbar() {
                 {
                   menuList.map((item)=>{
                     return (
-                    <li className={`nav-item px-2 ${selectedId===item.id? 'active bg-primary text-light': ''}`} key={item.id} onClick={()=>setselectedId(()=>{return item.id})}>
+                    <li className={`nav-item px-3 ${selectedId===item.id? 'active bg-primary text-light fw-bold': ''}`} key={item.id} onClick={()=>setselectedId(()=>{return item.id})}>
                       <Link to={item.path} className={`nav-link ${selectedId===item.id? 'text-light': ''}`} >{item.name}</Link>
                     </li>
                     )

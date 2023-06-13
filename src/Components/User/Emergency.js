@@ -192,7 +192,7 @@ function Emergency() {
     }
   }
   return (
-    <>
+    <body className="main_container">
       <Navbar />
       <div className="col-12 px-lg-4 px-2">
         <div className="row">
@@ -208,6 +208,7 @@ function Emergency() {
                   name="category"
                   value={details.category}
                   label="Category"
+                  className="bg-white"
                   onChange={(e) =>
                     setdetails({ ...details, category: e.target.value })
                   }
@@ -269,7 +270,7 @@ function Emergency() {
               <DescTemplate handleTemplate={handleTemplate} />
             </div>
             <div className="col-lg-6 col-md-6 col-sm-12 text_desc_area my-2">
-              <label htmlFor="">Description</label>
+              <label htmlFor="" className="fw-bold">Description</label>
               <textarea
                 rows="3"
                 cols="10"
@@ -283,16 +284,12 @@ function Emergency() {
 
           {/* voice record */}
           <div className="col-lg-6 col-md-6 col-sm-12 voice_desc_area my-2 media_record">
-            <label htmlFor="">
-              Use voice record
-            </label>
+            
               <AudioRecord getAudioRecorded={getAudioRecorded} />
           </div>
           <div className="video_desc_area border-0 card my-2 shadow">
-            <div className="take_video">
-              <label htmlFor="" className="text-center">
-                Take a Video record
-              </label>
+            <div className="take_video text-center">
+              
               <VideoRecord getVideoRecorded={getVideoRecorded} />
             </div>
           </div>
@@ -378,7 +375,7 @@ function Emergency() {
         }}
       />
       <Footer />
-    </>
+    </body>
   );
 }
 export default Emergency;
