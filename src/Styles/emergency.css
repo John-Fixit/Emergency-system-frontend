@@ -21,7 +21,7 @@
 }
 
 .record_btn{
-    width: 7vh; 
+    width: 7vh;
     height: 7vh;
     cursor: pointer;
     background-color: brown;
@@ -36,5 +36,10 @@
     right: 1vh;
     bottom: 2vh;
    }
+}
+@media only screen and (max-width: 1040px){
+    .lg_org_contact_list{
+        display: none !important;
+    }
 }
 

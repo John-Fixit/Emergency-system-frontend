@@ -1,21 +1,20 @@
 import Loader from 'react-spinners/PropagateLoader'
 import styled from 'styled-components';
-function ListOfOrgs({allOrg, isLoading}) {
-  console.log(allOrg)
+function ListOfOrgs({allOrg, isLoading, category}) {
   return (
     <>
           {
-            allOrg?.length ?
-        <div className='col-lg-4'>
+            !!category?
+        <div className='col-4 lg_org_contact_list'>
             <div className='card h-100 shadow-sm'>
                 <h3 className='card-header text-center'>Agent Contacts</h3>
-                {/* <a href={`tel: +2349160261836`}>9160261836</a> */}
                 {
                   isLoading?   <div className="mx-auto text-center">
                   <Loader cssOverride={{margin: "auto"}} color="blue"/>
                 </div>: 
                 <ContactList className={`px-2`}>
                   {
+                     allOrg?.length ?
                     allOrg?.map((org, index)=>{
                       return (
                         <div className='org-contact shadow-sm px-2 rounded d-flex justify-content-between py-3' key={index}>
@@ -26,11 +25,16 @@ function ListOfOrgs({allOrg, isLoading}) {
                         </div>
                       )
                     })
+                    :(
+                      <>
+                      <marquee >No Organization with that category registered</marquee>
+                      </>
+                    )
                   }
                 </ContactList>
                 }
             </div>
-        </div>:""
+        </div> : ("")
           }
     </>
   )
@@ -49,7 +53,6 @@ const ContactList = styled.div`
       background-color: blue;
     }
   }
-  
   .org-contact{
     -webkit-animation: scale-in-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 	        animation: scale-in-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
@@ -86,4 +89,5 @@ const ContactList = styled.div`
       opacity: 1;
     }
   }
+ 
 `

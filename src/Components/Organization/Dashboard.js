@@ -91,11 +91,11 @@ const Dialog = styled.div`
     transition: 0.5s;
     &::-webkit-scrollbar{
       width: 3px;
-      background-color: rgb(169, 157, 157);
+      background-color: rgb(228, 226, 226);
       box-shadow: inset 0px 4px 4px;
       border-radius: 15px;
       &-thumb{
-        background-color: rgb(228, 226, 226);
+        background-color: rgb(169, 157, 157);
         width: 0.5px !important;
         border-radius: 15px;
       }

@@ -30,6 +30,7 @@ import VideoRecord from "../../Sub-Components/VideoRecord";
 import Footer from "../Footer";
 import { ContextForSocket } from "../Organization/StoreContext/SocketContext";
 import ListOfOrgs from "../../Sub-Components/ListOfOrgs";
+import MobileOrgList from "../../Sub-Components/MobileOrgList";
 import useSWR from "swr";
 import { baseUrl } from "../../URL";
 function Emergency() {
@@ -195,10 +196,11 @@ function Emergency() {
     <body className="main_container">
       <Navbar />
       <div className="col-12 px-lg-4 px-2">
+        <MobileOrgList allOrg={orgs} isLoading={isLoading} category={details.category}/>
         <div className="row">
-        <div className="col-sm-8 my-3 shadow-sm">
+        <div className="col-lg-8 col-md-12 my-3 shadow-sm">
           <div className="row">
-            <div className="category col-lg-6 col-md-6 col-sm-12">
+            <div className="category col-sm-6">
               <label htmlFor="">Category of incident</label>
               <FormControl sx={{ m: 2, minWidth: 120 }}>
                 <InputLabel id="demo-simple-select-label">Category</InputLabel>

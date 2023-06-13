@@ -46,8 +46,7 @@ function Settings() {
                 <Avatar sx={{bgcolor: "blue", height:"15vh", width: "15vh", fontSize: "8vh", fontWeight: "bold"}}>
                 {
                   org_detail?
-                `${org_detail?.name?.split(" ")[0].split("")[0]}${
-                  org_detail?.name?.split(" ")[1].split("")[0]
+                `${org_detail?.name?.split("")[0]
                 }`:""
               }
                 </Avatar>

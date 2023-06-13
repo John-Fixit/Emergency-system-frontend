@@ -9,7 +9,13 @@ function ProfileHeader({name, email, profile_photo}) {
             <div className='card py-3 px-lg-5 px-2'>
                 <div className='d-flex gap-4'>
                     <div className='org_avatar'>
-                        <Avatar ></Avatar>
+                        <Avatar >
+                        {
+                  !!name?
+                `${name?.split("")[0]
+                }`:""
+            }
+                        </Avatar>
                     </div>
                     <div className='org_name my-auto'>
                         <h4 className=''>{name?? "Organisation Name"}</h4>
