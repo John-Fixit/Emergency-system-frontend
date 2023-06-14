@@ -37,22 +37,11 @@ function OrgMainRoute() {
   const startAlart=()=>{
     audio.loop = true
     audio.play()
-    // return audioRef.current.play()
-    // audio.currentTime = 0;
-    // document.getElementById('myAudio')
   }
   const stopAlert =()=>{
-    // audio.current.pause()
     setarrived(false)
     audio.pause();
-    // audio.currentTime = 0;
   }
-  // React.useEffect(() => {
-  //   if (newMessage) {
-  //     const audio = new Audio(tone);
-  //     audio.play();
-  //   }
-  // }, [newMessage]);
   React.useEffect(() => {
     socket.on("msgResponse", async (data) => {
       msgRef.current = await data;
@@ -97,8 +86,6 @@ function OrgMainRoute() {
   return (
     <>
      <Sidebar >
-      {/* <button onClick={startAlart}></button> */}
-      {/* <audio loop={true} ref={audioRef} src={tone}/> */}
       {
         !audio.paused&& arrived&&
         <button className="btn btn-danger float-end" onClick={()=>stopAlert()}>Stop Alert</button>

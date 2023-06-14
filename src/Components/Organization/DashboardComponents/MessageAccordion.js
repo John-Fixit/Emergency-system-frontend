@@ -35,38 +35,38 @@ function MessageAccordion() {
                     }}
                   >
                     <b>Location: </b>
-                    {message.location}
+                    {message?.location}
                   </Typography>
                   <Typography  sx={{
                       width: "20%",
                       flexShrink: 0,
                     }}>
                     <b>Date: </b>
-                    {new Date(message.createdAt).toDateString()}
+                    {new Date(message?.createdAt).toDateString()}
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   <b>Message:</b>
-                  <Typography>{message.message.text}</Typography>
+                  <Typography>{message?.message?.text}</Typography>
                   <div
                     className={`${!!message?.message.audio ? "" : "d-none"}`}
                   >
-                    <audio src={message?.message.audio} controls/>
+                    <audio src={message?.message?.audio} controls/>
                   </div>
                   {message?.message.audio}
                   <div
-                    className={`${!!message?.message.video ? "" : "d-none"}`}
+                    className={`${!!message?.message?.video ? "" : "d-none"}`}
                   >
                     <video
                       width="270px"
                       height="200px"
-                      src={message?.message.video}
+                      src={message?.message?.video}
                       controls
                     />
                   </div>
                   <Typography>
                     <b>Time: </b>
-                    {new Date(message.createdAt).toLocaleTimeString()}
+                    {new Date(message?.createdAt).toLocaleTimeString()}
                   </Typography>
                     <RespondDialog message={message}/>
                 </AccordionDetails>
