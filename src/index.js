@@ -13,7 +13,6 @@ import SocketContext from "./Components/Organization/StoreContext/SocketContext"
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-
 root.render(
   <React.StrictMode>
     <Provider store={store}>

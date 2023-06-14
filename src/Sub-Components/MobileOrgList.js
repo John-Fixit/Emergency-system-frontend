@@ -17,7 +17,7 @@ function MobileOrgList({allOrg, isLoading, category}){
                     <div className="col-lg-3 col-sm-8 col-md-5 m-1" key={index}>
             <div className="card border-0 shadow-sm gap-3 p-2 h-100 pt-0">
                 <p><span className="border-end border-primary border-2 text-danger px-1"><VscOrganization size={20}/></span> : {org?.name}</p>
-                <p><span className="border-end border-primary border-2 text-danger px-1"><BiPhoneCall size={20}/></span> : <a href={`+234${org?.mobile}`} >+234{org?.mobile}</a></p>
+                <p><span className="border-end border-primary border-2 text-danger px-1"><BiPhoneCall size={20}/></span> : <a href={`tel: +234${org?.mobile}`} >+234{org?.mobile}</a></p>
             </div>
           </div>
                 )

@@ -28,6 +28,7 @@ function OrgMainRoute() {
   const audioRef = useRef();
   const dispatch = useDispatch();
   const [audio] = useState(new Audio(tone));
+  const [newMessage, setNewMessage] = useState(false);
   //getting all messages from the ser
   const category = useSelector(state=>state.user.details.category)
   const {data, error, isLoading} = useSWR(`${baseUrl}/msg/${category}`, {refreshInterval: 1000});
@@ -46,11 +47,18 @@ function OrgMainRoute() {
     audio.pause();
     // audio.currentTime = 0;
   }
+  // React.useEffect(() => {
+  //   if (newMessage) {
+  //     const audio = new Audio(tone);
+  //     audio.play();
+  //   }
+  // }, [newMessage]);
   React.useEffect(() => {
     socket.on("msgResponse", async (data) => {
       msgRef.current = await data;
       setarrived(true)
       startAlart();
+      // setNewMessage(true);
       const { message: {text}, location } = await msgRef.current;
       dispatch(messageActions.addNewMessage(msgRef.current));
       if (!!text) {
