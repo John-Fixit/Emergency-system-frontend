@@ -2,12 +2,12 @@ import { Avatar } from '@mui/material'
 import React from 'react'
 import { FaEnvelope, FaUserAlt } from 'react-icons/fa'
 
-function ProfileHeader({name, email, profile_photo}) {
+function ProfileHeader({name, email}) {
   return (
     <>
         <div className='col-sm-12'>
             <div className='card py-3 px-lg-5 px-2'>
-                <div className='d-flex gap-4'>
+                <div className='d-flex gap-4 flex-wrap'>
                     <div className='org_avatar'>
                         <Avatar >
                         {

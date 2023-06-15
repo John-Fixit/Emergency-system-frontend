@@ -13,11 +13,14 @@ function Logout() {
             </div>
             <div className="modal-body">
              <h5>Are you sure you want to logout?</h5>
-             <button className="btn btn-secondary" data-bs-dismiss='modal'>Cancel</button>
-             <button className="btn btn-danger" data-bs-dismiss="modal" onClick={()=>{
-              localStorage.removeItem('org_token')
-              navigate('/login')
-              }}>Confirm</button>
+             <div className="d-flex gap-3 mx-auto">
+                <button className="btn btn-secondary" data-bs-dismiss='modal'>Cancel</button>
+                <button className="btn btn-danger" data-bs-dismiss="modal" onClick={()=>{
+                  localStorage.removeItem('org_token')
+                  navigate('/login')
+                  }}>Log out</button>
+
+             </div>
             </div>
           </div>
         </div>

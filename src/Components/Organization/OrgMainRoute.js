@@ -103,7 +103,7 @@ function OrgMainRoute() {
           <Route path=":category/responded" element={<RespondedMessages />} />
           <Route path="profile" element={<Outlet />}>
             <Route path=":id" element={<Outlet />}>
-              <Route path="me" element={<Profile />}/>
+              <Route path="us" element={<Profile />}/>
               <Route path="setting" element={<Settings />}/>
               <Route path="logout" element={<Logout />}/>
             </Route>

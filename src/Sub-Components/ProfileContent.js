@@ -4,8 +4,8 @@ function ProfileContent({org_detail}) {
     const infoMenu = [
         {name: 'Mobile', value: org_detail?.mobile ??'9892982938'},
         {name: 'Category', value: 
-            org_detail?.category.map((cat, index)=>{
-              return <span key={index}>| {cat}</span>
+            org_detail?.category?.map((cat, index)=>{
+              return <span key={index}> | {cat}</span>
             }) ?? "Category"
         },
         {name: 'Description', value: !!org_detail?.description ? org_detail?.description:  'Not Available'},
@@ -18,11 +18,11 @@ function ProfileContent({org_detail}) {
                 <div className='content'>
                     <h3 className='border-bottom border-danger'>Basic Information</h3>
                     {
-                        infoMenu.map((item, index)=>{
+                        infoMenu?.map((item, index)=>{
                             return (
-                                <div key={index} className='row my-2'>
+                                <div key={index} className='d-flex flex-wrap gap-2 my-2'>
                                     <p className='col-lg-2 col-sm-6 fw-bold'>{item.name} :</p>
-                                    <p className='col-lg-3 col-sm-6'>
+                                    <p className='col-lg-3 col-sm-6 text-justify'>
                                         <span > {item.value}</span>
                                     </p>
                                 </div>
@@ -32,7 +32,7 @@ function ProfileContent({org_detail}) {
                 </div>
                 <div className='my-lg-5 my-2'>
                     <h3 className='border-bottom border-danger'>Location / Address</h3>
-                    <p>{!!org_detail?.location ? org_detail?.location: "Not Available"}</p>
+                    <p className=''>{!!org_detail?.location ? org_detail?.location: "No description"}</p>
                 </div>
 
             </div>

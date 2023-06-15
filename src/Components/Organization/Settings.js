@@ -42,7 +42,7 @@ function Settings() {
           <div className="col-sm-2 p-3 text-end">
             <label htmlFor="">Your Avatar</label>
           </div>
-          <div className="col-sm-3 w-auto p-2 mx-3 text-center rounded" style={{ border: "2px dashed red" }}>
+          <div className="col-sm-3 w-auto p-2 mx-3 text-center rounded" style={{ border: "2px solid red" }}>
                 <Avatar sx={{bgcolor: "blue", height:"15vh", width: "15vh", fontSize: "8vh", fontWeight: "bold"}}>
                 {
                   org_detail?

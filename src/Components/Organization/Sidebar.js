@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import NotificationSlide from "../../Sub-Components/NotificationSlide";
 import Logout from "./Logout";
 import { BsFillReplyAllFill } from "react-icons/bs";
+import logo from "../../assets/ENS Logo.png";
 function Sidebar({ children }) {
   const userDetail = useSelector((state) => state.user.details);
   const newMessages = useSelector(state=>state.message.newMessages);
@@ -34,7 +35,7 @@ function Sidebar({ children }) {
     {
       name: "Profile",
       icon: <VscOrganization size={"3.5vh"} />,
-      route: `/org/profile/${userDetail ? userDetail._id : "xxxxxx"}/me`,
+      route: `/org/profile/${userDetail ? userDetail._id : "xxxxxx"}/us`,
     },
     {
       name: "Settings",
@@ -56,16 +57,26 @@ function Sidebar({ children }) {
     },
   };
 
+  const ENS = ()=>{
+    return (
+      <>
+        <img src={logo} alt="ENS Logo" className="rounded"/>
+      </>
+    )
+  }
+
   return (
     <>
       <div className="header">
         <div className="top_section">
           <Link to={"/org/"} className="d-flex gap-2">
+        <Tooltip title={<ENS />} placement="right-start" arrow sx={{padding: '5px'}} TransitionComponent={Zoom}>
             <Avatar
               alt="Remy Sharp"
               src={require("../../assets/ENS Logo.png")}
               sx={{ width: 50, height: 50 }}
-            />
+              />
+              </Tooltip>
             <h3
               className="logo my-auto"
               style={{ display: isOpen ? "block" : "none", transition: "0.5s" }}
@@ -83,11 +94,6 @@ function Sidebar({ children }) {
         </div>
         <div className="icons_section gap-3 px-3">
           <p className="my-auto" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" style={{cursor: 'pointer'}}>
-            <Badge badgeContent={newMessages.length} sx={badgeStyle}>
-              <FaEnvelope size={"3vh"} color="white" />
-            </Badge>
-          </p>
-          <p className="my-auto">
             <Badge badgeContent={newMessages.length} sx={badgeStyle}>
               <FaBell size={"3vh"} color="white" />
             </Badge>
@@ -114,12 +120,12 @@ function Sidebar({ children }) {
           <div>
             {menus.slice(0, -2).map((menu, index) => {
               return (
-                <Tooltip title={menu.name} placement="right-start" arrow sx={{padding: '3px'}} TransitionComponent={Zoom}>
+                <Tooltip title={menu.name} placement="right-start" arrow sx={{padding: '3px'}} TransitionComponent={Zoom} key={index}>
                 <NavLink
                   to={menu.route}
                   className={`link`}
                   activeclassName="active"
-                  key={index}
+                  onClick={() => setIsOpen(!isOpen)}
                 >
                   <div className="icon">{menu.icon}</div>
                   <div
@@ -139,12 +145,13 @@ function Sidebar({ children }) {
           <div className="">
             {menus.slice(-2).map((menu, index) => {
               return (
-                <Tooltip title={menu.name} placement="right-start" arrow sx={{padding: '3px'}} TransitionComponent={Zoom}>
+                <Tooltip title={menu.name} placement="right-start" arrow sx={{padding: '3px'}} TransitionComponent={Zoom} key={index}>
                   <NavLink
                     to={menu.route}
                     className={`link`}
                     activeclassName="active"
                     key={Math.random()}
+                    onClick={() => setIsOpen(!isOpen)}
                     data-bs-toggle={menu.name=='Logout'? 'modal': ''} data-bs-target="#exampleModal"
                   >
                     <div className="icon">{menu.icon}</div>
