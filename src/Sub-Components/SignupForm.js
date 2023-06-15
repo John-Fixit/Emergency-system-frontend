@@ -70,27 +70,36 @@ function SignupForm() {
         });
     }
     else {
-        let errorName = handleValidation().name
-        errorName==='category'? setErrorMsg('Please select your organization category'): errorName==='mobile'? setErrorMsg('Please your organization contact'): errorName==='name'&& setErrorMsg('Organization name cannot be empty') 
+        let error = handleValidation()
+        setErrorMsg(error.message)
     }
   };
 
 
   const handleValidation =()=>{
     if(!(!!orgData.name)){
-        return {status: false, name: 'name'};
+        return {status: false, message: 'Organization name cannot be empty'};
     }
       if(orgData.category==='Choose Category'){
-        return {status: false, name: 'category'};
+        return {status: false, message: 'Please select your organization category'};
     }
     if(!(!!orgData.mobile)){
-        return {status: false, name: 'mobile'};
+        return {status: false, message: 'Please your organization contact'};
     }
-    
+    if(!phoneNumberHasCountryCode(orgData.mobile)){
+      return { status: false, message: "Sorry, your mobile must include valid country code" }
+    }
     else{
       return {status: true}
     }
   }
+
+  const phoneNumberHasCountryCode = (phoneNumber) => {
+    const countryCodeRegex = /^\+[1-9]\d{0,2}/; // Assumes country codes start with '+'
+    const result = countryCodeRegex.test(phoneNumber)
+    return result;
+  };
+  
   return (
     <>
         <Container className="col-sm-6 px-lg-5 px-2">
@@ -167,7 +176,7 @@ function SignupForm() {
                             fullWidth
                             name="mobile"
                             label="contact"
-                            type="number"
+                            type="tel"
                             id="contact"
                             autoComplete="contact"
                             onChange={(e)=>handleChange(e)}

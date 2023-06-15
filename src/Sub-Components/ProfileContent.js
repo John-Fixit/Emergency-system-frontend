@@ -9,12 +9,12 @@ function ProfileContent({org_detail}) {
             }) ?? "Category"
         },
         {name: 'Description', value: !!org_detail?.description ? org_detail?.description:  'Not Available'},
-        {name: 'Website', value: <a href="">{!!org_detail?.websiteLink ? org_detail?.websiteLink: 'https://yourwebsite'}</a>}
+        {name: 'Website', value: <a href="">{!!org_detail?.websiteLink ? org_detail?.websiteLink: 'https://ourwebsitelink'}</a>}
     ]
   return (
     <>
         <div className='col-sm-10 mx-auto'>
-            <div className="card p-4 my-lg-3 my-2">
+            <div className="card p-4 border-0 shadow-sm my-lg-3 my-2">
                 <div className='content'>
                     <h3 className='border-bottom border-danger'>Basic Information</h3>
                     {

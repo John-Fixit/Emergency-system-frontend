@@ -32,11 +32,15 @@ import ListOfOrgs from "../../Sub-Components/ListOfOrgs";
 import MobileOrgList from "../../Sub-Components/MobileOrgList";
 import useSWR from "swr";
 import { baseUrl } from "../../URL";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllOrgAction } from "../../store/userSlice";
 function Emergency() {
   const socket = useContext(ContextForSocket);
+  const dispatch = useDispatch(null);
   const [useCurrentLocation, setUseCurrentLocation] = React.useState(null);
   const [newLocation, setnewLocation] = useState('')
   const [orgs, setOrgs] = useState();
+  const {loading, data} = useSelector(state=>state.user.allOrgs)
   const [details, setdetails] = React.useState({
     category: "",
     text: "",
@@ -53,7 +57,6 @@ function Emergency() {
     open: false,
     NoError: null,
   });
-  const { data, isLoading } = useSWR(`${baseUrl}/org/allOrgs`);
   const toastStyle = {
     theme: "colored",
     delay: 8000,
@@ -63,12 +66,12 @@ function Emergency() {
   };
   
   useEffect(()=>{
-    setOrgs(()=>{return data?.data.result});
+    setOrgs(data);
     getAddress();
   }, [])
 
   useEffect(()=>{
-      const allOrg = data?.data?.result;
+      const allOrg = data
       let newArray = []
       allOrg?.map((item)=>{
         const confirmIfHas = item.category.includes(details?.category);
@@ -95,7 +98,7 @@ function Emergency() {
             setnewLocation(()=>{return addressData.formatted});
           })
           .catch((err) => {
-            toast.error(`error occurred`, toastStyle);
+            toast.error(`error occurred, please check your connection!`, toastStyle);
           });
       } else {
         toast.error("Geolocation is not supported in your browser", toastStyle);
@@ -194,7 +197,7 @@ function Emergency() {
     <body className="main_container">
       <Navbar />
       <div className="col-12 px-lg-4 px-2">
-        <MobileOrgList allOrg={orgs} isLoading={isLoading} category={details.category}/>
+        <MobileOrgList allOrg={orgs} isLoading={loading} category={details.category}/>
         <div className="row">
         <div className="col-lg-8 col-md-12 my-3 shadow-sm">
           <div className="row">
@@ -309,7 +312,7 @@ function Emergency() {
             </button>
             </div>
         </div>
-        <ListOfOrgs allOrg={orgs} isLoading={isLoading} category={details.category}/>
+        <ListOfOrgs allOrg={orgs} isLoading={loading} category={details.category}/>
       </div>
       </div>
       <Dialog

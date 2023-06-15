@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../../Styles/sidebar.css";
-import { FaBars, FaBell, FaEnvelope } from "react-icons/fa";
+import { FaBars, FaBell} from "react-icons/fa";
 import { TbSettings, TbMessages } from "react-icons/tb";
 import { RiDashboardLine } from "react-icons/ri";
 import { VscOrganization } from "react-icons/vsc";
@@ -72,8 +72,8 @@ function Sidebar({ children }) {
           <Link to={"/org/"} className="d-flex gap-2">
         <Tooltip title={<ENS />} placement="right-start" arrow sx={{padding: '5px'}} TransitionComponent={Zoom}>
             <Avatar
-              alt="Remy Sharp"
-              src={require("../../assets/ENS Logo.png")}
+              alt="logo"
+              src={logo}
               sx={{ width: 50, height: 50 }}
               />
               </Tooltip>
@@ -103,7 +103,7 @@ function Sidebar({ children }) {
               {userDetail ? userDetail.name : "Name"}
             </p>
             <Link
-              to={`/org/profile/${userDetail ? userDetail._id : "xxxxxx"}/me`}
+              to={`/org/profile/${userDetail ? userDetail._id : "xxxxxx"}/us`}
             >
               <Avatar sx={{ bgcolor: "red" }}>
               {
@@ -125,7 +125,11 @@ function Sidebar({ children }) {
                   to={menu.route}
                   className={`link`}
                   activeclassName="active"
-                  onClick={() => setIsOpen(!isOpen)}
+                  onClick={() => {
+                    if(isOpen){
+                      setIsOpen(!isOpen)
+                    }
+                  }}
                 >
                   <div className="icon">{menu.icon}</div>
                   <div

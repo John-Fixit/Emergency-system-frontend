@@ -20,14 +20,14 @@ function ListOfOrgs({allOrg, isLoading, category}) {
                         <div className='org-contact shadow-sm px-2 rounded d-flex justify-content-between py-3' key={index}>
                           <p>{org?.name} -</p>
                           <p>
-                            <a href={`tel: +234${org?.mobile}`}>{org?.mobile}</a>
+                            <a href={`tel: ${org?.mobile}`}>{org?.mobile}</a>
                           </p>
                         </div>
                       )
                     })
                     :(
                       <>
-                      <marquee >No Organization with that category registered</marquee>
+                      <p className='org-contact p-2'>No Organization with that {category} category registered</p>
                       </>
                     )
                   }
@@ -42,18 +42,21 @@ function ListOfOrgs({allOrg, isLoading, category}) {
 
 export default ListOfOrgs;
 const ContactList = styled.div`
-  height: 100vh;
-  overflow: auto;
+  height: auto;
   white-space: nowrap;
-  &::-webkit-scrollbar{
-    height: 5px;
-    background-color: rgb(212, 209, 209);
-    border-radius: 5vh;
-    &-thumb{
-      background-color: blue;
-    }
-  }
   .org-contact{
+    overflow: auto;
+    &::-webkit-scrollbar{
+      height: 3px;
+      transition: 0.5s;
+      background-color: rgb(228, 226, 226);
+      border-radius: 5vh;
+      &-thumb{
+        background-color: rgb(169, 157, 157);
+        width: 0.5px !important;
+          border-radius: 15px;
+      }
+    }
     -webkit-animation: scale-in-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 	        animation: scale-in-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
   }

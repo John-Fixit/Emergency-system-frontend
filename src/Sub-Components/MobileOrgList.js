@@ -14,16 +14,16 @@ function MobileOrgList({allOrg, isLoading, category}){
           allOrg?.length?
             allOrg?.map((org, index)=>{
                 return (
-                    <div className="col-lg-3 col-sm-8 col-md-5 m-1" key={index}>
+                    <div className="col-8 m-1" key={index}>
             <div className="card border-0 shadow-sm gap-3 p-2 h-100 pt-0">
                 <p><span className="border-end border-primary border-2 text-danger px-1"><VscOrganization size={20}/></span> : {org?.name}</p>
-                <p><span className="border-end border-primary border-2 text-danger px-1"><BiPhoneCall size={20}/></span> : <a href={`tel: +234${org?.mobile}`} >+234{org?.mobile}</a></p>
+                <p><span className="border-end border-primary border-2 text-danger px-1"><BiPhoneCall size={20}/></span> : <a href={`tel: ${org?.mobile}`} >{org?.mobile}</a></p>
             </div>
           </div>
                 )
             }): (
                 <>
-                  <marquee >No Organization with that category registered</marquee>
+                   <p className='org-contact p-2 bg-primary text-white'>No Organization for {category} registered</p>
                   </>
             ): ""
         }
@@ -39,16 +39,12 @@ display: flex;
 width: 100%;
 overflow: auto;
 transition: 0.5s;
-// &:hover::-webkit-scrollbar {
-//     transition: 0.5s;
-//     height: 5px;
-// }
 &::-webkit-scrollbar{
     height: 2px;
     &:hover{
         height: 8px;
     }
-    background-color:  rgb(228, 226, 226);
+    background-color: rgb(228, 226, 226);
     border-radius: 5vh;
     &-thumb{
         background-color: rgb(169, 157, 157);

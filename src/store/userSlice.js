@@ -16,17 +16,21 @@ export const getOrgDetailAction = createAsyncThunk("/user/detail", async(payload
 export const updateOrgAction = createAsyncThunk("user/updateProfile", async(payload, {rejectWithValue})=>{
     try{
         const res = await axios.patch(`${baseUrl}/org/update-org`, payload);
-        console.log(res?.data);
         return res?.data;
     }catch(err){
-        console.log(err?.response?.data);
         return rejectWithValue(err?.response?.data);
     }
 })
 
 //get all organization
-// export const updateOrgAction = createAsyncThunk
-
+export const getAllOrgAction = createAsyncThunk("/org/all-org", async(_, {rejectWithValue})=>{
+    try{
+        const res = await axios.get(`${baseUrl}/org/allOrgs`)
+        return res?.data?.result
+    }catch(err){
+        rejectWithValue(err?.response?.data);
+    }
+})
 const userSlice = createSlice({
     name: 'user',
     initialState: {
@@ -34,6 +38,11 @@ const userSlice = createSlice({
         updateOrgDetail: {
             loading: false,
             appError: null,
+        },
+        allOrgs: {
+            data: [],
+            loading: false,
+            appError: null
         }
     },
     reducers: {
@@ -56,6 +65,19 @@ const userSlice = createSlice({
         //get org detail
         .addCase(getOrgDetailAction.fulfilled, (state, action)=>{
             state.details = action.payload;
+        })
+        //get all organisation
+        .addCase(getAllOrgAction.pending, (state)=>{
+            state.allOrgs.loading = true;
+            state.allOrgs.data = []
+        })
+        .addCase(getAllOrgAction.fulfilled, (state, action)=>{
+            state.allOrgs.loading = false;
+            state.allOrgs.data = action.payload
+        })
+        .addCase(getAllOrgAction.rejected, (state, action)=>{
+            state.allOrgs.isLoading = false;
+            state.allOrgs.appError = action.payload
         })
     }
 })
