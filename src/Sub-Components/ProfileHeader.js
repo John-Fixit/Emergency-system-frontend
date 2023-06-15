@@ -1,6 +1,6 @@
 import { Avatar } from '@mui/material'
 import React from 'react'
-import { FaEnvelope, FaUserAlt } from 'react-icons/fa'
+import { FaEnvelope} from 'react-icons/fa'
 
 function ProfileHeader({name, email}) {
   return (

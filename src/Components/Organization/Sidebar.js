@@ -155,7 +155,11 @@ function Sidebar({ children }) {
                     className={`link`}
                     activeclassName="active"
                     key={Math.random()}
-                    onClick={() => setIsOpen(!isOpen)}
+                    onClick={() => {
+                      if(isOpen){
+                        setIsOpen(!isOpen)
+                      }
+                    }}
                     data-bs-toggle={menu.name=='Logout'? 'modal': ''} data-bs-target="#exampleModal"
                   >
                     <div className="icon">{menu.icon}</div>

@@ -26,7 +26,7 @@ function AudioRecord({getAudioRecorded}) {
   const audioUrl = useRef()
   const onStop = (data) => {
     setaudioBlobUrl(()=>{return data})
-    audioUrl.current = data.url
+    audioUrl.current = data.url;
     getAudioRecorded(data.blob)
   };
   return (

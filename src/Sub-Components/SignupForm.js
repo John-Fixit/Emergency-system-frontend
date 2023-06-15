@@ -33,7 +33,6 @@ function SignupForm() {
         mobile: '',
         password: ''
     });
-    const [personName, setPersonName] = React.useState([]);
 
   const handleChange=(e)=>{ 
       setOrgData({...orgData, [e.target.name]: e.target.value})

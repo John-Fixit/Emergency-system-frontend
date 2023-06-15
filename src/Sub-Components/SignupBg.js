@@ -1,6 +1,4 @@
-import { Grid } from '@mui/material'
-import React from 'react'
-import styled from 'styled-components'
+
 
 function SignupBg() {
   return (
@@ -13,7 +11,3 @@ function SignupBg() {
 }
 
 export default SignupBg
-
-const SignUpBgImage = styled.div`
-
-`

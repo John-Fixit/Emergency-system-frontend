@@ -1,6 +1,5 @@
 import React, { useRef } from 'react'
-import { BsFillPlayFill, BsPauseFill, BsPlayBtn, BsRecordBtn, BsStop } from 'react-icons/bs';
-import { GiOldMicrophone } from 'react-icons/gi';
+import { BsRecordBtn, BsStop } from 'react-icons/bs';
 import { BiVideoRecording } from 'react-icons/bi';
 import { useReactMediaRecorder } from 'react-media-recorder'
 import "../Styles/emergency.css";

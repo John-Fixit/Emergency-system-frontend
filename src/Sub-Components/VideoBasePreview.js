@@ -1,4 +1,3 @@
-import React, { useRef } from 'react'
 import { BsFillCameraVideoFill } from 'react-icons/bs'
 import Loader from "react-spinners/DotLoader"
 function VideoBasePreview({status}) {

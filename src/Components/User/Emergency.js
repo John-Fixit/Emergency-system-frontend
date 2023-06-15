@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState} from "react";
+import React, { useContext, useEffect, useState} from "react";
 import { sendMsg } from "../../FunctionControllers/sendMsgFunc";
 import "../../Styles/emergency.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -17,7 +17,6 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  Typography,
 } from "@mui/material";
 import { getLocation } from "../../FunctionControllers/getUserCurrentLocation";
 import { videoRecordComplete } from "../../FunctionControllers/videoRecordComplete";
@@ -30,13 +29,9 @@ import Footer from "../Footer";
 import { ContextForSocket } from "../Organization/StoreContext/SocketContext";
 import ListOfOrgs from "../../Sub-Components/ListOfOrgs";
 import MobileOrgList from "../../Sub-Components/MobileOrgList";
-import useSWR from "swr";
-import { baseUrl } from "../../URL";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllOrgAction } from "../../store/userSlice";
 function Emergency() {
   const socket = useContext(ContextForSocket);
-  const dispatch = useDispatch(null);
   const [useCurrentLocation, setUseCurrentLocation] = React.useState(null);
   const [newLocation, setnewLocation] = useState('')
   const [orgs, setOrgs] = useState();
