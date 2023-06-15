@@ -20,7 +20,6 @@ import {
   Typography,
 } from "@mui/material";
 import { getLocation } from "../../FunctionControllers/getUserCurrentLocation";
-import { audioRecordComplete } from "../../FunctionControllers/audioRecordComplete";
 import { videoRecordComplete } from "../../FunctionControllers/videoRecordComplete";
 import Navbar from "../User/Navbar";
 import Loader from "react-spinners/ClipLoader";
@@ -37,7 +36,6 @@ function Emergency() {
   const socket = useContext(ContextForSocket);
   const [useCurrentLocation, setUseCurrentLocation] = React.useState(null);
   const [newLocation, setnewLocation] = useState('')
-  const [newCategory, setNewCategory] = useState('')
   const [orgs, setOrgs] = useState();
   const [details, setdetails] = React.useState({
     category: "",
@@ -97,7 +95,7 @@ function Emergency() {
             setnewLocation(()=>{return addressData.formatted});
           })
           .catch((err) => {
-            toast.error(err.message, toastStyle);
+            toast.error(`error occurred`, toastStyle);
           });
       } else {
         toast.error("Geolocation is not supported in your browser", toastStyle);
@@ -296,8 +294,10 @@ function Emergency() {
             </div>
           </div>
         </div>
+        <div className="border px-5 btnDiv" 
+        >
           <button
-              className="btn submitBtn px-5 text-center float-end rounded btn-danger d-flex gap-2"
+              className={`btn submitBtn px-5 py-2 text-center float-end rounded btn-danger d-flex gap-2`}
               onClick={() => submit()}
             >
               {
@@ -307,6 +307,7 @@ function Emergency() {
               }
               Send 
             </button>
+            </div>
         </div>
         <ListOfOrgs allOrg={orgs} isLoading={isLoading} category={details.category}/>
       </div>

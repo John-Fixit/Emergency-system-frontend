@@ -9,7 +9,7 @@
     caret-color: red !important;
     position: fixed;
     right: 70vh;
-    bottom: 10vh;
+    bottom: 0vh;
     z-index: 99;
 }
 .select_category{
