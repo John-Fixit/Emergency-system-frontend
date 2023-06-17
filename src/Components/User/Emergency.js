@@ -30,6 +30,16 @@ import { ContextForSocket } from "../Organization/StoreContext/SocketContext";
 import ListOfOrgs from "../../Sub-Components/ListOfOrgs";
 import MobileOrgList from "../../Sub-Components/MobileOrgList";
 import { useDispatch, useSelector } from "react-redux";
+
+const categoryList = [
+  "Road Accident",
+  "Fire",
+  "Medical",
+  "Robbery",
+  "Riot",
+  "Natural Disaster",
+  "Kidnapping"
+]
 function Emergency() {
   const socket = useContext(ContextForSocket);
   const [useCurrentLocation, setUseCurrentLocation] = React.useState(null);
@@ -179,8 +189,9 @@ function Emergency() {
     setUseCurrentLocation(e.target.checked);
   };
 
-  const handleTemplate = (param) => {
-    setdetails({ ...details, text: param });
+  const handleTemplate = ({desc, index}) => {
+    console.log(index)
+    setdetails({ ...details, text: desc, category: categoryList[index] });
   };
 
   const hoverOnUseLocation=()=>{
@@ -195,6 +206,7 @@ function Emergency() {
         <MobileOrgList allOrg={orgs} isLoading={loading} category={details.category}/>
         <div className="row">
         <div className="col-lg-8 col-md-12 my-3 shadow-sm">
+          <DescTemplate handleTemplate={handleTemplate} />
           <div className="row">
             <div className="category col-sm-6">
               <label htmlFor="">Category of incident</label>
@@ -222,6 +234,7 @@ function Emergency() {
                   <MenuItem value={"Robbery"}>Robbery</MenuItem>
                   <MenuItem value={"Riot"}>Riot</MenuItem>
                   <MenuItem value={"Natural Disaster"}>Natural Disaster</MenuItem>
+                  <MenuItem value={"Kidnapping"}>Kidnapping</MenuItem>
                 </Select>
                 <FormHelperText>
                   Select the Category of your Organization
@@ -265,7 +278,7 @@ function Emergency() {
               <label htmlFor="">
                (Optional Information) 
               </label><br />
-              <DescTemplate handleTemplate={handleTemplate} />
+              
             </div>
             <div className="col-lg-6 col-md-6 col-sm-12 text_desc_area my-2">
               <label htmlFor="" className="fw-bold">Description</label>

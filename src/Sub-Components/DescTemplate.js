@@ -14,7 +14,7 @@ function DescTemplate({handleTemplate}) {
         <React.Fragment>
           {
             descList.map((item, i)=>{
-              return <Chip key={i} label={item.catName} className={`border border-danger border-1 fire px-2 m-1 bg-light`} onClick={()=>handleTemplate(item.desc)} />
+              return <Chip key={i} label={item.catName} className={`border border-danger border-1 fire px-2 m-1 bg-light`} onClick={()=>handleTemplate({ desc: item.desc, index:i})} />
             })
           }
         </React.Fragment>
