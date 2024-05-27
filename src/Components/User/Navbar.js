@@ -26,7 +26,9 @@ function Navbar() {
  
   return (
     <React.Fragment>
-        <nav className="navbar navbar-expand-sm navbar-light shadow-sm sticky-top border-bottom border-danger border-2">
+        <nav className="navbar navbar-expand-sm navbar-light shadow-sm sticky-top " style={{
+          borderBottom: "2px solid #11113D"
+        }}>
           <div className="container-fluid pad_navbar">
             <Link to={`/`} className="navbar-brand fw-bold" ><span style={styles}>
             <Tooltip title={<ENS />} placement="right-start" arrow sx={{padding: '5px'}} TransitionComponent={Zoom}>
@@ -38,7 +40,7 @@ function Navbar() {
             </Tooltip>
             </span>
             </Link>
-            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            {/* <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
@@ -46,14 +48,16 @@ function Navbar() {
                 {
                   menuList.map((item)=>{
                     return (
-                    <li className={`nav-item px-3 ${selectedId===item.id? 'active bg-primary text-light fw-bold': ''}`} key={item.id} onClick={()=>setselectedId(()=>{return item.id})}>
+                    <li className={`nav-item px-3 ${selectedId===item.id? 'active  text-light fw-bold': ''}`} key={item.id} onClick={()=>setselectedId(()=>{return item.id})} style={{
+                      backgroundColor: "#11113D"
+                    }}>
                       <Link to={item.path} className={`nav-link ${selectedId===item.id? 'text-light': ''}`} >{item.name}</Link>
                     </li>
                     )
                   })
                 }
               </ul>
-            </div>
+            </div> */}
           </div>
         </nav>
     </React.Fragment>

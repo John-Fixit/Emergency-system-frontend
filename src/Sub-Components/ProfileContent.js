@@ -16,7 +16,7 @@ function ProfileContent({org_detail}) {
         <div className='col-sm-10 mx-auto'>
             <div className="card p-4 border-0 shadow-sm my-lg-3 my-2">
                 <div className='content'>
-                    <h3 className='border-bottom border-danger'>Basic Information</h3>
+                    <h3 className='border-bottom ens_border-danger'>Basic Information</h3>
                     {
                         infoMenu?.map((item, index)=>{
                             return (
@@ -31,7 +31,7 @@ function ProfileContent({org_detail}) {
                     }
                 </div>
                 <div className='my-lg-5 my-2'>
-                    <h3 className='border-bottom border-danger'>Location / Address</h3>
+                    <h3 className='border-bottom ens_border-danger'>Location / Address</h3>
                     <p className=''>{!!org_detail?.location ? org_detail?.location: "No description"}</p>
                 </div>
 

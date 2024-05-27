@@ -180,7 +180,6 @@ function Sidebar({ children }) {
           style={{ transition: "all 0.5s", marginTop: "2vh" }}
         >
           {children}
-
         </main>
           <NotificationSlide />
           <Logout />

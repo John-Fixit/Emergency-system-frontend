@@ -6,7 +6,7 @@
     padding: 0 10px;
     text-align: center;
     cursor: pointer;
-    caret-color: red !important;
+    caret-color: rgb(239, 50, 50)!important;
     position: fixed;
     right: 70vh;
     bottom: 0vh;

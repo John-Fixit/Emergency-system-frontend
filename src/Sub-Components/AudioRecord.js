@@ -31,45 +31,47 @@ function AudioRecord({getAudioRecorded}) {
   };
   return (
     <div className="text-center bg-white border-0 shadow-sm rounded py-1">
-      <label htmlFor="" className="fw-bold border-start border-primary border-3 text-danger">
-              Voice record <sup><RiUserVoiceLine className="text-primary" size={20}/></sup>
+       <label htmlFor="" className="fw-bold ens_text-danger mb-2 ps-2" style={{
+      // borderLeft: "3px solid #11113D"
+    }}>
+              Voice record <span><RiUserVoiceLine className="ens_text-primary" size={20}/></span>
       </label>
       {
-        audioBlobUrl && recordState=="stop" &&
+        audioBlobUrl && recordState==="stop" &&
       <p>New Record</p>
       }
       <div className="row">
-        <AudioReactRecorder state={recordState} onStop={onStop} canvasHeight={30} canvasWidth={340} foregroundColor="brown"/>
+        <AudioReactRecorder state={recordState} onStop={onStop} canvasHeight={30} canvasWidth={340} foregroundColor="#11113D" backgroundColor="white"/>
         <div>
           {
-            audioBlobUrl && recordState=="stop" &&  <audio src={audioUrl.current} controls style={{height: '10px'}}/>
+            audioBlobUrl && recordState==="stop" &&  <audio src={audioUrl.current} controls style={{height: '20px'}}/>
           }
         </div>
       </div>
       {
-        recordState == "start"?
+        recordState === "start"?
         <div >
           <button className="btn btn-warning rounded-circle" onClick={()=>pause()}>
             <BsPauseFill size={"4vh"} />
           </button>
-          <button className="btn btn-danger rounded-circle" onClick={()=>stop()}>
+          <button className="btn ens_bg-danger text-white rounded-circle" onClick={()=>stop()}>
             <BsStop size={"4vh"} />
           </button>
         </div>
         :
-        recordState=="pause"?
+        recordState==="pause"?
         <div >
           <button className="btn btn-warning rounded-circle" onClick={()=>start()}>
            <BsFillPlayFill size={"4vh"} />
           </button>
-          <button className="btn btn-danger rounded-circle" onClick={()=>stop()}>
+          <button className="btn ens_bg-danger text-white rounded-circle" onClick={()=>stop()}>
             <BsStop size={"4vh"} />
           </button>
         </div>
        :
-        recordState==null||recordState=="stop"?
+        recordState==null||recordState==="stop"?
         <div >
-          <button className="btn btn-danger rounded-circle" onClick={()=>start()}>
+          <button className="btn ens_bg-danger text-white rounded-circle" onClick={()=>start()}>
             <GiOldMicrophone size={"4vh"} />
           </button>
           </div>:""

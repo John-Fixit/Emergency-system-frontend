@@ -14,31 +14,33 @@ function VideoRecord({getVideoRecorded}) {
         videoRef.current.srcObject = previewStream;
       }
     }, [previewStream])
-    if(mediaBlobUrl && status=="stopped"){
+    if(mediaBlobUrl && status==="stopped"){
       getVideoRecorded(mediaBlobUrl)
     }
   return (
     <div className="py-3">
-    <label htmlFor="" className="fw-bold border-start border-primary border-3 text-danger">
-              Video record <sup><BiVideoRecording className="text-primary" size={20}/></sup>
+    <label htmlFor="" className="fw-bold ens_text-danger mb-2 ps-2" style={{
+      // borderLeft: "3px solid #11113D"
+    }}>
+              Video record <span><BiVideoRecording className="ens_text-primary" size={20}/></span>
       </label>
       <div className='text-center mx-auto'>
-        <video ref={videoRef} autoPlay className={`video mx-auto rounded ${status!="recording"? 'd-none': ''}`} />
-        <video src={mediaBlobUrl} controls className={`rounded video mx-auto ${status=="stopped"? '': 'd-none'}`}/>
+        <video ref={videoRef} autoPlay className={`video mx-auto rounded ${status!=="recording"? 'd-none': ''}`} />
+        <video src={mediaBlobUrl} controls className={`rounded video mx-auto ${status==="stopped"? '': 'd-none'}`}/>
         <VideoBasePreview status={status}/>
       </div>
-    <div className='text-center'>
+    <div className='text-center mt-2'>
       {
-        status == "recording"?
+        status === "recording"?
         <div className='btn-group'>
-          <button className="btn btn-danger rounded">
+          <button className="btn ens_bg-danger text-white rounded">
             <BsStop size={"4vh"}  onClick={stopRecording} />
           </button>
         </div>
        :
-        status=="idle"||status=="stopped"||status=="acquiring_media"?
+        status==="idle"||status==="stopped"||status==="acquiring_media"?
         <div >
-          <button className="btn btn-danger rounded" onClick={startRecording}>
+          <button className="btn ens_bg-danger text-white rounded" onClick={startRecording}>
             <BsRecordBtn size={"4vh"} />
       </button>
           </div>:""
