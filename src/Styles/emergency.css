@@ -1,12 +1,15 @@
-
+.main_container{
+    background-color: #EDEEEB;
+    width: 100%;
+}
 .submitBtn{
     padding: 0 10px;
     text-align: center;
     cursor: pointer;
-    caret-color: red !important;
+    caret-color: rgb(239, 50, 50)!important;
     position: fixed;
     right: 70vh;
-    bottom: 10vh;
+    bottom: 0vh;
     z-index: 99;
 }
 .select_category{
@@ -18,7 +21,7 @@
 }
 
 .record_btn{
-    width: 7vh; 
+    width: 7vh;
     height: 7vh;
     cursor: pointer;
     background-color: brown;
@@ -33,5 +36,10 @@
     right: 1vh;
     bottom: 2vh;
    }
+}
+@media only screen and (max-width: 1040px){
+    .lg_org_contact_list{
+        display: none !important;
+    }
 }
 

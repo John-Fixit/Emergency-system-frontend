@@ -17,10 +17,8 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  Typography,
 } from "@mui/material";
 import { getLocation } from "../../FunctionControllers/getUserCurrentLocation";
-import { audioRecordComplete } from "../../FunctionControllers/audioRecordComplete";
 import { videoRecordComplete } from "../../FunctionControllers/videoRecordComplete";
 import Navbar from "../User/Navbar";
 import Loader from "react-spinners/ClipLoader";
@@ -30,12 +28,25 @@ import VideoRecord from "../../Sub-Components/VideoRecord";
 import Footer from "../Footer";
 import { ContextForSocket } from "../Organization/StoreContext/SocketContext";
 import ListOfOrgs from "../../Sub-Components/ListOfOrgs";
-import useSWR from "swr";
-import { baseUrl } from "../../URL";
+import MobileOrgList from "../../Sub-Components/MobileOrgList";
+import { useDispatch, useSelector } from "react-redux";
+import { AnimatePresence, motion } from "framer-motion";
+
+const categoryList = [
+  "Road Accident",
+  "Fire",
+  "Medical",
+  "Robbery",
+  "Riot",
+  "Natural Disaster",
+  "Kidnapping"
+]
 function Emergency() {
   const socket = useContext(ContextForSocket);
   const [useCurrentLocation, setUseCurrentLocation] = React.useState(null);
   const [newLocation, setnewLocation] = useState('')
+  const [orgs, setOrgs] = useState();
+  const {loading, data} = useSelector(state=>state.user.allOrgs)
   const [details, setdetails] = React.useState({
     category: "",
     text: "",
@@ -52,7 +63,6 @@ function Emergency() {
     open: false,
     NoError: null,
   });
-  const { data, isLoading } = useSWR(`${baseUrl}/org/allOrgs`);
   const toastStyle = {
     theme: "colored",
     delay: 8000,
@@ -60,10 +70,23 @@ function Emergency() {
     draggable: true,
     pauseOnHover: true,
   };
-
+  
   useEffect(()=>{
+    setOrgs(data);
     getAddress();
   }, [])
+
+  useEffect(()=>{
+      const allOrg = data
+      let newArray = []
+      allOrg?.map((item)=>{
+        const confirmIfHas = item.category.includes(details?.category);
+        if(confirmIfHas){
+          newArray.push(item);
+        }
+      })
+      setOrgs(newArray);
+  }, [details?.category])
 
   const handleChange = (e) => {
     if (details.location == "") {
@@ -79,9 +102,12 @@ function Emergency() {
         getLocation(latitude, longitude)
           .then((addressData) => {
             setnewLocation(()=>{return addressData.formatted});
+            if(addressData.formatted){
+              setUseCurrentLocation(true);
+            }
           })
           .catch((err) => {
-            toast.error(err.message, toastStyle);
+            toast.error(`error occurred, please check your connection!`, toastStyle);
           });
       } else {
         toast.error("Geolocation is not supported in your browser", toastStyle);
@@ -167,8 +193,8 @@ function Emergency() {
     setUseCurrentLocation(e.target.checked);
   };
 
-  const handleTemplate = (param) => {
-    setdetails({ ...details, text: param });
+  const handleTemplate = ({desc, index}) => {
+    setdetails({ ...details, text: desc, category: categoryList[index] });
   };
 
   const hoverOnUseLocation=()=>{
@@ -177,22 +203,33 @@ function Emergency() {
     }
   }
   return (
-    <>
+    <body className="main_container">
       <Navbar />
       <div className="col-12 px-lg-4 px-2">
+        <MobileOrgList allOrg={orgs} isLoading={loading} category={details.category}/>
         <div className="row">
-        <div className="col-sm-8 my-3 shadow-sm">
-          <div className="row">
-            <div className="category col-lg-6 col-md-6 col-sm-12">
+        <AnimatePresence>
+        <motion.div className={`${details?.category? 'mx-auto': 'mx-auto'} col-lg-8 col-md-12 py-4 px-4 shadow-sm bg-white`}
+        //  initial={{ x: -300 }}
+         animate={{ x: 0 }}
+         exit={{ x: 0 }}
+         transition={{ duration: 0.5 }}
+        >
+          <DescTemplate handleTemplate={handleTemplate} category={details.category}/>
+          <div className="row mt-3">
+            <div className="category col-sm-6">
               <label htmlFor="">Category of incident</label>
-              <FormControl sx={{ m: 2, minWidth: 120 }}>
-                <InputLabel id="demo-simple-select-label">Category</InputLabel>
+              <FormControl sx={{ mt: 1, width: "100%" }}>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   name="category"
                   value={details.category}
-                  label="Category"
+                  className="bg-white"
+               
+                  style={{
+                    width: "100%"
+                  }}
                   onChange={(e) =>
                     setdetails({ ...details, category: e.target.value })
                   }
@@ -208,53 +245,53 @@ function Emergency() {
                   <MenuItem value={"Robbery"}>Robbery</MenuItem>
                   <MenuItem value={"Riot"}>Riot</MenuItem>
                   <MenuItem value={"Natural Disaster"}>Natural Disaster</MenuItem>
+                  <MenuItem value={"Kidnapping"}>Kidnapping</MenuItem>
                 </Select>
-                <FormHelperText>
-                  Select the Category of your Organization
-                </FormHelperText>
               </FormControl>
             </div>
             {/* Location */}
+           
             <div className="location col-sm-6">
+            <div className="device_location" >
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                    sx={{
+                      color: '#11113D',
+                      '&.Mui-checked': {
+                        color: '#11113D',
+                      },
+                    }}
+                      checked={!!useCurrentLocation}
+                      onChange={handleCheckLocation}
+                      onMouseEnter={hoverOnUseLocation}
+                    />
+                  }
+                  label={useCurrentLocation?'Using your location' : "Use my current location"}
+                />
+              </div>
               {useCurrentLocation ? (
                 ""
               ) : (
                 <div className="provide_location">
-                  <label htmlFor="">
+                  {/* <label htmlFor="">
                     Enter the exact location of the Emergency
-                  </label>
+                  </label> */}
                   <textarea
                     rows="2"
                     cols="5"
                     name="location"
-                    className="form-control textArea my-2"
+                    className="form-control textArea"
                     placeholder="Location of the incident..."
                     value={details.location}
                     onChange={(e) => handleChange(e)}
                   ></textarea>
                 </div>
               )}
-              <div className="device_location" >
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={!!useCurrentLocation}
-                      onChange={handleCheckLocation}
-                      onMouseEnter={hoverOnUseLocation}
-                    />
-                  }
-                  label="Use my current location"
-                />
-              </div>
-            </div>
-            <div className="col-12">
-              <label htmlFor="">
-               (Optional Information) 
-              </label><br />
-              <DescTemplate handleTemplate={handleTemplate} />
+             
             </div>
             <div className="col-lg-6 col-md-6 col-sm-12 text_desc_area my-2">
-              <label htmlFor="">Description</label>
+              <label htmlFor="" className="fw-bold">Description</label>
               <textarea
                 rows="3"
                 cols="10"
@@ -268,22 +305,19 @@ function Emergency() {
 
           {/* voice record */}
           <div className="col-lg-6 col-md-6 col-sm-12 voice_desc_area my-2 media_record">
-            <label htmlFor="">
-              Use voice record
-            </label>
+            
               <AudioRecord getAudioRecorded={getAudioRecorded} />
           </div>
-          <div className="video_desc_area border-0 card my-2 shadow">
-            <div className="take_video">
-              <label htmlFor="" className="text-center">
-                Take a Video record
-              </label>
+          <div className="video_desc_area border-0 car my-2">
+            <div className="take_video text-center">
               <VideoRecord getVideoRecorded={getVideoRecorded} />
             </div>
           </div>
         </div>
+        <div className="border px-5 btnDiv" 
+        >
           <button
-              className="btn submitBtn px-5 text-center float-end rounded btn-danger d-flex gap-2"
+              className={`btn submitBtn px-5 py-2 text-center float-end rounded btn-dange d-flex gap-2`}
               onClick={() => submit()}
             >
               {
@@ -293,8 +327,11 @@ function Emergency() {
               }
               Send 
             </button>
-        </div>
-        <ListOfOrgs allOrg={data?.data.result} isLoading={isLoading} />
+            </div>
+        </motion.div>
+          
+            </AnimatePresence>
+        <ListOfOrgs allOrg={orgs} isLoading={loading} category={details.category}/>
       </div>
       </div>
       <Dialog
@@ -310,7 +347,7 @@ function Emergency() {
         <DialogTitle
           id="alert-dialog-title"
           className={`${
-            responseDialog.NoError ? "text-success" : "text-danger"
+            responseDialog.NoError ? "text-success" : "ens_text-danger"
           }`}
         >
           {"Response: Notification! Notification!! Notification!!!"}
@@ -321,14 +358,14 @@ function Emergency() {
             className={`form-control ${
               responseDialog.NoError
                 ? "is-valid text-success"
-                : "is-invalid text-danger"
+                : "is-invalid ens_text-danger"
             }`}
           >
             {resMsg.message}
           </DialogContentText>
           {
             resMsg.suggestedMeasure?.length ?
-            <div className="my-2 px-lg-3 text-danger" style={{listStyleType: 'circle'}}>
+            <div className="my-2 px-lg-3 ens_text-danger" style={{listStyleType: 'circle'}}>
               <ul className="text-start">
                 <p className="fw-bold text-uppercase">Take Note of the following:</p>
                 {
@@ -363,7 +400,7 @@ function Emergency() {
         }}
       />
       <Footer />
-    </>
+    </body>
   );
 }
 export default Emergency;

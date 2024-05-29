@@ -33,7 +33,7 @@ export default function CommentsModal({respondedMsg, msgId, msgCategory}) {
     }
   }, [open]);
   
-  comments.current = data?.data.comments
+  comments.current = data?.data.comments;
   if(isLoading){
       return <>
         <div className="mx-auto text-center">
@@ -84,6 +84,7 @@ export default function CommentsModal({respondedMsg, msgId, msgCategory}) {
             comments.current.map((msg, index)=>{
                 return (
                     <div className='comment my-4 text-end' key={index}>
+                      <span className=''>{msg?.responder?.orgName}</span>
                         <p className='shadow-sm py-2 px-3 rounded text-dark'>{msg.comment}</p>
                         <small className='float-end'>
                         <TimeAgo date={msg.createdAt}/>
@@ -107,9 +108,7 @@ export default function CommentsModal({respondedMsg, msgId, msgCategory}) {
             <div className='ms-auto'>
                 <Button onClick={handleClose} sx={{color: 'red'}}>Cancel</Button>
                 {
-                    !!comment?
-                    <Button onClick={()=>handleSubmit()}>Submit</Button>:
-                    <Button disabled onClick={()=>handleSubmit()}>Submit</Button>
+                    <Button disabled={!!comment? false: true} onClick={()=>handleSubmit()} >Submit</Button>
                 }
             </div>
         </DialogActions>

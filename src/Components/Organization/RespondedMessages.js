@@ -6,6 +6,7 @@ import Loader from 'react-spinners/PropagateLoader'
 import styled from 'styled-components'
 import RespondedAccordion from './DashboardComponents/RespondedAccordion'
 import { useSelector } from 'react-redux'
+import OrgHeader from "../../Sub-Components/OrgHeader"
 function RespondedMessages() {
   const routeParam = useParams()
   const allMessages = useSelector((state) => state.message.fetchMessages.data)
@@ -21,8 +22,9 @@ function RespondedMessages() {
   }
   return (
    <>
+   <OrgHeader page={'Responded Messages'}/>
       <Container className={`col-lg-10 mx-auto`}>
-          <h2 className='bg-primary text-white rounded p-3 text-center'>Responded Messages</h2>
+          <h2 className='bg-primary text-white rounded p-1 text-center'></h2>
           <RespondedAccordion respondedMessages={respondedMessages} allMessages={allMessages}/>
       </Container>
    </>

@@ -1,16 +1,14 @@
 .navbar{
-    background: white;
-    color: red;
-    position: sticky;
+    background: transparent;
+    color: rgb(239, 50, 50);
+    position: sticky !important;
     top: 0;
     backdrop-filter: blur(5px);
 }
-
 .navbar_second_color{
-    background-color: rgb(171, 25, 25) !important;
+    background-color: rgb(239, 50, 50) !important;
     color: white;
 }
-
 @media screen and (min-width: 730px) {
     .pad_navbar{
         padding: 0 5vh !important;

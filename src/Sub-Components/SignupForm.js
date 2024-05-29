@@ -1,9 +1,27 @@
 import styled from 'styled-components'
 import React from 'react'
-import {Box, Typography, TextField, Button, Grid, FormHelperText} from '@mui/material'
+import {Box, Typography, TextField, Button, Grid, FormHelperText, FormControl, InputLabel, Select, MenuItem, Checkbox, ListItemText, OutlinedInput} from '@mui/material'
 import {Link, useNavigate} from 'react-router-dom' 
 import Loader from "react-spinners/ClockLoader"
 import { createOrg } from "../FunctionControllers/createOrgFunc";
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+const categories = [
+  'Road Accident',
+  'Fire',
+  'Medical',
+  'Robbery',
+  'Riot',
+  'Natural Disaster',
+];
 function SignupForm() {
     const navigate = useNavigate('')
     const [isLoading, setIsLoading] = React.useState(false)
@@ -11,15 +29,22 @@ function SignupForm() {
     const [orgData, setOrgData] = React.useState({
         name: "",
         email: "",
-        category: "Choose Category",
+        category: [],
         mobile: '',
         password: ''
     });
 
-  const handleChange=(e)=>{
+  const handleChange=(e)=>{ 
       setOrgData({...orgData, [e.target.name]: e.target.value})
   } 
-
+  const handleChangeCategory = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setOrgData({...orgData, category: typeof value === 'string' ? value.split(',') : value,}
+      // On autofill we get a stringified value.   
+    );
+  };
   const handleSubmit = () => {
     if(handleValidation().status){
       setIsLoading(true)
@@ -44,27 +69,36 @@ function SignupForm() {
         });
     }
     else {
-        let errorName = handleValidation().name
-        errorName==='category'? setErrorMsg('Please select your organization category'): errorName==='mobile'? setErrorMsg('Please your organization contact'): errorName==='name'&& setErrorMsg('Organization name cannot be empty') 
+        let error = handleValidation()
+        setErrorMsg(error.message)
     }
   };
 
 
   const handleValidation =()=>{
     if(!(!!orgData.name)){
-        return {status: false, name: 'name'};
+        return {status: false, message: 'Organization name cannot be empty'};
     }
       if(orgData.category==='Choose Category'){
-        return {status: false, name: 'category'};
+        return {status: false, message: 'Please select your organization category'};
     }
     if(!(!!orgData.mobile)){
-        return {status: false, name: 'mobile'};
+        return {status: false, message: 'Please your organization contact'};
     }
-    
+    if(!phoneNumberHasCountryCode(orgData.mobile)){
+      return { status: false, message: "Sorry, your mobile must include valid country code" }
+    }
     else{
       return {status: true}
     }
   }
+
+  const phoneNumberHasCountryCode = (phoneNumber) => {
+    const countryCodeRegex = /^\+[1-9]\d{0,2}/; // Assumes country codes start with '+'
+    const result = countryCodeRegex.test(phoneNumber)
+    return result;
+  };
+  
   return (
     <>
         <Container className="col-sm-6 px-lg-5 px-2">
@@ -112,20 +146,27 @@ function SignupForm() {
                   Provide Your Organization Email Address   
                 </FormHelperText>
                 </div>
-               
-                <div className="col-md-12 my-1">
-                    <select className='form-select py-3' name='category' onChange={(e)=>handleChange(e)} style={{cursor: 'pointer'}}>
-                        <option value={''}>Choose Category</option>
-                        <option value={'Road Accident'}>Road Accident</option>
-                        <option value={'Fire'}>Fire</option>
-                        <option value={'Medical'}>Medical</option>
-                        <option value={'Robbery'}>Robbery</option>
-                        <option value={'Riot'}>Riot</option>
-                        <option value={'Natural Disaster'}>Natural Disaster</option>
-                    </select>
-                    <FormHelperText>
-                         Select the Category of your Organization
-                    </FormHelperText>
+                <div className='col-md-12 my-1'>
+                  <FormControl sx={{ width: "100%" }}>
+                    <InputLabel id="demo-multiple-checkbox-label">Category *</InputLabel>
+                    <Select
+                      labelId="demo-multiple-checkbox-label"
+                      id="demo-multiple-checkbox"
+                      multiple
+                      value={orgData.category}
+                      onChange={handleChangeCategory}
+                      input={<OutlinedInput label="Category *" />}
+                      renderValue={(selected) => selected.join(', ')}
+                      MenuProps={MenuProps}
+                    >
+                      {categories.map((name) => (
+                        <MenuItem key={name} value={name}>
+                          <Checkbox checked={orgData.category.indexOf(name) > -1} />
+                          <ListItemText primary={name} />
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </div>
                 <div className="col-md-12 my-1">
                     <TextField
@@ -134,7 +175,7 @@ function SignupForm() {
                             fullWidth
                             name="mobile"
                             label="contact"
-                            type="number"
+                            type="tel"
                             id="contact"
                             autoComplete="contact"
                             onChange={(e)=>handleChange(e)}
@@ -142,19 +183,9 @@ function SignupForm() {
                     />
                     <FormHelperText>
                         Provide your Organization Contact here
-                        <small className="text-danger"> [ Please enter with country code ]</small>
+                        {/* <small className="text-danger"> [ Please enter with country code ]</small> */}
                     </FormHelperText>
                 </div>
-                {/* <div className="col-md-12 my-1">
-                    <textarea rows="3" cols="5" name="description" placeholder="Your Organization description" className="form-control textArea"
-                    onChange={(e)=>handleChange(e)}
-                    value={orgData.description}
-                    >
-                    </textarea>
-                    <FormHelperText>
-                        Provide your organization's description here
-                    </FormHelperText>
-                </div> */}
                 <div className="col-md-12">
                     <TextField
                         margin="normal"
@@ -177,7 +208,7 @@ function SignupForm() {
                         fullWidth
                         variant="contained"
                         sx={{ mt: 1, backgroundColor: 'primary' }}
-                        className="bg-primary"
+                        className="bg-primary py-3"
                         onClick={handleSubmit}
                         >
                         <Loader loading={isLoading} size={20} color={"white"} cssOverride={{}}/>
@@ -186,7 +217,7 @@ function SignupForm() {
                     <Grid container justifyContent="flex-start" >
               <Grid item>
                 <Link to={`/login`} variant="body2">
-                  Already have an account? Sign in
+                  Already have an account? <span className='text-danger'>Sign in</span>
                 </Link>
               </Grid>
             </Grid>

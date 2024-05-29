@@ -9,8 +9,15 @@ import Signup from './Components/Organization/Signup';
 import About from './Components/User/About'
 import Contact from './Components/User/Contact'
 import USSD from './Sub-Components/USSD';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { getAllOrgAction } from './store/userSlice';
 function App() {
   const fetcher =(...args)=>axios.get(...args)
+  const dispatch = useDispatch(null);
+  useEffect(()=>{
+    dispatch(getAllOrgAction());
+  }, [])
   return (
     <>
       <SWRConfig value={{fetcher: fetcher}}>

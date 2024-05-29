@@ -1,19 +1,19 @@
 {
-  "short_name": "React App",
-  "name": "Emergency System",
+  "short_name": "ENS System",
+  "name": "Emergency Notification System",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "ENS Logo.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "ENS Logo.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "ENS Logo.png",
       "type": "image/png",
       "sizes": "512x512"
     }
