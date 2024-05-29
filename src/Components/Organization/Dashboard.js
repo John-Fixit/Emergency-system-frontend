@@ -41,9 +41,9 @@ function Dashboard() {
               return <div className="col-lg-4">
                <Card
                   key={index}
-                  icon={cat=='Road Accident'? <FaStreetView size={iconSize} color="red" />: cat=="Robbery"? <GiKingJuMask size={iconSize} color="red" />: cat=="Riot" ? <GiSwordman size={iconSize} color="red" />: cat=="Fire" ? <GiFireBowl size={iconSize} color="red" />: cat=="Natural Disaster" &&<WiEarthquake size={iconSize} color="red" />}
+                  icon={cat==='Road Accident'? <FaStreetView size={iconSize} color="red" />: cat==="Robbery"? <GiKingJuMask size={iconSize} color="red" />: cat==="Riot" ? <GiSwordman size={iconSize} color="red" />: cat==="Fire" ? <GiFireBowl size={iconSize} color="red" />: cat==="Natural Disaster" &&<WiEarthquake size={iconSize} color="red" />}
                   name={`${cat} Messages`}
-                  quality={allMessage?.filter((msg)=>msg.category==cat)?.length}
+                  quality={allMessage?.filter((msg)=>msg.category===cat)?.length}
                 />
           </div>
             })
