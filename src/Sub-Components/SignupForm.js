@@ -183,7 +183,7 @@ function SignupForm() {
                     />
                     <FormHelperText>
                         Provide your Organization Contact here
-                        <small className="text-danger"> [ Please enter with country code ]</small>
+                        {/* <small className="text-danger"> [ Please enter with country code ]</small> */}
                     </FormHelperText>
                 </div>
                 <div className="col-md-12">
@@ -208,7 +208,7 @@ function SignupForm() {
                         fullWidth
                         variant="contained"
                         sx={{ mt: 1, backgroundColor: 'primary' }}
-                        className="bg-primary"
+                        className="bg-primary py-3"
                         onClick={handleSubmit}
                         >
                         <Loader loading={isLoading} size={20} color={"white"} cssOverride={{}}/>
@@ -217,7 +217,7 @@ function SignupForm() {
                     <Grid container justifyContent="flex-start" >
               <Grid item>
                 <Link to={`/login`} variant="body2">
-                  Already have an account? Sign in
+                  Already have an account? <span className='text-danger'>Sign in</span>
                 </Link>
               </Grid>
             </Grid>
