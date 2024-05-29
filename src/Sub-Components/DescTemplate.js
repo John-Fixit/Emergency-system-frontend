@@ -12,7 +12,7 @@ const descList = [
 function DescTemplate({handleTemplate, category}) {
   return (
         <React.Fragment>
-          <p>Available Templates messages:</p>
+          <p className="fw-bold">Available Message Templates:</p>
           {
             descList.map((item, i)=>{
               return <Chip key={i} label={item.categoryName} className={`border border-danger border-1 fire m-1 ${category === item.categoryName? "ens_bg-danger text-light": "bg-light"}`} onClick={()=>handleTemplate({ desc: item.desc, index:i})} />

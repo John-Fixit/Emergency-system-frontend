@@ -3,15 +3,33 @@
     width: 100%;
 }
 .submitBtn{
-    padding: 0 10px;
+    /* padding: 0 10px; */
     text-align: center;
     cursor: pointer;
-    caret-color: rgb(239, 50, 50)!important;
+    caret-color: rgb(239, 50, 50) !important;
     position: fixed;
+    background-color: rgb(239, 50, 50) !important;
+    border-radius: 50% !important;
+    border: none;
+    width: 3.5rem;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
     right: 70vh;
     bottom: 0vh;
     z-index: 99;
+    animation: rotate 1.5s linear infinite;
 }
+@keyframes rotate {
+    0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px); /* Adjust bounce height */
+      }
+  }
 .select_category{
     cursor: pointer;
 }
@@ -24,8 +42,8 @@
     width: 7vh;
     height: 7vh;
     cursor: pointer;
-    background-color: brown;
-    border: 5px solid brown;
+    background-color: rgb(239, 50, 50);
+    border: 5px solid rgb(239, 50, 50);
 }
 .record_btn:hover{
     background-color: white;

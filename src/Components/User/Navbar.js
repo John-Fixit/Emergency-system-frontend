@@ -27,7 +27,7 @@ function Navbar() {
   return (
     <React.Fragment>
         <nav className="navbar navbar-expand-sm navbar-light shadow-sm sticky-top " style={{
-          borderBottom: "2px solid #11113D"
+          borderBottom: "2px solid rgb(239, 50, 50)"
         }}>
           <div className="container-fluid pad_navbar">
             <Link to={`/`} className="navbar-brand fw-bold" ><span style={styles}>

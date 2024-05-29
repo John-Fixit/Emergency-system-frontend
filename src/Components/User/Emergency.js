@@ -31,6 +31,7 @@ import ListOfOrgs from "../../Sub-Components/ListOfOrgs";
 import MobileOrgList from "../../Sub-Components/MobileOrgList";
 import { useDispatch, useSelector } from "react-redux";
 import { AnimatePresence, motion } from "framer-motion";
+import SendIcon from '@mui/icons-material/Send';
 
 const categoryList = [
   "Road Accident",
@@ -205,7 +206,7 @@ function Emergency() {
   return (
     <body className="main_container">
       <Navbar />
-      <div className="col-12 px-lg-4 px-2">
+      <div className="col-12 px-lg-4 px-3">
         <MobileOrgList allOrg={orgs} isLoading={loading} category={details.category}/>
         <div className="row">
         <AnimatePresence>
@@ -216,10 +217,11 @@ function Emergency() {
          transition={{ duration: 0.5 }}
         >
           <DescTemplate handleTemplate={handleTemplate} category={details.category}/>
+        
           <div className="row mt-3">
             <div className="category col-sm-6">
-              <label htmlFor="">Category of incident</label>
-              <FormControl sx={{ mt: 1, width: "100%" }}>
+              <label htmlFor="" className="fw-semibold">Category of incident</label>
+              <FormControl sx={{ width: "100%" }}>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
@@ -251,47 +253,47 @@ function Emergency() {
             </div>
             {/* Location */}
            
-            <div className="location col-sm-6">
-            <div className="device_location" >
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                    sx={{
-                      color: '#11113D',
-                      '&.Mui-checked': {
-                        color: '#11113D',
-                      },
-                    }}
-                      checked={!!useCurrentLocation}
-                      onChange={handleCheckLocation}
-                      onMouseEnter={hoverOnUseLocation}
+            <div className="location col-sm-6 d-flex align-items-center">
+              <div >
+                <div className="device_location" >
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                        sx={{
+                          color: '#11113D',
+                          '&.Mui-checked': {
+                            color: '#11113D',
+                          },
+                        }}
+                          checked={!!useCurrentLocation}
+                          onChange={handleCheckLocation}
+                          onMouseEnter={hoverOnUseLocation}
+                        />
+                      }
+                      label={"Use device location"}
                     />
-                  }
-                  label={useCurrentLocation?'Using your location' : "Use my current location"}
-                />
+                  </div>
+                  {!useCurrentLocation && (
+                    <div className="provide_location">
+                      <label htmlFor="" className="text-muted">
+                        Enter the exact location of the Emergency
+                      </label>
+                      <textarea
+                        rows="2"
+                        cols="5"
+                        name="location"
+                        className="form-control textArea"
+                        placeholder="Location of the incident..."
+                        value={details.location}
+                        onChange={(e) => handleChange(e)}
+                      ></textarea>
+                    </div>
+                  )}
               </div>
-              {useCurrentLocation ? (
-                ""
-              ) : (
-                <div className="provide_location">
-                  {/* <label htmlFor="">
-                    Enter the exact location of the Emergency
-                  </label> */}
-                  <textarea
-                    rows="2"
-                    cols="5"
-                    name="location"
-                    className="form-control textArea"
-                    placeholder="Location of the incident..."
-                    value={details.location}
-                    onChange={(e) => handleChange(e)}
-                  ></textarea>
-                </div>
-              )}
              
             </div>
-            <div className="col-lg-6 col-md-6 col-sm-12 text_desc_area my-2">
-              <label htmlFor="" className="fw-bold">Description</label>
+            <div className="col-lg-6 col-md-6 col-sm-12 text_desc_area mt-3">
+              <label htmlFor="" className="fw-semibold">Description</label>
               <textarea
                 rows="3"
                 cols="10"
@@ -304,7 +306,7 @@ function Emergency() {
             </div>
 
           {/* voice record */}
-          <div className="col-lg-6 col-md-6 col-sm-12 voice_desc_area my-2 media_record">
+          <div className="col-lg-6 col-md-6 col-sm-12 voice_desc_area mt-3 media_record">
             
               <AudioRecord getAudioRecorded={getAudioRecorded} />
           </div>
@@ -317,15 +319,17 @@ function Emergency() {
         <div className="border px-5 btnDiv" 
         >
           <button
-              className={`btn submitBtn px-5 py-2 text-center float-end rounded btn-dange d-flex gap-2`}
+              className={`cursor-pointer submitBtn text-center float-end gap-2`}
               onClick={() => submit()}
             >
               {
-                <p className="my-auto">
+                isSending?(
                   <Loader loading={isSending} size={20} color={"white"} />
-                </p>
+                ):(
+                  <SendIcon size={40} color={"white"}/>
+                )
               }
-              Send 
+               
             </button>
             </div>
         </motion.div>
@@ -340,7 +344,7 @@ function Emergency() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         onKeyPress={(e) => {
-          e.key == "Enter" &&
+          e.key === "Enter" &&
             setResponseDialog({ ...responseDialog, open: false });
         }}
       >

@@ -30,7 +30,7 @@ function AudioRecord({getAudioRecorded}) {
     getAudioRecorded(data.blob)
   };
   return (
-    <div className="text-center bg-white border-0 shadow-sm rounded py-1">
+    <div className="text-center bg-white border-0 rounded">
        <label htmlFor="" className="fw-bold ens_text-danger mb-2 ps-2" style={{
       // borderLeft: "3px solid #11113D"
     }}>
@@ -41,7 +41,7 @@ function AudioRecord({getAudioRecorded}) {
       <p>New Record</p>
       }
       <div className="row">
-        <AudioReactRecorder state={recordState} onStop={onStop} canvasHeight={30} canvasWidth={340} foregroundColor="#11113D" backgroundColor="white"/>
+        <AudioReactRecorder state={recordState} onStop={onStop} canvasHeight={30} canvasWidth={340} foregroundColor="rgb(239, 50, 50)" backgroundColor="white"/>
         <div>
           {
             audioBlobUrl && recordState==="stop" &&  <audio src={audioUrl.current} controls style={{height: '20px'}}/>
@@ -51,9 +51,9 @@ function AudioRecord({getAudioRecorded}) {
       {
         recordState === "start"?
         <div >
-          <button className="btn btn-warning rounded-circle" onClick={()=>pause()}>
+          {/* <button className="btn btn-warning rounded-circle" onClick={()=>pause()}>
             <BsPauseFill size={"4vh"} />
-          </button>
+          </button> */}
           <button className="btn ens_bg-danger text-white rounded-circle" onClick={()=>stop()}>
             <BsStop size={"4vh"} />
           </button>
